@@ -7,6 +7,12 @@
   <!-- -*- extra stuff goes here -*- -->
 
     <permission
+        id="apc.content.AddSchool"
+        title="apc.content: Add School"
+    />
+
+        
+    <permission
         id="apc.content.AddTeacher"
         title="apc.content: Add Teacher"
     />
