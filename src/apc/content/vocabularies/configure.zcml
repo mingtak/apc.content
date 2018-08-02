@@ -1,0 +1,13 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="apc.content">
+
+    <!-- -*- extra stuff goes here -*- -->
+
+    <utility
+        component=".class_time.ClassTimeFactory"
+        name="apc.content.ClassTime"
+    />
+
+        
+</configure>

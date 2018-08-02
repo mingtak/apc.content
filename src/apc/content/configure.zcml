@@ -44,4 +44,7 @@
 
   <!-- -*- extra stuff goes here -*- -->
 
+    <include package=".vocabularies" />
+
+        
 </configure>
