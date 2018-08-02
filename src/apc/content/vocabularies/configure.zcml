@@ -5,6 +5,12 @@
     <!-- -*- extra stuff goes here -*- -->
 
     <utility
+        component=".language.LanguageFactory"
+        name="apc.content.Language"
+    />
+
+        
+    <utility
         component=".class_time.ClassTimeFactory"
         name="apc.content.ClassTime"
     />
