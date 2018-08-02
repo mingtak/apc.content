@@ -1,0 +1,6 @@
+[report]
+include =
+    src/apc/*
+omit =
+    */test*
+    */upgrades/*
