@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+
+<tal:match tal:repeat="item view/matchs">
+    <div tal:switch="python:bool(view.matchs[item])">
+        <div tal:case="True">
+            <h4><b>${item}:媒合成功</b></h4>
+            <ul>
+                <li tal:repeat="teacher python:view.matchs[item]">
+                    <h4>${python:teacher[0]}</h4>
+                    <b>有效的媒合語言:</b>
+                    <p tal:repeat="time python:teacher[1]">
+                        ${python:view.vocaClassTime.getTerm(time).title}
+                    </p>
+                    <b>有效的媒合時間:</b>
+                    <p tal:repeat="lang python:teacher[2]">
+                        ${python:view.vocaLanguage.getTerm(lang).title}
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <div tal:case="default">
+            <h4><b>${item}:媒合無結果</b></h4>
+        </div>
+    </div>
+    <hr>
+</tal:match>
+
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+

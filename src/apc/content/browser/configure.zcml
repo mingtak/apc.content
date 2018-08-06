@@ -17,5 +17,13 @@
       type="plone"
       directory="static"
       />
+ 
+  <browser:page
+      name="match_result"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      class=".views.MatchResult"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
 
 </configure>

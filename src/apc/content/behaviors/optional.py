@@ -15,12 +15,25 @@ class IOptional(model.Schema):
     """
     """
 
-    project = schema.TextLine(
-        title=_(u'Project'),
-        description=_(u'Give in a project name'),
-        required=False,
+    language = schema.List(
+        title=_(u'Language'),
+        value_type=schema.Choice(
+            title=_(u"Language"),
+            vocabulary='apc.content.Language',
+            required=False,
+        ),
+        required=True
     )
 
+    classTime = schema.List(
+        title=_(u'Class Time'),
+        value_type=schema.Choice(
+            title=_(u"Class Time"),
+            vocabulary='apc.content.ClassTime',
+            required=False,
+        ),
+        required=True
+    )
 
 @implementer(IOptional)
 @adapter(IDexterityContent)
