@@ -17,7 +17,7 @@ class IOptional(model.Schema):
 
     localLang = schema.TextLine(
         title=_(u'Local Language'),
-        description=_(u'Format example: D20,Language Name,111/A01,Language Name,011/..., 000 to 111 for primary-intermediate-advanced'),
+        description=_(u'Format example: D20,Language Name,1,1,1/A01,Language Name,0,1,3/..., 0,0,0 or 0,1,3 mapping to primary-intermediate-advanced'),
         required=True,
     )
 
@@ -28,7 +28,7 @@ class IOptional(model.Schema):
             vocabulary='apc.content.ClassTime',
             required=False,
         ),
-        required=True
+        required=False
     )
 
 @implementer(IOptional)

@@ -15,11 +15,6 @@ class ISchool(model.Schema):
     """ Marker interface and Dexterity Python Schema for School
     """
 
-    schoolCode = schema.TextLine(
-        title=_(u'School Code'),
-        required=True,
-    )
-
     seed = schema.Bool(
         title=_(u'Seed School'),
         default=False,
