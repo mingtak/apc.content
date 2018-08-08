@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+
+<table>
+    <tbody>
+        <tr>
+            <th>學校代碼</th>
+            <th>學校名稱</th>
+            <th>語言需求</th>
+            <th>可配合時段</th>
+            <th>優先學校</th>
+        </tr>
+        <tr tal:repeat="item python:view.portal['school'].getChildNodes()">
+            <td>${item/id}</td>
+            <td>${item/title}</td>
+            <td>${item/localLang}</td>
+            <td>
+                <tal:time repeat="time item/classTime">
+                    ${python:view.vocaClassTime.getTerm(time).title.replace('/', '')}
+                    <tal:common condition="not:repeat/time/end">, </tal:common>
+                </tal:time>
+            </td>
+            <td>${item/seed}</td>
+        </tr>
+
+    </tbody>
+</table>
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+

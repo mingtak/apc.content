@@ -13,6 +13,21 @@ from zope.schema.interfaces import IVocabularyFactory
 logger = logging.getLogger("apc.content")
 
 
+class SchoolOverview(BrowserView):
+    """ School Overview """
+    template = ViewPageTemplateFile("template/school_overview.pt")
+
+    def __call__(self):
+        context = self.context
+        request = self.request
+        self.portal = api.portal.get()
+
+        factory = getUtility(IVocabularyFactory, 'apc.content.ClassTime')
+        self.vocaClassTime = factory(context)
+
+        return self.template()
+
+
 class MatchResult(BrowserView):
     """ Match Result """
     template = ViewPageTemplateFile("template/match_result.pt")
