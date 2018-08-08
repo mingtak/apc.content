@@ -15,14 +15,10 @@ class IOptional(model.Schema):
     """
     """
 
-    language = schema.List(
-        title=_(u'Language'),
-        value_type=schema.Choice(
-            title=_(u"Language"),
-            vocabulary='apc.content.Language',
-            required=False,
-        ),
-        required=True
+    localLang = schema.TextLine(
+        title=_(u'Local Language'),
+        description=_(u'Format example: D20,Language Name,111/A01,Language Name,011/..., 000 to 111 for primary-intermediate-advanced'),
+        required=True,
     )
 
     classTime = schema.List(
