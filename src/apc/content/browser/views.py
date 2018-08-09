@@ -29,7 +29,7 @@ class SchoolOverview(BrowserView):
 
 
 """ 範例:
-{'劉金花_5-4':[學生數, 開課級別, [校名, 語言, 等級, 人數], [校名, 語言, 等級, 人數],...],
+{'劉金花_5-4':[學生數, 開課語言, 開課級別, [校名, 語言, 等級, 人數], [校名, 語言, 等級, 人數],...],
 
 ....
 }
@@ -40,7 +40,7 @@ class MatchResult(BrowserView):
 
     def classroomIn(self, key):
         """ 決定開課學校 """
-        courseTable = self.courseTable[key][2:]
+        courseTable = self.courseTable[key][3:]
         classroom = ''
         for index in range(len(courseTable)):
             if classroom == '':
@@ -56,7 +56,9 @@ class MatchResult(BrowserView):
             for cTime in school.classTime:
                 try:
                     print '%s_%s' % (teacher.title, cTime)
+                    # 開課時間吻合，開課語系吻合，開課程度吻合，共學校數未滿，最大學生數未滿，則成立
                     if self.courseTable.has_key('%s_%s' % (teacher.title, cTime)) and \
+                       self.courseTable['%s_%s' % (teacher.title, cTime)][2] in ['', language] and \
                        self.courseTable['%s_%s' % (teacher.title, cTime)][1] in ['', level] and \
                        len(self.courseTable['%s_%s' % (teacher.title, cTime)]) < self.max_sc+2 and \
                        self.courseTable['%s_%s' % (teacher.title, cTime)][0] < self.max_st:
@@ -69,9 +71,11 @@ class MatchResult(BrowserView):
                                 already = True
                                 break
                         if not already:
+                            # 加入共學，加計人數，確認語言，確認程度
                             self.courseTable['%s_%s' % (teacher.title, cTime)].append([school.title, language, level, int(req_lv)])
                             self.courseTable['%s_%s' % (teacher.title, cTime)][0] += int(req_lv)
                             self.courseTable['%s_%s' % (teacher.title, cTime)][1] = level
+                            self.courseTable['%s_%s' % (teacher.title, cTime)][2] = language
                 except:
                     print '有錯'
                     import pdb; pdb.set_trace()
@@ -100,7 +104,7 @@ class MatchResult(BrowserView):
         for teacher in teachers:
             for item in teacher.classTime:
                 # [學生數, 開課級別]
-                self.courseTable['%s_%s' % (teacher.title, item)] = [0, '']
+                self.courseTable['%s_%s' % (teacher.title, item)] = [0, '', '']
 
 
         for teacher in teachers:

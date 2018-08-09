@@ -3,14 +3,9 @@
     xmlns:metal="http://xml.zope.org/namespaces/metal"
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     lang="en"
-    metal:use-macro="context/main_template/macros/master"
     i18n:domain="apc.content">
 <body>
 
-
-<metal:content-core fill-slot="content-core">
-<metal:content-core define-macro="content-core"
-                    tal:define="toc context/table_of_contents|nothing;">
 
 <?python
 from plone import api
@@ -25,7 +20,9 @@ schools = portal['school'].getChildNodes()
             <th>學校\師資</th>
             <th tal:repeat="teacher teachers">
                 ${teacher/title}<br>
-                ${python:teacher.localLang[4:]}<br>
+                <tal:lang repeat="lang python:teacher.localLang.split('/')">
+                    ${python:lang[4:]}<br>
+                </tal:lang><hr>
                 <tal:lang tal:repeat="time teacher/classTime">
                     ${python:view.vocaClassTime.getTerm(time).title}<tal:common condition="not:repeat/time/end">, </tal:common>
                 </tal:lang>
@@ -33,24 +30,26 @@ schools = portal['school'].getChildNodes()
         </tr>
 
         <tr tal:repeat="school schools">
-            <td style="width:250px">
+            <td style="width:300px">
                 ${school/title}<br>
                 <tal:lang repeat="lang python:school.localLang.split('/')">
                     ${python:lang[4:]}<br>
+                </tal:lang><hr>
+                <tal:lang tal:repeat="time school/classTime">
+                    ${python:view.vocaClassTime.getTerm(time).title}<tal:common condition="not:repeat/time/end">, </tal:common>
                 </tal:lang>
             </td>
-            <td tal:repeat="teacher teachers" style="width:500px">
+            <td tal:repeat="teacher teachers" style="width:700px">
                 <tal:class repeat="item view/courseTable">
                     <tal:item condition="python:item.startswith(teacher.title) and view.courseTable[item][0]">
-                        <tal:course repeat="matchSchool python:view.courseTable[item][2:]">
-                            <tal:match condition="python:school.title == matchSchool[0] and len(view.courseTable[item][2:]) >= view.min_sc">
+                        <tal:course repeat="matchSchool python:view.courseTable[item][3:]">
+                            <tal:match condition="python:school.title == matchSchool[0] and len(view.courseTable[item][3:]) >= view.min_sc">
                                 ${python:view.vocaClassTime.getTerm(item.split('_')[1]).title}:<br>
                                 開課學校: ${python:view.classroomIn(item)}<br>
-                                語言/程度: ${python:view.courseTable[item][2][1]} / ${python:view.courseTable[item][2][2]}<br>
+                                語言/程度: ${python:view.courseTable[item][2]} / ${python:view.courseTable[item][1]}<br>
                                 總學生數: ${python:view.courseTable[item][0]}<br>
-                                開課級別: ${python:view.courseTable[item][1]}<br>
                                 共學組成:<br>
-                                <tal:co repeat="coSchool python:view.courseTable[item][2:]">
+                                <tal:co repeat="coSchool python:view.courseTable[item][3:]">
                                     ${python:coSchool[0]} / ${python:coSchool[1]} / 級別:${python:coSchool[2]} / 人數:${python:coSchool[3]}<br>
                                 </tal:co><hr>
                             </tal:match>
@@ -65,21 +64,14 @@ schools = portal['school'].getChildNodes()
 
 
 
+<style>
+table {border:1px solid black; border-collapse:collapse; width: 5000px}
+tbody, td, th {border:1px #000 solid; padding:5px}
+</style>
 
 
 
 
-
-
-
-
-
-
-
-
-
-</metal:content-core>
-</metal:content-core>
 
 </body>
 </html>
