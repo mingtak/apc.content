@@ -25,7 +25,7 @@ schools = portal['school'].getChildNodes()
             <th>學校\師資</th>
             <th tal:repeat="teacher teachers">
                 ${teacher/title}<br>
-                ${teacher/localLang}<br>
+                ${python:teacher.localLang[4:]}<br>
                 <tal:lang tal:repeat="time teacher/classTime">
                     ${python:view.vocaClassTime.getTerm(time).title}<tal:common condition="not:repeat/time/end">, </tal:common>
                 </tal:lang>
@@ -33,17 +33,20 @@ schools = portal['school'].getChildNodes()
         </tr>
 
         <tr tal:repeat="school schools">
-            <td>
+            <td style="width:250px">
                 ${school/title}<br>
-                ${school/localLang}<br>
+                <tal:lang repeat="lang python:school.localLang.split('/')">
+                    ${python:lang[4:]}<br>
+                </tal:lang>
             </td>
-            <td tal:repeat="teacher teachers">
+            <td tal:repeat="teacher teachers" style="width:500px">
                 <tal:class repeat="item view/courseTable">
                     <tal:item condition="python:item.startswith(teacher.title) and view.courseTable[item][0]">
                         <tal:course repeat="matchSchool python:view.courseTable[item][2:]">
                             <tal:match condition="python:school.title == matchSchool[0] and len(view.courseTable[item][2:]) >= view.min_sc">
                                 ${python:view.vocaClassTime.getTerm(item.split('_')[1]).title}:<br>
                                 開課學校: ${python:view.classroomIn(item)}<br>
+                                語言/程度: ${python:view.courseTable[item][2][1]} / ${python:view.courseTable[item][2][2]}<br>
                                 總學生數: ${python:view.courseTable[item][0]}<br>
                                 開課級別: ${python:view.courseTable[item][1]}<br>
                                 共學組成:<br>

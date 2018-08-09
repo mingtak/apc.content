@@ -107,7 +107,7 @@ class MatchResult(BrowserView):
             # 老師能教
             canTeach = {}
             for item in teacher.localLang.split('/'):
-                language = ''.join(item.split(',')[0:2])
+                language = item.split(',')[1]
                 canTeach[language] = item
 
             for school in schools:
@@ -120,7 +120,7 @@ class MatchResult(BrowserView):
                     continue
                 for item in school.localLang.split('/'):
                     # 逐個語言比對
-                    language = ''.join(item.split(',')[0:2])
+                    language = item.split(',')[1]
 
                     if language in canTeach.keys():
                         req_lv_1, req_lv_2, req_lv_3 = item.split(',')[2:]
