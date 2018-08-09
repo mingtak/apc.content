@@ -84,6 +84,34 @@ class MatchResult(BrowserView):
                                     print '有錯'
                                     import pdb; pdb.set_trace()
 
+
+#中階
+                        if int(can_lv_2) and int(req_lv_2):
+                            for cTime in school.classTime:
+                                try:
+                                    print '%s_%s' % (teacher.title, cTime)
+                                    if courseTable.has_key('%s_%s' % (teacher.title, cTime)) and \
+                                       courseTable['%s_%s' % (teacher.title, cTime)][0] < 10:    # TODO: 寫死學生數
+                                        courseTable['%s_%s' % (teacher.title, cTime)].append([school.title, language, 'intermediate', int(req_lv_2)])
+                                        courseTable['%s_%s' % (teacher.title, cTime)][0] += int(req_lv_2)
+                                except:
+                                    print '有錯'
+                                    import pdb; pdb.set_trace()
+
+#高階
+                        if int(can_lv_3) and int(req_lv_3):
+                            for cTime in school.classTime:
+                                try:
+                                    print '%s_%s' % (teacher.title, cTime)
+                                    if courseTable.has_key('%s_%s' % (teacher.title, cTime)) and \
+                                       courseTable['%s_%s' % (teacher.title, cTime)][0] < 10:    # TODO: 寫死學生數
+                                        courseTable['%s_%s' % (teacher.title, cTime)].append([school.title, language, 'advanced', int(req_lv_3)])
+                                        courseTable['%s_%s' % (teacher.title, cTime)][0] += int(req_lv_3)
+                                except:
+                                    print '有錯'
+                                    import pdb; pdb.set_trace()
+
+
         self.courseTable = courseTable
-        import pdb; pdb.set_trace()
+#        import pdb; pdb.set_trace()
         return self.template()
