@@ -28,14 +28,66 @@ class SchoolOverview(BrowserView):
         return self.template()
 
 
+""" 範例:
+{'劉金花_5-4':[學生數, 開課級別, [校名, 語言, 等級, 人數], [校名, 語言, 等級, 人數],...],
+
+....
+}
+"""
 class MatchResult(BrowserView):
     """ Match Result """
     template = ViewPageTemplateFile("template/match_result.pt")
+
+    def classroomIn(self, key):
+        """ 決定開課學校 """
+        courseTable = self.courseTable[key][2:]
+        classroom = ''
+        for index in range(len(courseTable)):
+            if classroom == '':
+                classroom = courseTable[index][0]
+            elif int(courseTable[index][-1]) > int(courseTable[index-1][-1]):
+                classroom =courseTable[index][0]
+        return classroom
+
+
+    def courseMatch(self, language, level, can_lv, req_lv, school, teacher):
+        """ 比對等級/人數 """
+        if int(can_lv) and int(req_lv):
+            for cTime in school.classTime:
+                try:
+                    print '%s_%s' % (teacher.title, cTime)
+                    if self.courseTable.has_key('%s_%s' % (teacher.title, cTime)) and \
+                       self.courseTable['%s_%s' % (teacher.title, cTime)][1] in ['', level] and \
+                       len(self.courseTable['%s_%s' % (teacher.title, cTime)]) < self.max_sc+2 and \
+                       self.courseTable['%s_%s' % (teacher.title, cTime)][0] < self.max_st:    # TODO: 寫死開課上限學生數
+
+                        # 檢查是否已在其它時段開課
+                        already = False
+                        for item in self.courseTable:
+                            if [school.title, language, level, int(req_lv)] in self.courseTable[item]:
+                                print '已開'
+                                already = True
+                                break
+                        if not already:
+                            self.courseTable['%s_%s' % (teacher.title, cTime)].append([school.title, language, level, int(req_lv)])
+                            self.courseTable['%s_%s' % (teacher.title, cTime)][0] += int(req_lv)
+                            self.courseTable['%s_%s' % (teacher.title, cTime)][1] = level
+                except:
+                    print '有錯'
+                    import pdb; pdb.set_trace()
+
 
     def __call__(self):
         context = self.context
         request = self.request
         portal = api.portal.get()
+
+        # min costudy schools(min_sc)
+        self.min_sc=int(request.form.get('min_sc', 3))
+
+        # max costudy schools(max_sc) and students(max_st) limit
+        self.max_sc=int(request.form.get('max_sc', 6))
+        self.max_st=int(request.form.get('max_st', 10))
 
         factory1 = getUtility(IVocabularyFactory, 'apc.content.ClassTime')
         self.vocaClassTime = factory1(context)
@@ -44,10 +96,11 @@ class MatchResult(BrowserView):
         schools = portal['school'].getChildNodes()
 
         # 確認可開班狀況
-        courseTable = {}
+        self.courseTable = {}
         for teacher in teachers:
             for item in teacher.classTime:
-                courseTable['%s_%s' % (teacher.title, item)] = [0]
+                # [學生數, 開課級別]
+                self.courseTable['%s_%s' % (teacher.title, item)] = [0, '']
 
 
         for teacher in teachers:
@@ -68,50 +121,13 @@ class MatchResult(BrowserView):
                 for item in school.localLang.split('/'):
                     # 逐個語言比對
                     language = ''.join(item.split(',')[0:2])
+
                     if language in canTeach.keys():
                         req_lv_1, req_lv_2, req_lv_3 = item.split(',')[2:]
                         can_lv_1, can_lv_2, can_lv_3 = canTeach[language].split(',')[2:]
-                        # 比對等級/人數
-                        if int(can_lv_1) and int(req_lv_1):
-                            for cTime in school.classTime:
-                                try:
-                                    print '%s_%s' % (teacher.title, cTime)
-                                    if courseTable.has_key('%s_%s' % (teacher.title, cTime)) and \
-                                       courseTable['%s_%s' % (teacher.title, cTime)][0] < 10:    # TODO: 寫死學生數
-                                        courseTable['%s_%s' % (teacher.title, cTime)].append([school.title, language, 'primary', int(req_lv_1)])
-                                        courseTable['%s_%s' % (teacher.title, cTime)][0] += int(req_lv_1)
-                                except:
-                                    print '有錯'
-                                    import pdb; pdb.set_trace()
 
+                        self.courseMatch(language, 'primary', can_lv_1, req_lv_1, school, teacher)
+                        self.courseMatch(language, 'intermediate', can_lv_2, req_lv_2, school, teacher)
+                        self.courseMatch(language, 'advanced', can_lv_3, req_lv_3, school, teacher)
 
-#中階
-                        if int(can_lv_2) and int(req_lv_2):
-                            for cTime in school.classTime:
-                                try:
-                                    print '%s_%s' % (teacher.title, cTime)
-                                    if courseTable.has_key('%s_%s' % (teacher.title, cTime)) and \
-                                       courseTable['%s_%s' % (teacher.title, cTime)][0] < 10:    # TODO: 寫死學生數
-                                        courseTable['%s_%s' % (teacher.title, cTime)].append([school.title, language, 'intermediate', int(req_lv_2)])
-                                        courseTable['%s_%s' % (teacher.title, cTime)][0] += int(req_lv_2)
-                                except:
-                                    print '有錯'
-                                    import pdb; pdb.set_trace()
-
-#高階
-                        if int(can_lv_3) and int(req_lv_3):
-                            for cTime in school.classTime:
-                                try:
-                                    print '%s_%s' % (teacher.title, cTime)
-                                    if courseTable.has_key('%s_%s' % (teacher.title, cTime)) and \
-                                       courseTable['%s_%s' % (teacher.title, cTime)][0] < 10:    # TODO: 寫死學生數
-                                        courseTable['%s_%s' % (teacher.title, cTime)].append([school.title, language, 'advanced', int(req_lv_3)])
-                                        courseTable['%s_%s' % (teacher.title, cTime)][0] += int(req_lv_3)
-                                except:
-                                    print '有錯'
-                                    import pdb; pdb.set_trace()
-
-
-        self.courseTable = courseTable
-#        import pdb; pdb.set_trace()
         return self.template()
