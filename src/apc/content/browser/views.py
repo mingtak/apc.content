@@ -59,7 +59,7 @@ class MatchResult(BrowserView):
                     if self.courseTable.has_key('%s_%s' % (teacher.title, cTime)) and \
                        self.courseTable['%s_%s' % (teacher.title, cTime)][1] in ['', level] and \
                        len(self.courseTable['%s_%s' % (teacher.title, cTime)]) < self.max_sc+2 and \
-                       self.courseTable['%s_%s' % (teacher.title, cTime)][0] < self.max_st:    # TODO: 寫死開課上限學生數
+                       self.courseTable['%s_%s' % (teacher.title, cTime)][0] < self.max_st:
 
                         # 檢查是否已在其它時段開課
                         already = False
