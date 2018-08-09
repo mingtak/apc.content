@@ -12,30 +12,50 @@
 <metal:content-core define-macro="content-core"
                     tal:define="toc context/table_of_contents|nothing;">
 
-<tal:match tal:repeat="item view/matchs">
-    <div tal:switch="python:bool(view.matchs[item])">
-        <div tal:case="True">
-            <h4><b>${item}:媒合成功</b></h4>
-            <ul>
-                <li tal:repeat="teacher python:view.matchs[item]">
-                    <h4>${python:teacher[0]}</h4>
-                    <b>有效的媒合語言:</b>
-                    <p tal:repeat="time python:teacher[1]">
-                        ${python:view.vocaClassTime.getTerm(time).title}
-                    </p>
-                    <b>有效的媒合時間:</b>
-                    <p tal:repeat="lang python:teacher[2]">
-                        ${python:view.vocaLanguage.getTerm(lang).title}
-                    </p>
-                </li>
-            </ul>
-        </div>
-        <div tal:case="default">
-            <h4><b>${item}:媒合無結果</b></h4>
-        </div>
-    </div>
-    <hr>
-</tal:match>
+<?python
+from plone import api
+portal = api.portal.get()
+teachers = portal['teacher'].getChildNodes()
+schools = portal['school'].getChildNodes()
+?>
+
+<table>
+    <tbody>
+        <tr>
+            <th>學校\師資</th>
+            <th tal:repeat="teacher teachers">
+                ${teacher/title}<br>
+                ${teacher/localLang}<br>
+                <tal:lang tal:repeat="time teacher/classTime">
+                    ${python:view.vocaClassTime.getTerm(time).title}<tal:common condition="not:repeat/time/end">, </tal:common>
+                </tal:lang>
+            </th>
+        </tr>
+
+        <tr tal:repeat="school schools">
+            <td>
+                ${school/title}<br>
+                ${school/localLang}<br>
+            </td>
+            <td tal:repeat="teacher teachers">${teacher/title}</td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </metal:content-core>

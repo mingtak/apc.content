@@ -39,35 +39,51 @@ class MatchResult(BrowserView):
 
         factory1 = getUtility(IVocabularyFactory, 'apc.content.ClassTime')
         self.vocaClassTime = factory1(context)
-        factory2 = getUtility(IVocabularyFactory, 'apc.content.Language')
-        self.vocaLanguage = factory2(context)
 
-        teachers = context['teachers'].getChildNodes()
-        schools = context['schools'].getChildNodes()
+        teachers = portal['teacher'].getChildNodes()
+        schools = portal['school'].getChildNodes()
 
-        self.matchs = {}
-        scount = 0
-        for school in schools:
-            sLanguage = school.language
-            sClassTime = school.classTime
-            self.matchs[school.title] = []
-            tcount = 0
-            for teacher in teachers:
-#                print 'LOOP: %s, %s' % (scount , tcount)
-                tLanguage = teacher.language
-                tClassTime = teacher.classTime
-#                self.matchs[school.title] = []
-                if set(tClassTime).intersection(sClassTime) and set(tLanguage).intersection(sLanguage):
-                    self.matchs[school.title].append(
-                        [teacher.title,
-                         list(set(tClassTime).intersection(sClassTime)),
-                         list(set(tLanguage).intersection(sLanguage))
-                        ]
-                    )
-#                    print 'MATCH: %s, %s' % (scount, tcount)
-#                    import pdb; pdb.set_trace()
-                tcount += 1
-            scount += 1
-#        import pdb; pdb.set_trace()
+        # 確認可開班狀況
+        courseTable = {}
+        for teacher in teachers:
+            for item in teacher.classTime:
+                courseTable['%s_%s' % (teacher.title, item)] = [0]
 
+
+        for teacher in teachers:
+            # 老師能教
+            canTeach = {}
+            for item in teacher.localLang.split('/'):
+                language = ''.join(item.split(',')[0:2])
+                canTeach[language] = item
+
+            for school in schools:
+                if school.classTime is None:
+                    continue
+
+                # 學校需要
+                reqLang = []
+                if school.localLang is None:
+                    continue
+                for item in school.localLang.split('/'):
+                    # 逐個語言比對
+                    language = ''.join(item.split(',')[0:2])
+                    if language in canTeach.keys():
+                        req_lv_1, req_lv_2, req_lv_3 = item.split(',')[2:]
+                        can_lv_1, can_lv_2, can_lv_3 = canTeach[language].split(',')[2:]
+                        # 比對等級/人數
+                        if int(can_lv_1) and int(req_lv_1):
+                            for cTime in school.classTime:
+                                try:
+                                    print '%s_%s' % (teacher.title, cTime)
+                                    if courseTable.has_key('%s_%s' % (teacher.title, cTime)) and \
+                                       courseTable['%s_%s' % (teacher.title, cTime)][0] < 10:    # TODO: 寫死學生數
+                                        courseTable['%s_%s' % (teacher.title, cTime)].append([school.title, language, 'primary', int(req_lv_1)])
+                                        courseTable['%s_%s' % (teacher.title, cTime)][0] += int(req_lv_1)
+                                except:
+                                    print '有錯'
+                                    import pdb; pdb.set_trace()
+
+        self.courseTable = courseTable
+        import pdb; pdb.set_trace()
         return self.template()
