@@ -12,8 +12,36 @@ from plone import api
 portal = api.portal.get()
 teachers = portal['teacher'].getChildNodes()
 schools = portal['school'].getChildNodes()
+level = {'primary': '初級', 'intermediate': '中級', 'advanced': '高級'}
 ?>
 
+<h3 id="match-detail">媒合成功細目</h3>
+<a href="#match-detail">媒合成功細目</a> | <a href="#match-table">族語共學媒合表</a>
+<br><br>
+<tal:p repeat="item view/courseTable">
+    <div tal:condition="python:len(view.courseTable[item][3:]) >= view.min_sc">
+        <b>老師姓名:</b> ${python:item.split('_')[0]}<br>
+        <b>上課時段:</b> ${python:view.vocaClassTime.getTerm(item.split('_')[1]).title}:<br>
+        <b>開課學校:</b> ${python:view.classroomIn(item)}<br>
+        <b>語言/程度:</b> ${python:view.courseTable[item][2]} / ${python:level[view.courseTable[item][1]]}<br>
+        <b>總學生數:</b> ${python:view.courseTable[item][0]}<br>
+        <b>共學組成學校:</b><br>
+            <tal:co repeat="coSchool python:view.courseTable[item][3:]">
+                ${python:coSchool[0]} / ${python:coSchool[1]} / 級別:${python:level[coSchool[2]]} / 人數:${python:coSchool[3]}<br>
+            </tal:co><hr>
+</div>
+</tal:p>
+
+
+<h3 id="match-table">族語共學媒合表</h3>
+<a href="#match-detail">媒合成功細目</a> | <a href="#match-table">族語共學媒合表</a>
+<h4>媒合表說明:</h4>
+<ul>
+    <li>師資下方為可教授之語言及級別，其後3個數字分別表示初、中、高級可否教授</li>
+    <li>例:海岸阿美語,1,1,1，表示海岸阿美語初中高級均可教授，賽夏語,1,1,0表示賽夏語可教授初、中階，高階不可教授。</li>
+    <li>學校下方則表示需求語言及各級別需求學生數，其後3個數字分別表示初、中、高級需求學生數</li>
+    <li>例:海岸阿美語,3,1,2，表示海岸阿美語初級學生數3人，中級學生數1人，高級學生數2人。</li>
+</ul>
 <table>
     <tbody>
         <tr>
@@ -44,14 +72,14 @@ schools = portal['school'].getChildNodes()
                     <tal:item condition="python:item.startswith(teacher.title) and view.courseTable[item][0]">
                         <tal:course repeat="matchSchool python:view.courseTable[item][3:]">
                             <tal:match condition="python:school.title == matchSchool[0] and len(view.courseTable[item][3:]) >= view.min_sc">
-                                ${python:view.vocaClassTime.getTerm(item.split('_')[1]).title}:<br>
-                                開課學校: ${python:view.classroomIn(item)}<br>
-                                語言/程度: ${python:view.courseTable[item][2]} / ${python:view.courseTable[item][1]}<br>
-                                總學生數: ${python:view.courseTable[item][0]}<br>
-                                共學組成:<br>
-                                <tal:co repeat="coSchool python:view.courseTable[item][3:]">
-                                    ${python:coSchool[0]} / ${python:coSchool[1]} / 級別:${python:coSchool[2]} / 人數:${python:coSchool[3]}<br>
-                                </tal:co><hr>
+                                <b>上課時段:</b> ${python:view.vocaClassTime.getTerm(item.split('_')[1]).title}:<br>
+                                <b>開課學校:</b> ${python:view.classroomIn(item)}<br>
+                                <b>語言/程度:</b> ${python:view.courseTable[item][2]} / ${python:level[view.courseTable[item][1]]}<br>
+                                <b>總學生數:</b> ${python:view.courseTable[item][0]}<br>
+                                <b>共學組成學校:</b><br>
+                                    <tal:co repeat="coSchool python:view.courseTable[item][3:]">
+                                        ${python:coSchool[0]} / ${python:coSchool[1]} / 級別:${python:level[coSchool[2]]} / 人數:${python:coSchool[3]}<br>
+                                    </tal:co><hr>
                             </tal:match>
                         </tal:course>
                     </tal:item>

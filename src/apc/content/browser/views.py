@@ -55,7 +55,7 @@ class MatchResult(BrowserView):
         if int(can_lv) and int(req_lv):
             for cTime in school.classTime:
                 try:
-                    print '%s_%s' % (teacher.title, cTime)
+                    #print '%s_%s' % (teacher.title, cTime)
                     # 開課時間吻合，開課語系吻合，開課程度吻合，共學校數未滿，最大學生數未滿，則成立
                     if self.courseTable.has_key('%s_%s' % (teacher.title, cTime)) and \
                        self.courseTable['%s_%s' % (teacher.title, cTime)][2] in ['', language] and \
@@ -67,7 +67,7 @@ class MatchResult(BrowserView):
                         already = False
                         for item in self.courseTable:
                             if [school.title, language, level, int(req_lv)] in self.courseTable[item]:
-                                print '已開'
+                                #print '已開'
                                 already = True
                                 break
                         if not already:
@@ -76,9 +76,9 @@ class MatchResult(BrowserView):
                             self.courseTable['%s_%s' % (teacher.title, cTime)][0] += int(req_lv)
                             self.courseTable['%s_%s' % (teacher.title, cTime)][1] = level
                             self.courseTable['%s_%s' % (teacher.title, cTime)][2] = language
-                except:
-                    print '有錯'
-                    import pdb; pdb.set_trace()
+                except:pass
+                    #print '有錯'
+#                    import pdb; pdb.set_trace()
 
 
     def __call__(self):
@@ -133,5 +133,9 @@ class MatchResult(BrowserView):
                         self.courseMatch(language, 'primary', can_lv_1, req_lv_1, school, teacher)
                         self.courseMatch(language, 'intermediate', can_lv_2, req_lv_2, school, teacher)
                         self.courseMatch(language, 'advanced', can_lv_3, req_lv_3, school, teacher)
+
+        # 統計
+#        self.result = {''}
+#        for item in self.courseMatch:
 
         return self.template()
