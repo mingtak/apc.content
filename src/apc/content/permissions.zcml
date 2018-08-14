@@ -7,6 +7,12 @@
   <!-- -*- extra stuff goes here -*- -->
 
     <permission
+        id="apc.content.AddLiveClass"
+        title="apc.content: Add LiveClass"
+    />
+
+        
+    <permission
         id="apc.content.AddSchool"
         title="apc.content: Add School"
     />
