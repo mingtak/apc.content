@@ -34,4 +34,12 @@
       permission="zope2.View"
   />
 
+  <browser:page
+      name="live_class_view"
+      for="..content.live_class.ILiveClass"
+      class=".views.LiveClassView"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
 </configure>

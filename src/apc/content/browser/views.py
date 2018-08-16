@@ -13,6 +13,18 @@ from zope.schema.interfaces import IVocabularyFactory
 logger = logging.getLogger("apc.content")
 
 
+class LiveClassView(BrowserView):
+    """ Live Class View """
+    template = ViewPageTemplateFile("template/live_class_view.pt")
+
+    def __call__(self):
+        context = self.context
+        request = self.request
+        self.portal = api.portal.get()
+
+        return self.template()
+
+
 class SchoolOverview(BrowserView):
     """ School Overview """
     template = ViewPageTemplateFile("template/school_overview.pt")

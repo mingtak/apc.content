@@ -1,0 +1,29 @@
+.frontend.portaltype-plone-site .flexslider {border:0; margin-bottom:0}
+.frontend.portaltype-plone-site .slider {margin-bottom: 20px}
+.frontend.portaltype-plone-site .slider img {width: 100%}
+.frontend.portaltype-plone-site .plone-navbar {margin-bottom: 0}
+.frontend.portaltype-plone-site #portal-breadcrumbs {display:none}
+.frontend .outer-wrapper {background: #D0DFE6;}
+.frontend #content {
+    background: #fff;
+    border-radius: 4px;
+    border: 1px solid #e5e5e5;
+    box-shadow:4px 4px 3px rgba(20%,20%,40%,0.5);
+}
+.frontend #content h1.documentFirstHeading {
+    background: #f2f1f1;
+    font-weight: 500;
+    font-size: 28px;
+    padding: 13px 15px;
+}
+.frontend #content-core {
+    padding: 10px 15px;
+}
+
+.frontend h1, .frontend header.portletHeader a {color:#C00000}
+
+.frontend .portlet.portletRecent {box-shadow:4px 4px 3px rgba(20%,20%,40%,0.5);}
+#portal-logo img {height:65px}
+#content-header {padding:8px 0; background:url(http://apc.21cms.tw/images/website/hdbg.jpg)}
+.frontend #portal-globalnav-wrapper {background-color:#a10d0d}
+.frontend #portal-footer-wrapper {background-color:#a10d0d}
