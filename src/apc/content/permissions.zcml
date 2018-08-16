@@ -7,6 +7,12 @@
   <!-- -*- extra stuff goes here -*- -->
 
     <permission
+        id="apc.content.AddPrepare"
+        title="apc.content: Add Prepare"
+    />
+
+        
+    <permission
         id="apc.content.AddCourse"
         title="apc.content: Add Course"
     />

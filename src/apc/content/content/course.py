@@ -6,49 +6,35 @@ from plone.namedfile import field as namedfile
 from plone.supermodel import model
 from plone.supermodel.directives import fieldset
 from z3c.form.browser.radio import RadioFieldWidget
+from plone.app.vocabularies.catalog import CatalogSource
+from z3c.relationfield.schema import RelationChoice, RelationList
 from zope import schema
 from zope.interface import implementer
 from apc.content import _
 
 
 class ICourse(model.Schema):
-    """ Marker interface and Dexterity Python Schema for Course
-    """
 
-    # directives.widget(level=RadioFieldWidget)
-    # level = schema.Choice(
-    #     title=_(u'Sponsoring Level'),
-    #     vocabulary=LevelVocabulary,
-    #     required=True
-    # )
+    title = schema.TextLine(
+        title=_(u'Title'),
+        required=True,
+    )
 
-    # text = RichText(
-    #     title=_(u'Text'),
-    #     required=False
-    # )
+    teacher = RelationChoice(
+        title=_(u'Teacher'),
+        source=CatalogSource(portal_type='Teacher'),
+        required=False,
+    )
 
-    # url = schema.URI(
-    #     title=_(u'Link'),
-    #     required=False
-    # )
-
-    # fieldset('Images', fields=['logo', 'advertisement'])
-    # logo = namedfile.NamedBlobImage(
-    #     title=_(u'Logo'),
-    #     required=False,
-    # )
-
-    # advertisement = namedfile.NamedBlobImage(
-    #     title=_(u'Advertisement (Gold-sponsors and above)'),
-    #     required=False,
-    # )
-
-    # directives.read_permission(notes='cmf.ManagePortal')
-    # directives.write_permission(notes='cmf.ManagePortal')
-    # notes = RichText(
-    #     title=_(u'Secret Notes (only for site-admins)'),
-    #     required=False
-    # )
+    school = RelationList(
+        title=_(u'Schools'),
+        value_type=RelationChoice(
+                     title=u"School",
+                     source=CatalogSource(
+                         portal_type='School')
+        ),
+        required=False,
+    )
 
 
 @implementer(ICourse)
