@@ -65,39 +65,47 @@
   }
 </style>
 
+<?python
+from plone import api
+portal = api.portal.get()
+?>
 
 <div class="row">
   <div class="col-xs-12 col-md-6 announcement">
-    <img src="++plone++apc.content/image/index-news-title.png">
+<h3>最新消息</h3>
     <div class="title-border-bottom" />
     <ul>
-      <tal:repeat tal:repeat="item python: range(6)">
-      <table>
-        <tbody>
-          <tr>
-            <td width="100"><li class="publish-date">2018-03-12</li></td>
-            <td><a href="" class="title">106年度原住民族語言能力認證測驗3月12日放榜${item}</a></td>
-          </tr>
-        </tbody>
-      </table>
+      <tal:repeat repeat="item python:list(portal['news']['news02'].getChildNodes())[:6]">
+        <table>
+          <tbody>
+            <tr>
+              <td width="100"><li class="publish-date">${python:item.created().strftime('%Y-%m-%d')}</li></td>
+              <td>
+                  <a href="${item/absolute_url}" class="title">${item/title}</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </tal:repeat>
     </ul>
     <div class="readmore">[<a href="#">閱讀更多</a>]</div>
   </div>
 
   <div class="col-xs-12 col-md-6 announcement">
-    <img src="++plone++apc.content/image/index-close-school-title.png">
+<h3>停/補課公告</h3>
     <div class="title-border-bottom" />
     <ul>
-      <tal:repeat tal:repeat="item python: range(6)">
-      <table>
-        <tbody>
-          <tr>
-            <td width="100"><li class="publish-date">2018-03-12</li></td>
-            <td><a href="" class="title">[停課] (106210)6/12日魯凱語直播共學教學課程停課一次${item}</a></td>
-          </tr>
-        </tbody>
-      </table>
+      <tal:repeat tal:repeat="item python:list(portal['news']['news01'].getChildNodes())[:6]">
+        <table>
+          <tbody>
+            <tr>
+              <td width="100"><li class="publish-date">${python:item.created().strftime('%Y-%m-%d')}</li></td>
+              <td>
+                  <a href="${item/absolute_url}" class="title">${item/title}</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </tal:repeat>
     </ul>
     <div class="readmore">[<a href="#">閱讀更多</a>]</div>
@@ -109,15 +117,16 @@
 
 <div class="row">
   <div class="col-xs-12 announcement">
-    <img src="++plone++apc.content/image/index-video-title.png">
+<h3>最新課程影片</h3>
   </div>
   <div class="col-xs-12" style="margin-bottom:20px;" />
   <div class="col-xs-12 announcement">
     <div class="row">
-      <tal:repeat tal:repeat="item python: range(8)">
+      <tal:repeat tal:repeat="item python:portal['course'].getChildNodes()">
         <div class="col-xs-6 col-md-3" style="text-align:center;">
-          <a href="" class="title">item</a>
-          <div style="margin-bottom:10px;"><a href=""><img src="https://via.placeholder.com/300x200" style="object-fit: cover; width: 100%;" /></a></div>
+          <a href="${item/absolute_url}" class="title">${item/title}</a>
+          <div style="margin-bottom:10px;">
+              <a href="${item/absolute_url}"><img src="https://via.placeholder.com/300x200" style="object-fit: cover; width: 100%;" /></a></div>
         </div>
       </tal:repeat>
     </div>

@@ -18,6 +18,11 @@ class IPrepare(model.Schema):
         required=True,
     )
 
+    description = schema.Text(
+        title=_(u'Agenda'),
+        required=False,
+    )
+
     file = namedfile.NamedFile(
         title=_(u'Teaching material'),
         required=False,

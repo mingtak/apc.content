@@ -64,7 +64,7 @@
       for="*"
       class=".views.CoursePrepare"
       layer="apc.content.interfaces.IApcContentLayer"
-      permission="zope2.View"
+      permission="cmf.ManagePortal"
   />
 
 </configure>
