@@ -9,6 +9,11 @@ from Acquisition import aq_inner
 import logging
 from zope.component import getUtility
 from zope.schema.interfaces import IVocabularyFactory
+from email.mime.text import MIMEText
+from zope.interface import alsoProvides
+from plone.protect.interfaces import IDisableCSRFProtection
+import requests
+import datetime
 
 logger = logging.getLogger("apc.content")
 
@@ -151,3 +156,102 @@ class MatchResult(BrowserView):
 #        for item in self.courseMatch:
 
         return self.template()
+
+
+class PrepareLessons(BrowserView):
+    template = ViewPageTemplateFile("template/prepare_lessons.pt")
+    template_timesup = ViewPageTemplateFile("template/prepare_lessons_not_effective.pt")
+    def __call__(self):
+        request = self.request
+        hashSHA256 = request.form.get('id', '')
+        course = api.content.find(hashSHA256=hashSHA256)
+        if len(course) == 1:
+            self.course = course[0]
+            current_time = datetime.datetime.now().date()
+            if self.course.getObject().link_date > current_time:
+                prepareUIDList = [item.UID for item in self.getPrepare()]
+                if request.form.has_key('file-upload-widget'):
+                    for uid in prepareUIDList:
+                        upload_file = request.form['file-'+uid]
+                        file_data =  upload_file.read()
+                        if file_data:
+                            item = api.content.get(UID=uid)
+                            url = item.absolute_url()
+                            headers = {
+                                'Accept': "application/json",
+                                'Content-Type': "application/json",
+                                'Authorization': "Basic YWRtaW46MTIzNDU2",
+                            }
+                            data = {
+                                "file": {
+                                    "content-type": upload_file.headers['content-type'],
+                                    "filename": upload_file.filename,
+                                    "encoding": "base64",
+                                    "data": file_data.encode('base64')
+                                }
+                            }
+                            response = requests.request("PATCH", url, headers=headers, json=data)
+                    self.request.response.redirect(self.request.URL)
+                return self.template()
+            else:
+                return self.template_timesup()
+
+    def getPrepare(self):
+        courseUID = self.course.UID
+        course = api.content.get(UID=courseUID)
+        prepare = api.content.find(context=course, portal_type="Prepare")
+        return prepare
+
+
+class CoursePrepare(BrowserView):
+    template = ViewPageTemplateFile("template/course_prepare.pt")
+    def __call__(self):
+        request = self.request
+        hashSHA256 = request.form.get('id', '')        
+        course = api.content.find(hashSHA256=hashSHA256)
+        if len(course) == 1:
+            self.sendPrepareLessonsMail(course[0])
+
+        return self.template()
+    
+    def getCourse(self):
+        courses = api.content.find(portal_type="Course")
+        return courses
+
+    def sendPrepareLessonsMail(self, course):
+        teacherObj = course.getObject().teacher.to_object
+        teacher = teacherObj.title
+        #t_mail  = teacherObj.email
+        hashSHA256 = course.hashSHA256
+        link = self.context.portal_url() + '/prepare_lessons?id=' + hashSHA256
+
+        current_time = datetime.datetime.now().date()
+        effective_date = current_time + datetime.timedelta(days=3)
+
+        body_str = """ 您好 %s 老師: \
+                  <br>  \
+                  <br> 點擊以下連結可以上傳您課堂上的教材↓ \
+                  <br> 此連結有效時間為 %s 請在時間內上傳完成\
+                  <br> <a href="%s">%s</a> \
+                  <br>  \
+                  <br> 原住民族委員會 \
+                   """ %(teacher.encode('utf8'), effective_date, link, link)
+        mime_text = MIMEText(body_str, 'html', 'utf-8')
+        teacher_email = teacherObj.email
+        if teacher_email:
+            api.portal.send_email(
+                recipient=teacher_email,
+                sender="service@apc.com.tw",
+                subject="備課教材" ,
+                body=mime_text.as_string(),
+            )
+            alsoProvides(self.request, IDisableCSRFProtection)
+            course.getObject().link_date = effective_date
+            
+            self.context.plone_utils.addPortalMessage(_(u'It is success mail to ') + teacher, 'info')
+        else:
+            self.context.plone_utils.addPortalMessage(_(u'This teacher has not email: ') + teacher, 'info')
+
+
+class PloneRootView(BrowserView):
+    pass

@@ -1,0 +1,76 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+
+
+<table>
+  <tr>
+    <td colspan=3>
+      <button id="allsubmit" style="float:right;" i18n:translate="">send all mail</button>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>課程名稱</p>
+    </td>
+    <td >
+      <p>授課老師</p>
+    </td>
+    <td>
+      <p>發送郵件</p>
+    </td>
+  </tr>
+  <tal:repeat tal:repeat="item view/getCourse">
+    <tr>
+      <form method="POST" class="course-form"  action="">
+        <td>
+          <p>${item/Title}</p>
+        </td>
+        <td >
+          <p tal:condition="python: hasattr(item.getObject().teacher, 'to_object')">
+            ${python: item.getObject().teacher.to_object.title}
+          </p>
+        </td>
+        <td>
+          <input type="submit" value="send mail" tal:condition="python: hasattr(item.getObject().teacher, 'to_object')" i18n:attributes="value" style="float:right;">
+          <input type="hidden" name="id" value="${item/hashSHA256}" tal:condition="python: hasattr(item.getObject().teacher, 'to_object')">
+        </td>
+      </form>
+    </tr>
+  </tal:repeat>
+</table>
+
+<script>
+    $(function() {
+        $("#allsubmit").click(function(){
+            $('.course-form').each(function(){
+                valuesToSend = $(this).serialize();
+                $.ajax($(this).attr('action'),
+                    {
+                    method: $(this).attr('method'),
+                    data: valuesToSend
+                    }
+                )
+            });
+            document.location.reload()
+        });
+    });
+</script>
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+
+
+

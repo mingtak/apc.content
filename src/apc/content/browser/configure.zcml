@@ -19,6 +19,15 @@
       />
  
   <browser:page
+      name="plone_root_view"
+      for="*"
+      template="template/plone_root_view.pt"
+      class=".views.PloneRootView"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+ 
+  <browser:page
       name="match_result"
       for="plone.app.contenttypes.interfaces.IFolder"
       class=".views.MatchResult"
@@ -38,6 +47,22 @@
       name="live_class_view"
       for="..content.live_class.ILiveClass"
       class=".views.LiveClassView"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
+  <browser:page
+      name="prepare_lessons"
+      for="*"
+      class=".views.PrepareLessons"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
+  <browser:page
+      name="course_prepare"
+      for="*"
+      class=".views.CoursePrepare"
       layer="apc.content.interfaces.IApcContentLayer"
       permission="zope2.View"
   />
