@@ -36,6 +36,11 @@ class ICourse(model.Schema):
         required=False,
     )
 
+    link_date = schema.Date(
+        title=_(u'Prepare Lessons Link Effective Date'),
+        required=False,
+    )
+
 
 @implementer(ICourse)
 class Course(Container):

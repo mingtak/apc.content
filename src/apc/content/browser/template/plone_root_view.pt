@@ -1,0 +1,136 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+<style>
+  .border-dotted{
+    margin: 25px 0 25px 0;
+    border-bottom: 1px dotted #cdcdcd;
+  }
+
+  .announcement .title-border-bottom{
+    margin: 5px 0 15px 0;
+    border-bottom: 2px solid #E0DEDE;
+  } 
+
+  .announcement .publish-date{
+    color: #b8010e;
+    font-size: 15px;
+    list-style: square;
+    margin: 5px !important;
+  }
+
+  .announcement a.title, .announcement .readmore a{ 
+    font-weight: 700;
+    font-size: 15px !important;
+    color: #858585;
+    border-bottom: 0 !important;
+    text-decoration: none;
+  }
+
+  .announcement .readmore a{
+    font-weight: unset;
+  }
+
+  .announcement a.title:hover, .announcement .readmore a:hover{
+    color: #2a6496;
+    text-decoration: underline;
+  }
+
+  .announcement ul{
+    padding: 0;
+  }
+
+  .announcement table{
+    border: 0;
+  }
+
+  .announcement table td{
+    border: 0;
+    border-bottom: 1px solid #cccccc;
+    vertical-align: middle;
+  }
+
+  .announcement .readmore{
+    color: #858585;
+  }
+</style>
+
+
+<div class="row">
+  <div class="col-xs-12 col-md-6 announcement">
+    <img src="++plone++apc.content/image/index-news-title.png">
+    <div class="title-border-bottom" />
+    <ul>
+      <tal:repeat tal:repeat="item python: range(6)">
+      <table>
+        <tbody>
+          <tr>
+            <td width="100"><li class="publish-date">2018-03-12</li></td>
+            <td><a href="" class="title">106年度原住民族語言能力認證測驗3月12日放榜${item}</a></td>
+          </tr>
+        </tbody>
+      </table>
+      </tal:repeat>
+    </ul>
+    <div class="readmore">[<a href="#">閱讀更多</a>]</div>
+  </div>
+
+  <div class="col-xs-12 col-md-6 announcement">
+    <img src="++plone++apc.content/image/index-close-school-title.png">
+    <div class="title-border-bottom" />
+    <ul>
+      <tal:repeat tal:repeat="item python: range(6)">
+      <table>
+        <tbody>
+          <tr>
+            <td width="100"><li class="publish-date">2018-03-12</li></td>
+            <td><a href="" class="title">[停課] (106210)6/12日魯凱語直播共學教學課程停課一次${item}</a></td>
+          </tr>
+        </tbody>
+      </table>
+      </tal:repeat>
+    </ul>
+    <div class="readmore">[<a href="#">閱讀更多</a>]</div>
+  </div>
+
+</div>
+
+<div class="border-dotted" />
+
+<div class="row">
+  <div class="col-xs-12 announcement">
+    <img src="++plone++apc.content/image/index-video-title.png">
+  </div>
+  <div class="col-xs-12" style="margin-bottom:20px;" />
+  <div class="col-xs-12 announcement">
+    <div class="row">
+      <tal:repeat tal:repeat="item python: range(8)">
+        <div class="col-xs-6 col-md-3" style="text-align:center;">
+          <a href="" class="title">item</a>
+          <div style="margin-bottom:10px;"><a href=""><img src="https://via.placeholder.com/300x200" style="object-fit: cover; width: 100%;" /></a></div>
+        </div>
+      </tal:repeat>
+    </div>
+  </div>
+
+</div>
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+
+
+
+

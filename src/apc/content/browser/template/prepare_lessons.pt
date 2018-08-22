@@ -1,0 +1,62 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+
+
+<table>
+  <form method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="file-upload-widget">
+    <tr>
+        <td>
+          <p>上課日期</p>
+        </td>
+        <td>
+          <p>上傳檔案</p>
+        </td>
+        <td>
+          <p>目前檔案</p>
+        </td>
+        <td>
+        </td>
+    </tr>
+    <tal:repeat tal:repeat="item view/getPrepare">
+      <tr>
+          <td>
+            <p>${item/Title}</p>
+          </td>
+          <td>
+            <input type="file" name="file-${item/UID}">
+          </td>
+          <td>
+            <a tal:condition="python: item.getObject().file" href="${item/getURL}/@@download/file">${python: item.getObject().file.filename}</a>
+          </td>
+          <td>
+            <input type="submit" value="send" style="float:right;" i18n:attributes="value">
+          </td>
+      </tr>
+    </tal:repeat>
+    <tr>
+      <td colspan=4>
+        <input type="submit" value="all send" style="float:right;" i18n:attributes="value">
+      </td>
+    </tr>
+  </form>
+</table>
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+
+

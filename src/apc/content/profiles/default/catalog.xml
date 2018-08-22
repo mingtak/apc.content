@@ -1,4 +1,7 @@
 <?xml version="1.0"?>
 <object name="portal_catalog">
-  <!--<column value="my_meta_column"/>-->
+  <index name="hashSHA256" meta_type="FieldIndex">
+    <indexed_attr value="hashSHA256" />
+  </index>
+  <column value="hashSHA256"/>
 </object>

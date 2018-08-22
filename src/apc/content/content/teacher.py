@@ -12,46 +12,62 @@ from apc.content import _
 
 
 class ITeacher(model.Schema):
-    """ Marker interface and Dexterity Python Schema for Teacher
-    """
 
-    # directives.widget(level=RadioFieldWidget)
-    # level = schema.Choice(
-    #     title=_(u'Sponsoring Level'),
-    #     vocabulary=LevelVocabulary,
-    #     required=True
-    # )
+    fieldset(_('Teacher Info'), fields=['image', 'certification', 'study', 'qualified_teacher', 'ethnic_teacher', 'education', 'experience', 'teaching_years', 'remarks'])
 
-    # text = RichText(
-    #     title=_(u'Text'),
-    #     required=False
-    # )
+    image = namedfile.NamedBlobImage(
+        title=_(u'Teacher Image'),
+        required=False,
+    )
 
-    # url = schema.URI(
-    #     title=_(u'Link'),
-    #     required=False
-    # )
+    certification = schema.Text(
+        title=_(u"Ethnic language certification"),
+        required=False
+    )
 
-    # fieldset('Images', fields=['logo', 'advertisement'])
-    # logo = namedfile.NamedBlobImage(
-    #     title=_(u'Logo'),
-    #     required=False,
-    # )
+    study = schema.Text(
+        title=_(u"Revitalization study"),
+        required=False
+    )
 
-    # advertisement = namedfile.NamedBlobImage(
-    #     title=_(u'Advertisement (Gold-sponsors and above)'),
-    #     required=False,
-    # )
+    qualified_teacher = schema.Text(
+        title=_(u"Teaching class (Qualified teacher)"),
+        required=False
+    )
 
-    # directives.read_permission(notes='cmf.ManagePortal')
-    # directives.write_permission(notes='cmf.ManagePortal')
-    # notes = RichText(
-    #     title=_(u'Secret Notes (only for site-admins)'),
-    #     required=False
-    # )
+    ethnic_teacher = schema.Text(
+        title=_(u"Teaching class (Ethnic teacher)"),
+        required=False
+    )
+
+    education = schema.Text(
+        title=_(u"Education"),
+        required=False
+    )
+
+    experience = schema.Text(
+        title=_(u"work experience"),
+        required=False
+    )
+
+    teaching_years = schema.Text(
+        title=_(u"Teaching years"),
+        required=False
+    )
+
+    remarks = schema.Text(
+        title=_(u"Remarks"),
+        required=False
+    )
+
+    email = schema.TextLine(
+        title=_(u"Email"),
+        required=False
+    )
 
 
 @implementer(ITeacher)
 class Teacher(Item):
     """
     """
+   

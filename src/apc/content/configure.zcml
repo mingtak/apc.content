@@ -45,6 +45,7 @@
   <!-- -*- extra stuff goes here -*- -->
 
     <include package=".behaviors" />
+    <include package=".index" />
 
         
     <include package=".vocabularies" />
