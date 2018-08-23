@@ -1,0 +1,85 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  lang="en"
+  metal:use-macro="context/main_template/macros/master"
+  i18n:domain="apc.content">
+<body>
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+          tal:define="toc context/table_of_contents|nothing;">
+<div id="site-content" class="site-content clearfix">
+  <div id="inner-content" class="inner-content-wrap">
+    <metal:listingmacro define-macro="listing">
+      <tal:results define="batch view/batch;">
+        <tal:listing condition="batch">
+          <tal:repeat tal:repeat="item batch">
+            <tal:define tal:define="obj item/getObject;
+                                    item_title obj/title;
+                                    item_url   obj/absolute_url;
+                                    item_id    obj/id;
+                                    item_lang  obj/local_language;
+                                    item_teacher obj/teacher;
+                                    item_schools obj/school;
+                                    item_hireSchool obj/hire_school;
+                                    item_place obj/place;
+                                    item_courseDate obj/course_date;
+                                    item_courseTime obj/course_time;
+                                    item_courseOutline obj/course_outline;">
+              <div>
+                <p><span style="font-size: 14pt;"><strong>${item_title}</strong></span></p>
+                <p><strong>班 別: </strong>
+                  <a href="${item_url}" style="border-bottom: none;">${item_id}</a>
+                </p>
+                <p><strong>族語教學: </strong>${item_lang}</p>
+                <p style="white-space: pre-line;" tal:condition="item_schools"><strong>聯盟學校: </strong>${python: '\r\n'.join([school.to_object.title for school in item_schools])}</p>
+                <p tal:condition="item_hireSchool"><strong>聘用學校: </strong>${python: item_hireSchool.to_object.title}</p>
+                <p tal:condition="item_teacher"><strong>族語師資: </strong><strong><a href="${python: item_teacher.to_object.absolute_url()}">${python: item_teacher.to_object.title}</a></strong></p>
+                <p><strong>授課地點: </strong><strong>&nbsp;:&nbsp; &nbsp;新北市景新國小</strong></p>
+                <p><strong>授課日期: </strong>${item_courseDate}</p>
+                <p><strong>授課時間: </strong>${item_courseTime}</p>
+              </div>
+
+              <div>
+                <tal:repeat tal:repeat="prepare python: view.getPrepare(obj)">
+                  <div tal:condition="python: prepare.getObject().file" 
+                       style="height: 50px; width: 120px; background-image: linear-gradient(white 0%, white 49%, #a11712 50%);
+                              vertical-align: bottom; display: table-cell; text-align: center; border: 1px solid black;" >
+                    <p>${prepare/Title}</p>
+                    <a href="${prepare/getURL}/@@download/file" 
+                       style="border-bottom: none; color: white; font-size: 15px;">教材下載</a>
+                  </div>
+                </tal:repeat>
+              </div>
+              <div style="width:100%; border: 1px solid #e0dede; margin: 15px 0 40px 0;" />
+            </tal:define>
+          </tal:repeat>
+          <!-- pagination-area-start -->
+          <div class="themesflat-pagination clearfix">
+            <div metal:use-macro="context/batch_macros/macros/navigation" />
+          </div>
+          <!-- pagination-area-end -->
+        </tal:listing>
+
+        <metal:empty metal:define-slot="no_items_in_listing">
+          <p class="discreet"
+              tal:condition="not: view/batch"
+              i18n:translate="">
+            No results were found.
+          </p>
+        </metal:empty>
+
+      </tal:results>
+    </metal:listingmacro>
+
+  </div><!-- /#inner-content -->
+</div><!-- /#site-content -->
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+
+

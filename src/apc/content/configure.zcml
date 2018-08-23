@@ -46,6 +46,7 @@
 
     <include package=".behaviors" />
     <include package=".index" />
+    <include package=".viewlets" />
 
         
     <include package=".vocabularies" />

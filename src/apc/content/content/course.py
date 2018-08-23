@@ -20,6 +20,11 @@ class ICourse(model.Schema):
         required=True,
     )
 
+    local_language = schema.TextLine(
+        title=_(u'Local Language'),
+        required=False,
+    )
+
     teacher = RelationChoice(
         title=_(u'Teacher'),
         source=CatalogSource(portal_type='Teacher'),
@@ -27,7 +32,7 @@ class ICourse(model.Schema):
     )
 
     school = RelationList(
-        title=_(u'Schools'),
+        title=_(u'Alliance Schools'),
         value_type=RelationChoice(
                      title=u"School",
                      source=CatalogSource(
@@ -36,6 +41,33 @@ class ICourse(model.Schema):
         required=False,
     )
 
+    hire_school = RelationChoice(
+        title=_(u'Hire School'),
+        source=CatalogSource(portal_type='School'),
+        required=False,
+    )
+
+    place = schema.TextLine(
+        title=_(u'Place of Study'),
+        required=False,
+    )
+
+    course_date = schema.TextLine(
+        title=_(u'Course Date'),
+        required=False,
+    )
+
+    course_time = schema.TextLine(
+        title=_(u'Course Time'),
+        required=False,
+    )
+
+    course_outline = RichText(
+        title=_(u'Course Outline'),
+        required=False,
+    )
+
+    fieldset(_(u'Link Effective Date'), fields=['link_date'])
     link_date = schema.Date(
         title=_(u'Prepare Lessons Link Effective Date'),
         required=False,

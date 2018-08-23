@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from apc.content import _
 from Products.Five.browser import BrowserView
+from plone.app.contenttypes.browser.folder import FolderView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone import api
 from Products.CMFPlone.utils import safe_unicode
@@ -10,8 +11,10 @@ import logging
 from zope.component import getUtility
 from zope.schema.interfaces import IVocabularyFactory
 from email.mime.text import MIMEText
+from plone.app.textfield.value import RichTextValue
 from zope.interface import alsoProvides
 from plone.protect.interfaces import IDisableCSRFProtection
+from collections import OrderedDict
 import requests
 import datetime
 
@@ -171,6 +174,10 @@ class PrepareLessons(BrowserView):
             if self.course.getObject().link_date > current_time:
                 prepareUIDList = [item.UID for item in self.getPrepare()]
                 if request.form.has_key('file-upload-widget'):
+                    course_outline = request.get('course_outline', '')
+                    if course_outline:
+                        alsoProvides(self.request, IDisableCSRFProtection)
+                        self.course.getObject().course_outline = RichTextValue(course_outline)
                     for uid in prepareUIDList:
                         upload_file = request.form['file-'+uid]
                         file_data =  upload_file.read()
@@ -195,6 +202,11 @@ class PrepareLessons(BrowserView):
                 return self.template()
             else:
                 return self.template_timesup()
+
+    def getCourse(self):
+        courseUID = self.course.UID
+        course = api.content.get(UID=courseUID)
+        return course
 
     def getPrepare(self):
         courseUID = self.course.UID
@@ -255,3 +267,100 @@ class CoursePrepare(BrowserView):
 
 class PloneRootView(BrowserView):
     pass
+
+
+class CourseView(BrowserView):
+    pass
+
+
+class TeacherView(BrowserView):
+    def getTeacherField(self, item):
+        fields = ['localLang'     , 'certification', 'study'     , 'qualified_teacher', \
+                  'ethnic_teacher', 'education'    , 'experience', 'teaching_years'   , 'remarks'] 
+        fieldsName = {'localLang' : _(u'Local Language')         , 'certification'    : _(u'Ethnic language certification'), 
+                      'study'     : _(u'Revitalization study')   , 'qualified_teacher': _(u'Teaching class (Qualified teacher)'), 
+                      'ethnic_teacher': _(u'Teaching class (Ethnic teacher)'), 'education'      : _(u'Education'),
+                      'experience'    : _(u'work experience')                , 'teaching_years' : _(u'Teaching years'),
+                      'remarks'       : _(u'Remarks')} 
+        fieldsDict = OrderedDict()
+        for field in fields:
+            field_value = getattr(item, field, '')
+            if field_value:
+                fieldsDict.update({fieldsName[field]: field_value})
+        if fieldsDict.has_key(fieldsName['localLang']):
+            localLangValue = '\r\n'.join([lang.split(',')[1] for lang in fieldsDict[fieldsName['localLang']].split('/')])
+            fieldsDict[fieldsName['localLang']] = localLangValue
+        return fieldsDict
+
+
+class TeacherListingView(FolderView):
+    @property
+    def b_size(self):
+        b_size = getattr(self.request, 'b_size', None)\
+            or getattr(self.request, 'limit_display', None) or 10
+        return b_size
+
+    @property
+    def sort_on(self):
+        sort_on = getattr(self.request, 'sort_on', 'getObjPositionInParent')
+        return sort_on
+
+    def getTeacherField(self, item):
+        fields = ['localLang'     , 'certification', 'study'     , 'qualified_teacher', \
+                  'ethnic_teacher', 'education'    , 'experience', 'teaching_years'   , 'remarks'] 
+        fieldsName = {'localLang' : _(u'Local Language')         , 'certification'    : _(u'Ethnic language certification'), 
+                      'study'     : _(u'Revitalization study')   , 'qualified_teacher': _(u'Teaching class (Qualified teacher)'), 
+                      'ethnic_teacher': _(u'Teaching class (Ethnic teacher)'), 'education'      : _(u'Education'),
+                      'experience'    : _(u'work experience')                , 'teaching_years' : _(u'Teaching years'),
+                      'remarks'       : _(u'Remarks')} 
+        fieldsDict = OrderedDict()
+        for field in fields:
+            field_value = getattr(item.getObject(), field, '')
+            if field_value:
+                fieldsDict.update({fieldsName[field]: field_value})
+        if fieldsDict.has_key(fieldsName['localLang']):
+            localLangValue = '\r\n'.join([lang.split(',')[1] for lang in fieldsDict[fieldsName['localLang']].split('/')])
+            fieldsDict[fieldsName['localLang']] = localLangValue
+        return fieldsDict
+
+    def results(self, **kwargs):
+        kwargs.update(self.request.get('contentFilter', {}))
+        if 'object_provides' not in kwargs:  # object_provides is more specific
+            kwargs.setdefault('portal_type', 'Teacher')
+        kwargs.setdefault('batch', True)
+        kwargs.setdefault('sort_on', self.sort_on)
+
+        listing = aq_inner(self.context).restrictedTraverse(
+            '@@folderListing', None)
+        results = listing(**kwargs)
+        return results
+
+
+class CourseListingView(FolderView):
+    @property
+    def b_size(self):
+        b_size = getattr(self.request, 'b_size', None)\
+            or getattr(self.request, 'limit_display', None) or 10
+        return b_size
+
+    @property
+    def sort_on(self):
+        sort_on = getattr(self.request, 'sort_on', 'getObjPositionInParent')
+        return sort_on
+
+    def getPrepare(self, obj):
+        prepare = api.content.find(context=obj, portal_type="Prepare")
+        return prepare
+
+    def results(self, **kwargs):
+        kwargs.update(self.request.get('contentFilter', {}))
+        if 'object_provides' not in kwargs:  # object_provides is more specific
+            kwargs.setdefault('portal_type', 'Course')
+        kwargs.setdefault('batch', True)
+        kwargs.setdefault('sort_on', self.sort_on)
+
+        listing = aq_inner(self.context).restrictedTraverse(
+            '@@folderListing', None)
+        results = listing(**kwargs)
+        return results
+

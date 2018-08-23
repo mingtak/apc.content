@@ -67,4 +67,40 @@
       permission="cmf.ManagePortal"
   />
 
+  <browser:page
+      name="course_view"
+      for="apc.content.content.course.ICourse"
+      template="template/course_view.pt"
+      class=".views.CourseView"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+ 
+  <browser:page
+      name="teacher_view"
+      for="apc.content.content.teacher.ITeacher"
+      template="template/teacher_view.pt"
+      class=".views.TeacherView"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+ 
+  <browser:page
+      name="teacher_listing"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      template="template/teacher_listing.pt"
+      class=".views.TeacherListingView"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+ 
+  <browser:page
+      name="course_listing"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      template="template/course_listing.pt"
+      class=".views.CourseListingView"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+ 
 </configure>

@@ -1,0 +1,27 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="apc.content">
+
+    <browser:viewlet
+        name="three_icon_viewlet"
+        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+        manager="plone.app.layout.viewlets.interfaces.IMainNavigation"
+        template="three_icon_viewlet.pt"
+        class=".viewlets.ThreeIconViewlet"
+        layer="zope.interface.Interface"
+        permission="zope2.View"
+    />
+
+    <browser:viewlet
+        name="announcement_viewlet"
+        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+        manager="plone.app.layout.viewlets.interfaces.IMainNavigation"
+        template="announcement_viewlet.pt"
+        class=".viewlets.AnnouncementViewlet"
+        layer="zope.interface.Interface"
+        permission="zope2.View"
+    />
+
+</configure>

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2018-08-22 06:56+0000\n"
+"POT-Creation-Date: 2018-08-23 05:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,6 +14,14 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
+#: ../content/prepare.py:22
+msgid "Agenda"
+msgstr "課堂概要"
+
+#: ../content/course.py:35
+msgid "Alliance Schools"
+msgstr "聯盟學校"
+
 #: ../behaviors/optional.py:25
 msgid "Class Time"
 msgstr ""
@@ -22,12 +30,29 @@ msgstr ""
 msgid "Course"
 msgstr "課程"
 
+#: ../content/course.py:56
+msgid "Course Date"
+msgstr "授課日期"
+
+#: ../content/course.py:66
+msgid "Course Outline"
+msgstr "課程大綱"
+
+#: ../content/course.py:61
+msgid "Course Time"
+msgstr "授課時間"
+
+#: ../content/prepare.py:32
+msgid "Course Video"
+msgstr "課堂影片"
+
 #: ../profiles/default/types/Course.xml
 #: ../profiles/default/types/LiveClass.xml
 #: ../profiles/default/types/Prepare.xml
 msgid "Edit"
 msgstr ""
 
+#: ../browser/views.py:288
 #: ../content/teacher.py:44
 msgid "Education"
 msgstr "學歷"
@@ -40,6 +65,7 @@ msgstr ""
 msgid "Embeded Code"
 msgstr ""
 
+#: ../browser/views.py:286
 #: ../content/teacher.py:24
 msgid "Ethnic language certification"
 msgstr "族語認證"
@@ -47,6 +73,10 @@ msgstr "族語認證"
 #: ../behaviors/optional.py:20
 msgid "Format example: D20,Language Name,1,1,1/A01,Language Name,0,1,3/..., 0,0,0 or 0,1,3 mapping to primary-intermediate-advanced"
 msgstr ""
+
+#: ../content/course.py:45
+msgid "Hire School"
+msgstr "聘用學校"
 
 #: ../browser/template/prepare_lessons_not_effective.pt:15
 msgid "If you have any question"
@@ -56,9 +86,13 @@ msgstr "如果您有任何問題"
 msgid "Installs the apc.content add-on."
 msgstr ""
 
-#: ../browser/views.py:251
+#: ../browser/views.py:263
 msgid "It is success mail to "
 msgstr "已成功寄給 "
+
+#: ../content/course.py:70
+msgid "Link Effective Date"
+msgstr "連結有效日期"
 
 #: ../profiles/default/types/LiveClass.xml
 msgid "Live Class Video"
@@ -69,9 +103,18 @@ msgid "LiveClass"
 msgstr ""
 
 #: ../behaviors/optional.py:19
-#: ../content/live_class.py:21
+#: ../browser/views.py:286
+#: ../content/course.py:24
 msgid "Local Language"
-msgstr ""
+msgstr "族語教學"
+
+#: ../browser/template/teacher_listing.pt:57
+msgid "No results were found."
+msgstr "查詢不到任何結果"
+
+#: ../content/course.py:51
+msgid "Place of Study"
+msgstr "授課地點"
 
 #: ../browser/template/prepare_lessons_not_effective.pt:16
 msgid "Please connect with admin"
@@ -81,7 +124,7 @@ msgstr "請與網站管理員聯繫"
 msgid "Prepare"
 msgstr "備課"
 
-#: ../content/course.py:40
+#: ../content/course.py:72
 msgid "Prepare Lessons Link Effective Date"
 msgstr "備課檔案連結有效日期"
 
@@ -93,20 +136,18 @@ msgstr "備課檔案"
 msgid "Related"
 msgstr ""
 
+#: ../browser/views.py:290
 #: ../content/teacher.py:59
 msgid "Remarks"
 msgstr "備註"
 
+#: ../browser/views.py:287
 #: ../content/teacher.py:29
 msgid "Revitalization study"
 msgstr "振興人員研習"
 
 #: ../profiles/default/types/School.xml
 msgid "School"
-msgstr "學校"
-
-#: ../content/course.py:30
-msgid "Schools"
 msgstr "學校"
 
 #: ../content/school.py:19
@@ -117,11 +158,11 @@ msgstr ""
 msgid "Teach School"
 msgstr ""
 
-#: ../content/course.py:24
+#: ../content/course.py:29
 #: ../content/live_class.py:41
 #: ../profiles/default/types/Teacher.xml
 msgid "Teacher"
-msgstr ""
+msgstr "授課教師"
 
 #: ../content/teacher.py:19
 msgid "Teacher Image"
@@ -131,18 +172,21 @@ msgstr "教師照片"
 msgid "Teacher Info"
 msgstr "教師資訊"
 
+#: ../browser/views.py:288
 #: ../content/teacher.py:39
 msgid "Teaching class (Ethnic teacher)"
 msgstr "教學類（族語教師）"
 
+#: ../browser/views.py:287
 #: ../content/teacher.py:34
 msgid "Teaching class (Qualified teacher)"
 msgstr "教學類（合格師資）"
 
-#: ../content/prepare.py:22
+#: ../content/prepare.py:27
 msgid "Teaching material"
 msgstr "教材"
 
+#: ../browser/views.py:289
 #: ../content/teacher.py:54
 msgid "Teaching years"
 msgstr "教學年資"
@@ -151,7 +195,7 @@ msgstr "教學年資"
 msgid "This Link is not Effective"
 msgstr "此連結已經失效"
 
-#: ../browser/views.py:253
+#: ../browser/views.py:265
 msgid "This teacher has not email: "
 msgstr "這位老師沒有信箱"
 
@@ -174,7 +218,7 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: ../browser/template/prepare_lessons.pt:50
+#: ../browser/template/prepare_lessons.pt:72
 msgid "all send"
 msgstr "全部送出"
 
@@ -186,7 +230,7 @@ msgstr ""
 msgid "apc.content (uninstall)"
 msgstr ""
 
-#: ../browser/template/prepare_lessons.pt:44
+#: ../browser/template/prepare_lessons.pt:43
 msgid "send"
 msgstr "送出"
 
@@ -198,6 +242,7 @@ msgstr "寄出全部郵件"
 msgid "send mail"
 msgstr "寄出郵件"
 
+#: ../browser/views.py:289
 #: ../content/teacher.py:49
 msgid "work experience"
 msgstr "工作經驗"
