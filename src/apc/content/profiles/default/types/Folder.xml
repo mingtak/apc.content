@@ -48,6 +48,8 @@
   <property name="default_view_fallback">False</property>
   <property name="immediate_view">view</property>
   <property name="view_methods">
+    <element value="teacher_listing"/>
+    <element value="course_listing"/>
     <element value="album_view"/>
     <element value="event_listing"/>
     <element value="full_view"/>

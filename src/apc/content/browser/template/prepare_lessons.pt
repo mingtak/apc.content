@@ -12,9 +12,8 @@
 <metal:content-core define-macro="content-core"
                     tal:define="toc context/table_of_contents|nothing;">
 
-
-<table>
-  <form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data">
+  <table>
     <input type="hidden" name="file-upload-widget">
     <tr>
         <td>
@@ -40,18 +39,41 @@
           <td>
             <a tal:condition="python: item.getObject().file" href="${item/getURL}/@@download/file">${python: item.getObject().file.filename}</a>
           </td>
-          <td>
+          <td rowspan=2>
             <input type="submit" value="send" style="float:right;" i18n:attributes="value">
           </td>
       </tr>
+      <tr>
+        <td >
+          <p>課程主題</p>
+        </td>
+        <td colspan=2>
+          <textarea name="text-${item/UID}" cols="40" rows="5">${python: item.getObject().description}</textarea>
+        </td>
+      </tr>
     </tal:repeat>
+    <tr>
+      <td colspan=4>
+        <p>課程大綱</p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan=4>
+        <textarea name="course_outline" class="pat-tinymce"
+                  data-pat-tinymce='{"relatedItems": {
+                                        "vocabularyUrl": "/relateditems-test.json"
+                                    }}'>
+          <tal:content tal:condition="python: view.getCourse().course_outline" tal:content="python: view.getCourse().course_outline.raw" />
+        </textarea>
+      </td>
+    </tr>
     <tr>
       <td colspan=4>
         <input type="submit" value="all send" style="float:right;" i18n:attributes="value">
       </td>
     </tr>
-  </form>
-</table>
+  </table>
+</form>
 
 </metal:content-core>
 </metal:content-core>

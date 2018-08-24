@@ -28,6 +28,11 @@ class IPrepare(model.Schema):
         required=False,
     )
 
+    video = RichText(
+        title=_(u'Course Video'),
+        required=False,
+    )
+
 
 @implementer(IPrepare)
 class Prepare(Item):
