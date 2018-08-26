@@ -9,15 +9,19 @@
 
 <metal:custom_title fill-slot="content-title" tal:define="header view/header_string">
   <h1 class="documentFirstHeading" tal:define="mode request/mode|string:future;">
-<!--    <span tal:replace="header/main" tal:condition="header/main"/>-->課程行事曆
+<!--    <span tal:replace="header/main" tal:condition="header/main"/>--> 課程行事曆
     <nav tal:define="show_filter view/show_filter">
       <ul class="mode_selector">
         <tal:cond condition="show_filter">
+
+        <li class="">
+          <a href="${context/absolute_url}/teacher_intro">教師介紹</a>
+        </li>
         <li class="" tal:condition="python:mode=='past'">
-          <a class="mode_future"   href="" tal:attributes="href view/mode_future_url"   i18n:translate="mode_future_link">Upcoming</a>
+          <a class="mode_future" tal:attributes="href view/mode_future_url">近期課程</a>
         </li>
         <li class="" tal:condition="python:mode=='future'">
-          <a class="mode_past"   href="" tal:attributes="href view/mode_past_url"   i18n:translate="mode_past_link">Past</a>
+          <a class="mode_past" tal:attributes="href view/mode_past_url">前期課程</a>
         </li>
         </tal:cond>
 <!--        <li>

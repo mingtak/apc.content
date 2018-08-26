@@ -1,3 +1,9 @@
+.teacher-img {
+    width:100%;
+}
+.template-teacher_listing .discreet {
+    display:none
+}
 .template-event_listing .slider, .template-event_listing #three-icon-viewlet, .template-event_listing #announcement_viewlet,  .template-event_listing #active_highlights_viewlet {
     display:none
 }

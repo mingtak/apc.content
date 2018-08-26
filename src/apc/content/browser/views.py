@@ -314,7 +314,7 @@ class TeacherListingView(FolderView):
                       'remarks'       : _(u'Remarks')} 
         fieldsDict = OrderedDict()
         for field in fields:
-            field_value = getattr(item.getObject(), field, '')
+            field_value = getattr(item, field, '')
             if field_value:
                 fieldsDict.update({fieldsName[field]: field_value})
         if fieldsDict.has_key(fieldsName['localLang']):
