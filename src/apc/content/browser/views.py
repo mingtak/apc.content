@@ -268,7 +268,6 @@ class CoursePrepare(BrowserView):
 class PloneRootView(BrowserView):
     pass
 
-
 class CourseView(BrowserView):
     pass
 
