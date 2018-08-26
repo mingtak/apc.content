@@ -28,8 +28,14 @@ class IPrepare(model.Schema):
         required=False,
     )
 
+    """ 
     video = RichText(
         title=_(u'Course Video'),
+        required=False,
+    ) """
+
+    embeded = schema.Text(
+        title=_(u'Embeded Code'),
         required=False,
     )
 

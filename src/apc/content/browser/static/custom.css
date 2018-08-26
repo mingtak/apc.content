@@ -1,3 +1,23 @@
+.template-event_listing .slider, .template-event_listing #three-icon-viewlet, .template-event_listing #announcement_viewlet,  .template-event_listing #active_highlights_viewlet {
+    display:none
+}
+.template-event_listing article#content {
+    margin-top: 15px;
+}
+
+.vevent.tileItem {
+    height: 150px;
+}
+.vevent div.cal_date {
+    margin: 12px 0 12px 12px;
+}
+.template-event_listing #content-core article {
+    padding: 20px 0;
+}
+.template-event_listing #content-core article h2 {
+    font-size: 22px;
+}
+
 #announcement_viewlet svg, #active_highlights_viewlet svg {
     vertical-align: middle;
 }

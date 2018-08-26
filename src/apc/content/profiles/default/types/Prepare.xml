@@ -35,7 +35,8 @@
   <property name="schema">apc.content.content.prepare.IPrepare</property>
 
   <!-- Enabled behaviors -->
-  <property name="behaviors" purge="false">
+  <property name="behaviors" purge="true">
+    <element value="plone.app.event.dx.behaviors.IEventBasic"/>
     <element value="plone.app.content.interfaces.INameFromTitle"/>
     <element value="plone.app.dexterity.behaviors.id.IShortName"/>
   </property>
