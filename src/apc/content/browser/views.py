@@ -363,3 +363,11 @@ class CourseListingView(FolderView):
         results = listing(**kwargs)
         return results
 
+
+class PrepareView(BrowserView):
+    template = ViewPageTemplateFile("template/prepare_view.pt")
+    def __call__(self):
+        request = self.request
+        context = self.context
+
+        return self.template()

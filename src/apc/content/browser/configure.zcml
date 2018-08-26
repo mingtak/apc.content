@@ -60,6 +60,14 @@
   />
 
   <browser:page
+      name="prepare_view"
+      for="apc.content.content.prepare.IPrepare"
+      class=".views.PrepareView"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
+  <browser:page
       name="course_prepare"
       for="*"
       class=".views.CoursePrepare"

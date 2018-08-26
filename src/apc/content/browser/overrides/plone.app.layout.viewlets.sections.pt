@@ -42,7 +42,7 @@
 <?python
 from plone import api
 portal = api.portal.get()
-images = portal['resource']['images'].getChildNodes()
+images = portal['resource']['cover_slider'].getChildNodes()
 ?>
 <div class="slider" tal:condition="python:portal.portal_type == context.portal_type">
 

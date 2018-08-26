@@ -43,7 +43,6 @@
   <property name="default_view_fallback">False</property>
   <property name="immediate_view">course_view</property>
   <property name="view_methods">
-    <element value="view"/>
     <element value="course_view"/>
   </property>
 

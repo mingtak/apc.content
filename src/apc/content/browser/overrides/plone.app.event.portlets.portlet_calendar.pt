@@ -67,7 +67,7 @@
                 tal:content="day/day"></span>
             <a href=""
                 tal:condition="events"
-                tal:attributes="href python:view.date_events_url(day['date_string']).replace('event_listing', 'course/event_listing');
+                tal:attributes="href python:view.date_events_url(day['date_string']).replace('event_listing', 'language_study/event_listing');
                                 title day/events_string;"
                 
                 tal:content="day/day">31</a>

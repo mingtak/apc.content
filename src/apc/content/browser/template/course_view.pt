@@ -25,9 +25,13 @@
                         item_courseOutline obj/course_outline;">
   <div>
     <p><span style="font-size: 14pt;"><strong>${item_title}</strong></span></p>
-    <p><strong>班 別: </strong>${item_id}</p>
+    <p><strong>虛擬教室編號: </strong>${item_id}</p>
     <p><strong>族語教學: </strong>${item_lang}</p>
-    <p style="white-space: pre-line;" tal:condition="item_schools"><strong>聯盟學校: </strong>${python: '\r\n'.join([school.to_object.title for school in item_schools])}</p>
+    <div style="white-space: pre-line;" tal:condition="item_schools">
+        <strong>聯盟學校: </strong>
+        <ul><li tal:repeat="item python:[school.to_object.title for school in item_schools]">${item/title}</li>
+        </ul>
+    </div>
     <p tal:condition="item_hireSchool"><strong>聘用學校: </strong>${python: item_hireSchool.to_object.title}</p>
     <p tal:condition="item_teacher"><strong>族語師資: </strong><strong><a href="${python: item_teacher.to_object.absolute_url()}">${python: item_teacher.to_object.title}</a></strong></p>
     <p><strong>授課地點: </strong><strong>&nbsp;:&nbsp; &nbsp;新北市景新國小</strong></p>
@@ -38,6 +42,17 @@
   <div tal:condition="item_courseOutline">
     <tal:content tal:content="structure python: item_courseOutline.raw" />
   </div>
+
+  <h3>各堂課程</h3>
+  <div tal:repeat="item context/getChildNodes">
+    ${python:'%s-%s' % (item.start.strftime('%Y年%m月%d日 %H:%M'), item.end.strftime('%H:%M'))}<br>
+    <p tal:condition="item/description" tal:content="structure python:item.description.replace('\n', '<br>')"></p>
+    <h4>直播視訊</h4>
+    <p tal:condition="item/embeded" tal:content="structure item/embeded"></p>
+    <hr>
+  </div>
+
+
 </tal:define>
 
 </metal:content-core>

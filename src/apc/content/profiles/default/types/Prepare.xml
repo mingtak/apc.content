@@ -43,11 +43,11 @@
 
   <!-- View information -->
   <property name="add_view_expr">string:${folder_url}/++add++Prepare</property>
-  <property name="default_view">view</property>
+  <property name="default_view">prepare_view</property>
   <property name="default_view_fallback">False</property>
-  <property name="immediate_view">view</property>
+  <property name="immediate_view">prepare_view</property>
   <property name="view_methods">
-    <element value="view"/>
+    <element value="prepare_view"/>
   </property>
 
   <!-- Method aliases -->
