@@ -1,19 +1,23 @@
-<div class="container" style="background: #fff; border-radius: 4px;  border: 1px solid #e5e5e5;  box-shadow: 4px 4px 3px rgba(20%,20%,40%,0.5); margin-bottom: 20px; padding: 25px;">
+<div id="three-icon-viewlet" class="container">
+
 <div class="row">
   <div class="col-xs-12 col-md-4">
-    <img src="++plone++apc.content/image/index-03p.png" style="background: #9c1602; border-radius: 50%;">
-    <span>課程行事曆</span>
-    <p>遠路遠距授課方式,提供學生族語學習機會,規劃參與同一時段互動族語共學之學校,成立共學聯盟...</p>
+    <i class="far fa-calendar-alt fa-4x"></i>
+    <span class="title">課程行事曆</span>
+    <p class="info">遠距授課方式,提供學生族語學習機會,規劃參與同一時段互動族語共學之學校,成立共學聯盟...</p>
   </div>
+
   <div class="col-xs-12 col-md-4">
-    <img src="++plone++apc.content/image/index-01p.png" style="background: #9c1602; border-radius: 50%;">
-    <span>課程介紹</span>
-    <p>原住民直播共學系統是為打造原住民部落創新直播共學環境,推動遠距教學風氣,可藉由遠距學習獲得...</p>
+    <i class="fas fa-book-open fa-4x"></i>
+    <span class="title">課程介紹</span>
+    <p class="info">族語直播共學系統打造原住民部落直播共學環境,推動遠距教學風氣,可藉由遠距學習獲得...</p>
   </div>
+
   <div class="col-xs-12 col-md-4">
-    <img src="++plone++apc.content/image/index-02p.png" style="background: #9c1602; border-radius: 50%;">
-    <span>教師介紹</span>
-    <p>老師分屬各地,教學於直播攝影棚內,可不分遠近同時上課,並在老師的背後合成其他的照片'圖片或影片...</p>
+    <i class="fas fa-chalkboard-teacher fa-4x"></i>
+    <span class="title">教師介紹</span>
+    <p class="info">老師分屬各地,於直播攝影棚教學,無距離同時上課,並在老師的背後合成相關圖片或影片...</p>
   </div>
 </div>
+
 </div>

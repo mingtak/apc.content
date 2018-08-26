@@ -1,0 +1,19 @@
+<?python
+from plone import api
+portal = api.portal.get()
+?>
+
+<div class="container" id="active_highlights_viewlet">
+  <div class="row">
+    <div class="col-xs-12 col-md-12 announcement">
+      <h3><i class="far fa-images fa-2x"></i><span class="text">活動花絮</span></h3>
+      <div class="title-border-bottom" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-6 col-md-3 highlight" tal:repeat="item python:list(portal['resource']['highlights'].getChildNodes())[:6]">
+      <img alt="${item/description}" src="${item/absolute_url}/@@images/image/preview">
+    </div>
+  </div>
+
+</div>

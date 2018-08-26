@@ -24,4 +24,14 @@
         permission="zope2.View"
     />
 
+    <browser:viewlet
+        name="active_highlights_viewlet"
+        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+        manager="plone.app.layout.viewlets.interfaces.IMainNavigation"
+        template="active_highlights_viewlet.pt"
+        class=".viewlets.ActiveHighlightsViewlet"
+        layer="apc.content.interfaces.IApcContentLayer"
+        permission="zope2.View"
+    />
+
 </configure>

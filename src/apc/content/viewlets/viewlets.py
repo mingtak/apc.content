@@ -13,3 +13,6 @@ class ThreeIconViewlet(base.ViewletBase):
     pass
 
 
+class ActiveHighlightsViewlet(base.ViewletBase):
+    pass
+
