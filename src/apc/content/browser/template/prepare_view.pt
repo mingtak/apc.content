@@ -18,7 +18,7 @@
     </li>
     <li><b>課堂教材:</b>
         <a tal:condition="context/file"
-           tal:attributes="href string:${context/absolute_url}/@@download/file/${context/file/filename}">${context/file/filename}</a>
+           tal:attributes="href string:${context/absolute_url}/@@pdf_embeded">${context/file/filename}</a>
     </li>
 
 

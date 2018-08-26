@@ -11,8 +11,8 @@
 from plone import api
 portal = api.portal.get()
 teachers = portal['teacher'].getChildNodes()
-schools = portal['school'].getChildNodes()
-level = {'primary': '初級', 'intermediate': '中級', 'advanced': '高級'}
+schools = api.content.find(context=portal['school'], Type='School')
+level = {'primary': '低年級', 'intermediate': '中年級', 'advanced': '高年級'}
 ?>
 
 <h3 id="match-detail">媒合成功細目</h3>
@@ -37,10 +37,10 @@ level = {'primary': '初級', 'intermediate': '中級', 'advanced': '高級'}
 <a href="#match-detail">媒合成功細目</a> | <a href="#match-table">族語共學媒合表</a>
 <h4>媒合表說明:</h4>
 <ul>
-    <li>師資下方為可教授之語言及級別，其後3個數字分別表示初、中、高級可否教授</li>
-    <li>例:海岸阿美語,1,1,1，表示海岸阿美語初中高級均可教授，賽夏語,1,1,0表示賽夏語可教授初、中階，高階不可教授。</li>
-    <li>學校下方則表示需求語言及各級別需求學生數，其後3個數字分別表示初、中、高級需求學生數</li>
-    <li>例:海岸阿美語,3,1,2，表示海岸阿美語初級學生數3人，中級學生數1人，高級學生數2人。</li>
+    <li>師資下方為可教授之語言及級別，其後3個數字分別表示低、中、高年級可否教授</li>
+    <li>例:海岸阿美語,1,1,1，表示海岸阿美語低、中、高年級均可教授，賽夏語,1,1,0表示賽夏語可教授低、中年級，高年級不可教授。</li>
+    <li>學校下方則表示需求語言及各級別需求學生數，其後3個數字分別表示低、中、高年級需求學生數</li>
+    <li>例:海岸阿美語,3,1,2，表示海岸阿美語低年級學生數3人，中年級學生數1人，高年級學生數2人。</li>
 </ul>
 <table>
     <tbody>
@@ -57,15 +57,18 @@ level = {'primary': '初級', 'intermediate': '中級', 'advanced': '高級'}
             </th>
         </tr>
 
-        <tr tal:repeat="school schools">
+        <tr tal:repeat="school_item schools">
+          <tal:sc define="school python:school_item.getObject()">
             <td style="width:300px">
-                ${school/title}<br>
+              ${school/title}<br>
+              <tal:cond condition="school/localLang">
                 <tal:lang repeat="lang python:school.localLang.split('/')">
                     ${python:lang[4:]}<br>
                 </tal:lang><hr>
                 <tal:lang tal:repeat="time school/classTime">
                     ${python:view.vocaClassTime.getTerm(time).title}<tal:common condition="not:repeat/time/end">, </tal:common>
                 </tal:lang>
+              </tal:cond>
             </td>
             <td tal:repeat="teacher teachers" style="width:700px">
                 <tal:class repeat="item view/courseTable">
@@ -85,6 +88,7 @@ level = {'primary': '初級', 'intermediate': '中級', 'advanced': '高級'}
                     </tal:item>
                 </tal:class>
             </td>
+          </tal:sc>
         </tr>
     </tbody>
 </table>

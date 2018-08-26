@@ -39,6 +39,16 @@ class IPrepare(model.Schema):
         required=False,
     )
 
+    onCall = schema.Text(
+        title=_(u'Roll Call, On Call'),
+        required=False,
+    )
+
+    notOnCall = schema.Text(
+        title=_(u'Roll Call, Not On Call'),
+        required=False,
+    )
+
 
 @implementer(IPrepare)
 class Prepare(Item):

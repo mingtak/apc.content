@@ -117,7 +117,7 @@ class MatchResult(BrowserView):
         self.vocaClassTime = factory1(context)
 
         teachers = portal['teacher'].getChildNodes()
-        schools = portal['school'].getChildNodes()
+        schools = api.content.find(context=portal['school'], Type='School')
 
         # 確認可開班狀況
         self.courseTable = {}
@@ -126,7 +126,6 @@ class MatchResult(BrowserView):
                 # [學生數, 開課級別]
                 self.courseTable['%s_%s' % (teacher.title, item)] = [0, '', '']
 
-
         for teacher in teachers:
             # 老師能教
             canTeach = {}
@@ -134,7 +133,8 @@ class MatchResult(BrowserView):
                 language = item.split(',')[1]
                 canTeach[language] = item
 
-            for school in schools:
+            for school_item in schools:
+                school = school_item.getObject()
                 if school.classTime is None:
                     continue
 
@@ -371,3 +371,33 @@ class PrepareView(BrowserView):
         context = self.context
 
         return self.template()
+
+
+class PdfEmbeded(BrowserView):
+    template = ViewPageTemplateFile("template/pdf_embeded.pt")
+    def __call__(self):
+        request = self.request
+        context = self.context
+
+        #TODO: 老師登入權限
+        if not api.user.is_anonymous():
+            self.canRollcall = True
+        else:
+            self.canRollcall = False
+        return self.template()
+
+
+class Rollcall(BrowserView):
+    def __call__(self):
+        request = self.request
+        context = self.context
+
+        #TODO: 老師登入權限
+        if api.user.is_anonymous():
+            return request.response.redirect(api.portal.get().absolute_url())
+
+        context.onCall = request.form.get('on_call').replace('||', '\n')
+        context.notOnCall = request.form.get('not_on_call').replace('||', '\n')
+#        import pdb; pdb.set_trace()
+
+        return

@@ -1,0 +1,92 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+
+
+<a tal:condition="view/canRollcall"
+   href="#teacher-rollcall" class="teacher-rollcall">教師上課點名</a>
+
+    <h3><b>課堂名稱:</b>${context/title}</h3>
+
+
+    <b>課堂教材:</b><br>
+<iframe src="${python:'%s/@@display-file/file/%s' %(context.absolute_url(), context.file.filename)}"
+        width="100%" height="100%" style="height:600px">
+    This browser does not support PDFs. Please download the PDF to view it:
+</iframe>
+
+<!--
+        <a tal:condition="context/file"
+           tal:attributes="href string:${context/absolute_url}/@@download/file/${context/file/filename}">${context/file/filename}</a>
+-->
+
+
+
+
+
+
+
+
+<div class="rollcall" tal:condition="view/canRollcall">
+ <div id="teacher-rollcall">
+  <h3>教師上課點名</h3><hr>
+  <b>未到課請打勾</b>
+  <div>
+    <ul tal:define="students python:context.getParentNode().studentList">
+      <li tal:repeat="item python:students.split('\n')">
+          <input type="checkbox" class="confirm" data-student="${item}" name="rollcall"> |
+          <span class="info" tal:repeat="info python:item.split(',')">${info}</span>
+      </li>
+    </ul>
+<hr>
+<a href="javascript:void(0)" class="button-field context update-rollcall">確認點名結果/送出</a>
+  </div>
+ </div>
+
+<script tal:condition="view/canRollcall">
+   $(document).ready(function(){
+       // colorbox
+       $(".teacher-rollcall").colorbox({inline:true, width:"50%"});
+
+       // update rollcall
+       $('.update-rollcall').click(function(){
+           on_call = ''
+           not_on_call  = ''
+           for(i=0; i<$('input.confirm').length; i++){
+               if($('input.confirm')[i].checked){
+                   not_on_call += $($('input.confirm')[i]).data('student')
+                   not_on_call += '||'
+               }else{
+                   on_call += $($('input.confirm')[i]).data('student')
+                   on_call += '||'
+               }
+           }
+           $.get("${context/absolute_url}/@@rollcall?on_call=" + on_call + "&not_on_call=" + not_on_call, function(){
+           }).done(function(){
+               alert('完成點名，老師您辛苦了。')
+               $(".teacher-rollcall").colorbox.close()
+           }).fail(function(){
+               alert('點名失敗，請稍候再試，若持續失敗，請先人工點名，並於下課後向系統管理員反應，謝謝')
+           });
+debugger
+       })
+   });
+</script>
+</div>
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+

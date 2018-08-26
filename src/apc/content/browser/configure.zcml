@@ -68,6 +68,23 @@
   />
 
   <browser:page
+      name="pdf_embeded"
+      for="apc.content.content.prepare.IPrepare"
+      class=".views.PdfEmbeded"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
+  <!-- 權限待定 -->
+  <browser:page
+      name="rollcall"
+      for="apc.content.content.prepare.IPrepare"
+      class=".views.Rollcall"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="cmf.ManagePortal"
+  />
+
+  <browser:page
       name="course_prepare"
       for="*"
       class=".views.CoursePrepare"

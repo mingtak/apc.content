@@ -47,6 +47,10 @@
   <div tal:repeat="item context/getChildNodes">
     ${python:'%s-%s' % (item.start.strftime('%Y年%m月%d日 %H:%M'), item.end.strftime('%H:%M'))}<br>
     <p tal:condition="item/description" tal:content="structure python:item.description.replace('\n', '<br>')"></p>
+    <p><b>課堂教材：</b>
+        <a tal:condition="item/file"
+           tal:attributes="href string:${item/absolute_url}/@@pdf_embeded">${item/file/filename}</a>
+    </p>
     <h4>直播視訊</h4>
     <p tal:condition="item/embeded" tal:content="structure item/embeded"></p>
     <hr>

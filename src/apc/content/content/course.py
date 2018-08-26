@@ -47,6 +47,12 @@ class ICourse(model.Schema):
         required=False,
     )
 
+    studentList = schema.Text(
+        title=_(u'Student List'),
+        description=_(u'format: city,school_name,student_name'),
+        required=False,
+    )
+
     place = schema.TextLine(
         title=_(u'Place of Study'),
         required=False,

@@ -1,3 +1,18 @@
+#teacher-rollcall b {
+    font-size: 20px;
+}
+#teacher-rollcall li {
+    font-size: 18px;
+    padding: 5px 0;
+}
+#teacher-rollcall li span.info {
+    margin-right: 20px;
+}
+
+.template-pdf_embeded .rollcall {
+    display: none;
+}
+
 .teacher-img {
     width:100%;
 }

@@ -57,7 +57,7 @@ portal = api.portal.get()
   <div class="col-xs-12 announcement">
     <div class="row">
       <tal:repeat tal:repeat="item python:api.content.find(context=portal['language_study'], Type='Prepare', sort_on='start', sort_order='reverse')">
-       <tal:obj define="obj item/getObject">
+       <tal:obj define="obj item/getObject" condition="obj/embeded">
         <div class="col-xs-6 col-md-3" style="text-align:center;">
           <a href="${item/getURL}" class="title">${item/Title}</a>
           <div style="margin-bottom:10px;"
