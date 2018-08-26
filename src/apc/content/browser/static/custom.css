@@ -28,3 +28,20 @@
 #content-header {padding:8px 0; background:url(http://apc.21cms.tw/images/website/hdbg.jpg)}
 .frontend #portal-globalnav-wrapper {background-color:#a10d0d}
 .frontend #portal-footer-wrapper {background-color:#a10d0d}
+
+body {
+    font-family: "Noto Sans TC", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* font-face */
+/*
+* Noto Sans TC (Chinese_traditional) http://www.google.com/fonts/earlyaccess
+ */
+@font-face {
+   font-family: 'Noto Sans TC';
+   font-style: normal;
+   font-weight: 700;
+   src: url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Regular.woff2) format('woff2'),
+        url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Regular.woff) format('woff'),
+        url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Regular.otf) format('opentype');
+}
