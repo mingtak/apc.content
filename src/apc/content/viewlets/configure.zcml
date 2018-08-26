@@ -10,7 +10,7 @@
         manager="plone.app.layout.viewlets.interfaces.IMainNavigation"
         template="three_icon_viewlet.pt"
         class=".viewlets.ThreeIconViewlet"
-        layer="zope.interface.Interface"
+        layer="apc.content.interfaces.IApcContentLayer"
         permission="zope2.View"
     />
 
@@ -20,7 +20,7 @@
         manager="plone.app.layout.viewlets.interfaces.IMainNavigation"
         template="announcement_viewlet.pt"
         class=".viewlets.AnnouncementViewlet"
-        layer="zope.interface.Interface"
+        layer="apc.content.interfaces.IApcContentLayer"
         permission="zope2.View"
     />
 
