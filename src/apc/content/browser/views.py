@@ -48,6 +48,21 @@ class SchoolOverview(BrowserView):
         return self.template()
 
 
+class MatchSystem(BrowserView):
+    """ Match System """
+    template = ViewPageTemplateFile("template/match_system.pt")
+
+    def __call__(self):
+        context = self.context
+        request = self.request
+        self.portal = api.portal.get()
+
+        isAnon = api.user.is_anonymous()
+        if isAnon:
+            return request.response.redirect(self.portal.absolute_url())
+        return self.template()
+
+
 """ 範例:
 {'劉金花_5-4':[學生數, 開課級別, 開課語言, [校名, 語言, 等級, 人數], [校名, 語言, 等級, 人數],...],
 
@@ -106,9 +121,12 @@ class MatchResult(BrowserView):
         request = self.request
         portal = api.portal.get()
 
+        isAnon = api.user.is_anonymous()
+        if isAnon:
+            return request.response.redirect(portal.absolute_url())
+
         # min costudy schools(min_sc)
         self.min_sc=int(request.form.get('min_sc', 3))
-
         # max costudy schools(max_sc) and students(max_st) limit
         self.max_sc=int(request.form.get('max_sc', 6))
         self.max_st=int(request.form.get('max_st', 10))
@@ -142,6 +160,7 @@ class MatchResult(BrowserView):
                 reqLang = []
                 if school.localLang is None:
                     continue
+
                 for item in school.localLang.split('/'):
                     # 逐個語言比對
                     language = item.split(',')[1]

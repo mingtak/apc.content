@@ -3,8 +3,13 @@
     xmlns:metal="http://xml.zope.org/namespaces/metal"
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     lang="en"
+    metal:use-macro="context/main_template/macros/master"
     i18n:domain="apc.content">
 <body>
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
 
 
 <?python
@@ -15,8 +20,8 @@ schools = api.content.find(context=portal['school'], Type='School')
 level = {'primary': '低年級', 'intermediate': '中年級', 'advanced': '高年級'}
 ?>
 
-<h3 id="match-detail">媒合成功細目</h3>
-<a href="#match-detail">媒合成功細目</a> | <a href="#match-table">族語共學媒合表</a>
+<h3 id="match-detail">共學排課系統-媒合結果</h3>
+<!-- <a href="#match-detail">媒合成功細目</a> | <a href="#match-table">族語共學媒合表</a> -->
 <br><br>
 <tal:p repeat="item view/courseTable">
     <div tal:condition="python:len(view.courseTable[item][3:]) >= view.min_sc">
@@ -33,67 +38,6 @@ level = {'primary': '低年級', 'intermediate': '中年級', 'advanced': '高�
 </tal:p>
 
 
-<h3 id="match-table">族語共學媒合表</h3>
-<a href="#match-detail">媒合成功細目</a> | <a href="#match-table">族語共學媒合表</a>
-<h4>媒合表說明:</h4>
-<ul>
-    <li>師資下方為可教授之語言及級別，其後3個數字分別表示低、中、高年級可否教授</li>
-    <li>例:海岸阿美語,1,1,1，表示海岸阿美語低、中、高年級均可教授，賽夏語,1,1,0表示賽夏語可教授低、中年級，高年級不可教授。</li>
-    <li>學校下方則表示需求語言及各級別需求學生數，其後3個數字分別表示低、中、高年級需求學生數</li>
-    <li>例:海岸阿美語,3,1,2，表示海岸阿美語低年級學生數3人，中年級學生數1人，高年級學生數2人。</li>
-</ul>
-<table>
-    <tbody>
-        <tr>
-            <th>學校\師資</th>
-            <th tal:repeat="teacher teachers">
-                ${teacher/title}<br>
-                <tal:lang repeat="lang python:teacher.localLang.split('/')">
-                    ${python:lang[4:]}<br>
-                </tal:lang><hr>
-                <tal:lang tal:repeat="time teacher/classTime">
-                    ${python:view.vocaClassTime.getTerm(time).title}<tal:common condition="not:repeat/time/end">, </tal:common>
-                </tal:lang>
-            </th>
-        </tr>
-
-        <tr tal:repeat="school_item schools">
-          <tal:sc define="school python:school_item.getObject()">
-            <td style="width:300px">
-              ${school/title}<br>
-              <tal:cond condition="school/localLang">
-                <tal:lang repeat="lang python:school.localLang.split('/')">
-                    ${python:lang[4:]}<br>
-                </tal:lang><hr>
-                <tal:lang tal:repeat="time school/classTime">
-                    ${python:view.vocaClassTime.getTerm(time).title}<tal:common condition="not:repeat/time/end">, </tal:common>
-                </tal:lang>
-              </tal:cond>
-            </td>
-            <td tal:repeat="teacher teachers" style="width:700px">
-                <tal:class repeat="item view/courseTable">
-                    <tal:item condition="python:item.startswith(teacher.title) and view.courseTable[item][0]">
-                        <tal:course repeat="matchSchool python:view.courseTable[item][3:]">
-                            <tal:match condition="python:school.title == matchSchool[0] and len(view.courseTable[item][3:]) >= view.min_sc">
-                                <b>上課時段:</b> ${python:view.vocaClassTime.getTerm(item.split('_')[1]).title}:<br>
-                                <b>開課學校:</b> ${python:view.classroomIn(item)}<br>
-                                <b>語言/程度:</b> ${python:view.courseTable[item][2]} / ${python:level[view.courseTable[item][1]]}<br>
-                                <b>總學生數:</b> ${python:view.courseTable[item][0]}<br>
-                                <b>共學組成學校:</b><br>
-                                    <tal:co repeat="coSchool python:view.courseTable[item][3:]">
-                                        ${python:coSchool[0]} / ${python:coSchool[1]} / 級別:${python:level[coSchool[2]]} / 人數:${python:coSchool[3]}<br>
-                                    </tal:co><hr>
-                            </tal:match>
-                        </tal:course>
-                    </tal:item>
-                </tal:class>
-            </td>
-          </tal:sc>
-        </tr>
-    </tbody>
-</table>
-
-
 
 
 <style>
@@ -103,6 +47,8 @@ tbody, td, th {border:1px #000 solid; padding:5px}
 
 
 
+</metal:content-core>
+</metal:content-core>
 
 
 </body>

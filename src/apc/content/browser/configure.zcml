@@ -26,7 +26,15 @@
       layer="apc.content.interfaces.IApcContentLayer"
       permission="zope2.View"
   />
- 
+
+  <browser:page
+      name="match_system"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      class=".views.MatchSystem"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
   <browser:page
       name="match_result"
       for="plone.app.contenttypes.interfaces.IFolder"

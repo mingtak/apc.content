@@ -24,14 +24,6 @@
           <a class="mode_past" tal:attributes="href view/mode_past_url">前期課程</a>
         </li>
         </tal:cond>
-<!--        <li>
-          <a class="mode_ical"  href="" tal:attributes="href view/ical_url"
-             title="Download this event in iCal format"
-             i18n:attributes="title title_add_to_ical;">
-              <span i18n:translate="label_add_to_ical">iCal</span></a>
-
-        </li>
--->
       </ul>
     </nav>
 

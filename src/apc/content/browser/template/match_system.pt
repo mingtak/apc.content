@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+
+<form action="${context/absolute_url}/@@match_result" method="get">
+請輸入最小學校數(預設值2)：<input type="number" name="min_sc" value=2>
+請輸入最大學校數(預設值5)：<input type="number" name="max_sc" value=5>
+請輸入最大學生數(預設值10)：<input type="number" name="max_st" value=10>
+<input type="submit" name="submit" value="確認">
+</form>
+
+</metal:content-core>
+</metal:content-core>
+
+
+</body>
+</html>
+
