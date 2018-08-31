@@ -4,11 +4,11 @@ portal = api.portal.get()
 ?>
 
 <div class="container" id="announcement_viewlet">
-<div class="row">
-  <div class="col-xs-12 col-md-6 announcement">
-<h3 class="cover-news"><i class="far fa-newspaper fa-2x"></i><span class="text">最新消息</span></h3>
-    <div class="title-border-bottom" />
-    <ul>
+  <div class="row">
+    <div class="col-xs-12 col-md-6 announcement">
+      <h3 class="cover-news"><i class="far fa-newspaper fa-2x"></i><span class="text">最新消息</span></h3>
+      <div class="title-border-bottom" />
+      <ul>
         <table>
           <tbody>
            <tal:repeat repeat="item python:list(portal['news']['news02'].getChildNodes())[:6]">
@@ -21,14 +21,14 @@ portal = api.portal.get()
            </tal:repeat>
           </tbody>
         </table>
-    </ul>
-    <div class="readmore">[<a href="${portal/absolute_url}/news/news02">閱讀更多</a>]</div>
-  </div>
+      </ul>
+      <div class="readmore">[<a href="${portal/absolute_url}/news/news02">閱讀更多</a>]</div>
+    </div>
 
-  <div class="col-xs-12 col-md-6 announcement">
-    <h3 class="cover-note"><i class="fas fa-bullhorn fa-2x"></i><span class="text">停/補課公告<span></h3>
-    <div class="title-border-bottom" />
-    <ul>
+    <div class="col-xs-12 col-md-6 announcement">
+      <h3 class="cover-note"><i class="fas fa-bullhorn fa-2x"></i><span class="text">停/補課公告<span></h3>
+      <div class="title-border-bottom" />
+      <ul>
         <table>
           <tbody>
            <tal:repeat tal:repeat="item python:list(portal['news']['news01'].getChildNodes())[:6]">
@@ -41,89 +41,33 @@ portal = api.portal.get()
            </tal:repeat>
           </tbody>
         </table>
-    </ul>
-    <div class="readmore">[<a href="${portal/absolute_url}/news/news01">閱讀更多</a>]</div>
+      </ul>
+      <div class="readmore">[<a href="${portal/absolute_url}/news/news01">閱讀更多</a>]</div>
+    </div>
   </div>
 
-</div>
+  <div class="border-dotted" />
 
-<div class="border-dotted" />
-
-<div class="row">
-  <div class="col-xs-12 announcement">
-<h3><i class="fas fa-film fa-2x"></i><span class="text">最新課程影片</span></h3>
-  </div>
-  <div class="col-xs-12" style="margin-bottom:20px;" />
-  <div class="col-xs-12 announcement">
-    <div class="row">
-      <tal:repeat tal:repeat="item python:api.content.find(context=portal['language_study'], Type='Prepare', sort_on='start', sort_order='reverse')">
-       <tal:obj define="obj item/getObject" condition="obj/embeded">
-        <div class="col-xs-6 col-md-3" style="text-align:center;">
-          <a href="${item/getURL}" class="title">${item/Title}</a>
-          <div style="margin-bottom:10px;"
-               tal:content="structure obj/embeded">
+  <div class="row">
+    <div class="col-xs-12 announcement">
+      <h3><i class="fas fa-film fa-2x"></i><span class="text">最新課程影片</span></h3>
+    </div>
+    <div class="col-xs-12" style="margin-bottom:20px;" />
+    <div class="col-xs-12 announcement">
+      <div class="row">
+        <tal:repeat tal:repeat="item python:api.content.find(context=portal['language_study'], Type='Prepare', sort_on='start', sort_order='reverse')">
+         <tal:obj define="obj item/getObject" condition="obj/embeded">
+          <div class="col-xs-6 col-md-3" style="text-align:center;">
+            <a href="${item/getURL}" class="title">${item/Title}</a>
+            <div style="margin-bottom:10px;"
+                 tal:content="structure obj/embeded">
+            </div>
           </div>
-        </div>
-       </tal:obj>
-      </tal:repeat>
+         </tal:obj>
+        </tal:repeat>
+      </div>
     </div>
   </div>
 
 </div>
-
-</div>
-
-<style>
-  .border-dotted{
-    margin: 25px 0 25px 0;
-    border-bottom: 1px dotted #cdcdcd;
-  }
-
-  .announcement .title-border-bottom{
-    margin: 5px 0 15px 0;
-    border-bottom: 2px solid #E0DEDE;
-  } 
-
-  .announcement .publish-date{
-    color: #b8010e;
-    font-size: 15px;
-    list-style: square;
-    margin: 5px !important;
-  }
-
-  .announcement a.title, .announcement .readmore a{ 
-    font-weight: 700;
-    font-size: 15px !important;
-    color: #858585;
-    border-bottom: 0 !important;
-    text-decoration: none;
-  }
-
-  .announcement .readmore a{
-    font-weight: unset;
-  }
-
-  .announcement a.title:hover, .announcement .readmore a:hover{
-    color: #2a6496;
-    text-decoration: underline;
-  }
-
-  .announcement ul{
-    padding: 0;
-  }
-
-  .announcement table{
-    border: 0;
-  }
-
-  .announcement table td{
-    border: 0;
-    border-bottom: 1px solid #cccccc;
-    vertical-align: middle;
-  }
-
-  .announcement .readmore{
-    color: #858585;
-  }
-</style>
 

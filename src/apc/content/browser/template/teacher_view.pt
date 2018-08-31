@@ -30,7 +30,7 @@
           <tal:repeat tal:repeat="field python: view.getTeacherField(item).iteritems()">
             <tr>
               <td style="border: 0; width: 30%;">${python: field[0]}</td>
-              <td style="border: 0; width: 70%;">${python: field[1]}</td>
+              <td style="border: 0; width: 70%; white-space: pre-line;">${python: field[1]}</td>
             </tr>
           </tal:repeat>
         </table>

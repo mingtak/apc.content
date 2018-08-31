@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+<h4>教師個人資料設定</h4>
+
+<form method="POST" enctype="multipart/form-data" >
+
+  <div class="field pat-inlinevalidation kssattr-fieldname-form.widgets.image">
+    <label for="form-widgets-image" class="horizontal">教師照片</label>
+    <div class="fieldErrorBox"></div>
+    <span id="form-widgets-image" class="named-image-widget namedblobimage-field">
+      <span>
+        <img src="${view/teacher/getURL}/@@images/image/preview" height="127" width="auto">
+        <br>
+      </span>
+      <div style="padding-top: 1em;">
+          <input type="radio" value="nochange" class="noborder" name="form.widgets.image.action" id="form-widgets-image-nochange" onclick="document.getElementById('form-widgets-image-input').disabled=true" checked="checked">
+          <label for="form-widgets-image-nochange">保留既有圖檔</label>
+          <br>
+          <input type="radio" value="replace" class="noborder" name="form.widgets.image.action" id="form-widgets-image-replace" onclick="document.getElementById('form-widgets-image-input').disabled=false">
+          <label for="form-widgets-image-replace">取代既有圖檔</label>
+      </div>
+      <div style="padding-left: 1.5em; padding-top: 0.5em;">
+          <input type="file" class="form-control" id="form-widgets-image-input" name="image" accept="image/*" disabled="">
+          <script type="text/javascript">document.getElementById('form-widgets-image-input').disabled=true;</script>
+      </div>
+    </span>
+  </div>
+
+  <label for="email">Email</label>
+  <input type="email" class="form-control" id="email" name="email" value="${python: view.teacher.getObject().email}">
+
+  <label for="certification" i18n:translate="">Ethnic language certification</label>
+  <textarea class="form-control" id="certification" name="certification" >${python: view.teacher.getObject().certification}</textarea>
+
+  <label for="study" i18n:translate="">Revitalization study</label>
+  <textarea class="form-control" id="study" name="study" >${python: view.teacher.getObject().study}</textarea>
+
+  <label for="qualified_teacher" i18n:translate="">Teaching class (Qualified teacher)</label>
+  <textarea class="form-control" id="qualified_teacher" name="qualified_teacher" >${python: view.teacher.getObject().qualified_teacher}</textarea>
+
+  <label for="ethnic_teacher" i18n:translate="">Teaching class (Ethnic teacher)</label>
+  <textarea class="form-control" id="ethnic_teacher" name="ethnic_teacher" >${python: view.teacher.getObject().ethnic_teacher}</textarea>
+
+  <label for="education" i18n:translate="">Education</label>
+  <textarea class="form-control" id="education" name="education" >${python: view.teacher.getObject().education}</textarea>
+
+  <label for="experience" i18n:translate="">work experience</label>
+  <textarea class="form-control" id="experience" name="experience" >${python: view.teacher.getObject().experience}</textarea>
+
+  <label for="teaching_years" i18n:translate="">Teaching years</label>
+  <textarea class="form-control" id="teaching_years" name="teaching_years">${python: view.teacher.getObject().teaching_years}</textarea>
+
+  <label for="remarks" i18n:translate="">Remarks</label>
+  <textarea class="form-control" id="remarks" name="remarks">${python: view.teacher.getObject().remarks}</textarea>
+
+  <div style="text-align: right; margin: 10px 0 10px 0;" >
+    <input type="hidden" name="widget-form-btn" value="widget-form-btn">
+    <input type="submit" class="context">
+  </div>
+
+</form>
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+

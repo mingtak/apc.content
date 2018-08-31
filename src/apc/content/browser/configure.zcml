@@ -68,6 +68,14 @@
   />
 
   <browser:page
+      name="prepare_uni_lessons"
+      for="*"
+      class=".views.PrepareUniLessons"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
+  <browser:page
       name="prepare_view"
       for="apc.content.content.prepare.IPrepare"
       class=".views.PrepareView"
@@ -93,11 +101,35 @@
   />
 
   <browser:page
-      name="course_prepare"
+      name="send_teacher_link"
       for="*"
-      class=".views.CoursePrepare"
+      class=".views.SendTeacherLink"
       layer="apc.content.interfaces.IApcContentLayer"
-      permission="cmf.ManagePortal"
+      permission="zope2.View"
+  />
+
+  <browser:page
+      name="teacher_init"
+      for="plone.app.contenttypes.interfaces.ILink"
+      class=".views.TeacherInit"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
+  <browser:page
+      name="teacher_info"
+      for="plone.app.contenttypes.interfaces.ILink"
+      class=".views.TeacherInfo"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
+  <browser:page
+      name="teacher_area"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      class=".views.TeacherArea"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
   />
 
   <browser:page

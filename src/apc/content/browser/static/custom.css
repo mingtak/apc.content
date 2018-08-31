@@ -134,3 +134,78 @@ body {
         url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Regular.woff) format('woff'),
         url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Regular.otf) format('opentype');
 }
+
+/* announcenment table */
+.border-dotted{
+  margin: 25px 0 25px 0;
+  border-bottom: 1px dotted #cdcdcd;
+}
+
+.border-solid{
+  margin: 5px 0 5px 0;
+  border-bottom: 1px solid #cdcdcd;
+}
+
+.announcement {
+  font-family: Verdana,Arial,Helvetica,sans-serif;
+}
+
+.announcement .bold-title{
+  font-weight: 700;
+  font-size: 15px !important;
+  color: #858585;
+}
+
+.announcement .title-border-bottom{
+  margin: 5px 0 15px 0;
+  border-bottom: 2px solid #E0DEDE;
+} 
+
+.announcement .publish-date, .announcement .publish-date a{
+  color: #b8010e;
+  font-size: 15px;
+  list-style: square;
+  margin: 5px !important;
+  border: 0 !important;
+  text-decoration: none;
+}
+
+.announcement .publish-date a:hover{
+  color: #790009;
+  text-decoration: underline;
+}
+
+.announcement a.title, .announcement .readmore a{
+  font-weight: 700;
+  font-size: 15px !important;
+  color: #858585;
+  border-bottom: 0 !important;
+  text-decoration: none;
+}
+
+.announcement .readmore a{
+  font-weight: unset;
+}
+
+.announcement a.title:hover, .announcement .readmore a:hover{
+  color: #2a6496;
+  text-decoration: underline;
+}
+
+.announcement ul{
+  padding: 0;
+}
+
+.announcement table{
+  border: 0;
+}
+
+.announcement table td{
+  border: 0;
+  border-bottom: 1px solid #cccccc;
+  vertical-align: middle;
+}
+
+.announcement .readmore{
+  color: #858585;
+}

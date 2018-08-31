@@ -4,6 +4,9 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="apc.content">
 
+    <adapter name="course_teacher" factory=".indexers.courseTeacher" />
+    <adapter name="start_date" factory=".indexers.start_date" />
     <adapter name="hashSHA256" factory=".indexers.hashSHA256" />
+    <adapter name="teacher_id" factory=".indexers.teacherID" />
 
 </configure>

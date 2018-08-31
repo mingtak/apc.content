@@ -73,12 +73,6 @@ class ICourse(model.Schema):
         required=False,
     )
 
-    fieldset(_(u'Link Effective Date'), fields=['link_date'])
-    link_date = schema.Date(
-        title=_(u'Prepare Lessons Link Effective Date'),
-        required=False,
-    )
-
 
 @implementer(ICourse)
 class Course(Container):

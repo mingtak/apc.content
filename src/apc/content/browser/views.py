@@ -8,6 +8,7 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.PloneBatch import Batch
 from Acquisition import aq_inner
 import logging
+from Products.CMFCore.utils import getToolByName
 from zope.component import getUtility
 from zope.schema.interfaces import IVocabularyFactory
 from email.mime.text import MIMEText
@@ -15,8 +16,10 @@ from plone.app.textfield.value import RichTextValue
 from zope.interface import alsoProvides
 from plone.protect.interfaces import IDisableCSRFProtection
 from collections import OrderedDict
+from collections import defaultdict
 import requests
 import datetime
+import hashlib
 
 logger = logging.getLogger("apc.content")
 
@@ -182,45 +185,56 @@ class MatchResult(BrowserView):
 
 class PrepareLessons(BrowserView):
     template = ViewPageTemplateFile("template/prepare_lessons.pt")
-    template_timesup = ViewPageTemplateFile("template/prepare_lessons_not_effective.pt")
     def __call__(self):
         request = self.request
-        hashSHA256 = request.form.get('id', '')
-        course = api.content.find(hashSHA256=hashSHA256)
+        courseUID = request.form.get('id', '')
+        course = api.content.find(portal_type='Course', UID=courseUID, sort_on='getObjPositionInParent')
         if len(course) == 1:
+            teacher_uid = self.request.cookies.get("teacher_login", "")
+            teacher = api.content.get(UID=teacher_uid)
+            if not teacher:
+                return self.request.response.redirect('{}/teacher-area/teacher-login'.format(self.context.portal_url()))
+            self.teacher = teacher
+
             self.course = course[0]
-            current_time = datetime.datetime.now().date()
-            if self.course.getObject().link_date > current_time:
-                prepareUIDList = [item.UID for item in self.getPrepare()]
-                if request.form.has_key('file-upload-widget'):
-                    course_outline = request.get('course_outline', '')
-                    if course_outline:
-                        alsoProvides(self.request, IDisableCSRFProtection)
-                        self.course.getObject().course_outline = RichTextValue(course_outline)
-                    for uid in prepareUIDList:
-                        upload_file = request.form['file-'+uid]
-                        file_data =  upload_file.read()
-                        if file_data:
-                            item = api.content.get(UID=uid)
-                            url = item.absolute_url()
-                            headers = {
-                                'Accept': "application/json",
-                                'Content-Type': "application/json",
-                                'Authorization': "Basic YWRtaW46MTIzNDU2",
-                            }
-                            data = {
-                                "file": {
-                                    "content-type": upload_file.headers['content-type'],
-                                    "filename": upload_file.filename,
-                                    "encoding": "base64",
-                                    "data": file_data.encode('base64')
-                                }
-                            }
-                            response = requests.request("PATCH", url, headers=headers, json=data)
-                    self.request.response.redirect(self.request.URL)
-                return self.template()
-            else:
-                return self.template_timesup()
+            if self.course.course_teacher != self.teacher.UID():
+                return self.request.response.redirect('{}/teacher-area/teacher-area'.format(self.context.portal_url()))
+
+            prepareUIDList = [item.UID for item in self.getPrepare()]
+            if request.form.has_key('file-upload-widget'):
+                course_outline = request.get('course_outline', '')
+                if course_outline:
+                    alsoProvides(self.request, IDisableCSRFProtection)
+                    self.course.getObject().course_outline = RichTextValue(course_outline)
+                for uid in prepareUIDList:
+                    item = api.content.get(UID=uid)
+                    url = item.absolute_url()
+                    upload_file = request.form['file-'+uid]
+                    upload_text = request.form['text-'+uid]
+                    headers = {
+                        'Accept': "application/json",
+                        'Content-Type': "application/json",
+                        'Authorization': "Basic YWRtaW46MTIzNDU2",
+                    }
+                    data = {"description": upload_text}
+
+                    file_data =  upload_file.read()
+                    if file_data:
+                        date.update(
+                            { \
+                                "file": { \
+                                "content-type": upload_file.headers['content-type'], \
+                                "filename": upload_file.filename, \
+                                "encoding": "base64", \
+                                "data": file_data.encode('base64') \
+                                } \
+                            } \
+                        )
+                    response = requests.request("PATCH", url, headers=headers, json=data)
+                self.request.response.redirect(self.request.URL)
+            return self.template()
+        else:
+            return self.request.response.redirect('{}/teacher-area/teacher-area'.format(self.context.portal_url()))
 
     def getCourse(self):
         courseUID = self.course.UID
@@ -230,45 +244,102 @@ class PrepareLessons(BrowserView):
     def getPrepare(self):
         courseUID = self.course.UID
         course = api.content.get(UID=courseUID)
-        prepare = api.content.find(context=course, portal_type="Prepare")
+        prepare = api.content.find(context=course, portal_type="Prepare", sort_on='getObjPositionInParent')
         return prepare
 
 
-class CoursePrepare(BrowserView):
-    template = ViewPageTemplateFile("template/course_prepare.pt")
+class PrepareUniLessons(BrowserView):
+    template = ViewPageTemplateFile("template/prepare_uni_lessons.pt")
     def __call__(self):
         request = self.request
-        hashSHA256 = request.form.get('id', '')        
-        course = api.content.find(hashSHA256=hashSHA256)
-        if len(course) == 1:
-            self.sendPrepareLessonsMail(course[0])
+        prepareUID = request.form.get('id', '')
+        prepare = api.content.find(portal_type='Prepare', UID=prepareUID, sort_on='getObjPositionInParent')
+        if len(prepare) == 1:
+            teacher_uid = self.request.cookies.get("teacher_login", "")
+            teacher = api.content.get(UID=teacher_uid)
+            if not teacher:
+                return self.request.response.redirect('{}/teacher-area/teacher-login'.format(self.context.portal_url()))
+            self.teacher = teacher
+            
+            self.prepare = prepare[0]
+            course_teacher = self.prepare.getObject().getParentNode().teacher.to_object.UID()
+            if course_teacher != self.teacher.UID(): 
+                return self.request.response.redirect('{}/teacher-area/teacher-area'.format(self.context.portal_url()))
+
+
+            if request.form.has_key('file-upload-widget'):
+                self.updatePrepare()
+                self.request.response.redirect(self.request.URL)
+
+            return self.template()
+        else:
+            return self.request.response.redirect('{}/teacher-area/teacher-area'.format(self.context.portal_url()))
+
+    def updatePrepare(self):
+        request = self.request
+        upload_file = request.form.get('file', '')
+        upload_text = request.form.get('text', '')
+
+        url = self.prepare.getURL()
+        headers = {
+            'Accept': "application/json",
+            'Content-Type': "application/json",
+            'Authorization': "Basic YWRtaW46MTIzNDU2",
+        }
+        data = {"description": upload_text}
+
+        file_data =  upload_file.read()
+        if file_data:
+            data.update(
+                { \
+                    "file": { \
+                        "content-type": upload_file.headers['content-type'], \
+                        "filename": upload_file.filename, \
+                        "encoding": "base64", \
+                        "data": file_data.encode('base64') \
+                    } \
+                } \
+            )
+        response = requests.request("PATCH", url, headers=headers, json=data)
+
+class SendTeacherLink(BrowserView):
+    template = ViewPageTemplateFile("template/send_teacher_link.pt")
+    def __call__(self):
+        request = self.request
+        hashSHA256 = request.form.get('id', '')
+        teacher = api.content.find(hashSHA256=hashSHA256)
+        if len(teacher) == 1:
+            self.sendTeacherInitMail(teacher[0])
 
         return self.template()
     
-    def getCourse(self):
-        courses = api.content.find(portal_type="Course")
-        return courses
+    def getCourseTeachers(self):
+        courses = api.content.find(portal_type="Course", sort_on='getObjPositionInParent')
+        teachers = defaultdict(list)
+        for course in courses:
+            if hasattr(course.getObject().teacher, 'to_object'):
+                teacher = course.getObject().teacher.to_object
+                teachers[teacher].append(course)
+        return teachers
 
-    def sendPrepareLessonsMail(self, course):
-        teacherObj = course.getObject().teacher.to_object
-        teacher = teacherObj.title
-        #t_mail  = teacherObj.email
-        hashSHA256 = course.hashSHA256
-        link = self.context.portal_url() + '/prepare_lessons?id=' + hashSHA256
+    def sendTeacherInitMail(self, teacher):
+        teacher_title = teacher.Title
+        hashSHA256 = teacher.hashSHA256
+        link = self.context.portal_url() + '/teacher-area/teacher-login/@@teacher_init?id=' + hashSHA256
 
         current_time = datetime.datetime.now().date()
         effective_date = current_time + datetime.timedelta(days=3)
 
         body_str = """ 您好 %s 老師: \
                   <br>  \
-                  <br> 點擊以下連結可以上傳您課堂上的教材↓ \
-                  <br> 此連結有效時間為 %s 請在時間內上傳完成\
+                  <br> 點擊以下連結可以設定您的帳號密碼↓ \
+                  <br> 此連結有效時間為 %s 請在時間內設定完成\
                   <br> <a href="%s">%s</a> \
                   <br>  \
                   <br> 原住民族委員會 \
-                   """ %(teacher.encode('utf8'), effective_date, link, link)
+                   """ %(teacher_title, effective_date, link, link)
         mime_text = MIMEText(body_str, 'html', 'utf-8')
-        teacher_email = teacherObj.email
+        teacher_email = teacher.getObject().email
         if teacher_email:
             api.portal.send_email(
                 recipient=teacher_email,
@@ -277,15 +348,179 @@ class CoursePrepare(BrowserView):
                 body=mime_text.as_string(),
             )
             alsoProvides(self.request, IDisableCSRFProtection)
-            course.getObject().link_date = effective_date
-            
-            self.context.plone_utils.addPortalMessage(_(u'It is success mail to ') + teacher, 'info')
+            teacher.getObject().link_date = effective_date
+
+            self.context.plone_utils.addPortalMessage(_(u'It is success mail to ') + teacher.Title.decode('utf8'), 'info')
         else:
-            self.context.plone_utils.addPortalMessage(_(u'This teacher has not email: ') + teacher, 'info')
+            self.context.plone_utils.addPortalMessage(_(u'This teacher has not email: ') + teacher.Title.decode('utf8'), 'info')
+
+    def getHashSHA256(self, uid):
+        return hashlib.sha256(uid).hexdigest() 
+
+
+class TeacherInit(BrowserView):
+    template = ViewPageTemplateFile("template/teacher_init.pt")
+    template_login = ViewPageTemplateFile("template/teacher_login.pt")
+    def __call__(self):
+        request = self.request
+        hashSHA256 = request.form.get('id', '')
+        teacher = api.content.find(hashSHA256=hashSHA256)
+
+        if len(teacher) == 1:
+            self.teacher = teacher[0]
+        
+        if request.form.get('widget-form-btn', '') == 'widget-form-btn':
+            portal_catalog = getToolByName(self.context, 'portal_catalog')
+            index_id = portal_catalog.Indexes['teacher_id']
+            teacher_id = request.form.get('teacher_id', '')
+            teacher_pw = request.form.get('teacher_pw', '')
+            if request.form.get('widget-registered-btn', '') == 'widget-registered-btn':
+                if teacher_id == self.teacher.teacher_id or teacher_id not in index_id.uniqueValues():
+                    self.initTeacher(teacher_id, teacher_pw, hashSHA256)
+                else: 
+                    self.context.plone_utils.addPortalMessage(_(u'This Teacher ID is already be used'), 'error')
+            else:
+                self.checkLogin(teacher_id, teacher_pw)
+
+        if len(teacher) != 1:
+            return self.template_login()
+        return self.template()
+
+    def initTeacher(self, teacher_id, teacher_pw, hashSHA256):
+        alsoProvides(self.request, IDisableCSRFProtection)
+        self.teacher.getObject().teacher_id = teacher_id
+        self.teacher.getObject().teacher_pw = teacher_pw
+
+        current_time = datetime.datetime.now().date()
+        effective_date = current_time - datetime.timedelta(days=3)
+        self.teacher.getObject().link_date = effective_date
+
+        cookie_path = api.portal.get().absolute_url_path()
+        self.request.response.setCookie("teacher_login", self.teacher.UID, path=cookie_path)
+
+        return self.request.response.redirect('{}/teacher-area/teacher-area'.format(self.context.portal_url())) 
+
+    def checkLogin(self, teacher_id, teacher_pw):
+        teacher = api.content.find(portal_type='Teacher', teacher_id=teacher_id, sort_on='getObjPositionInParent')
+        if len(teacher) == 1:
+            if teacher[0].getObject().teacher_pw == teacher_pw:
+
+                cookie_path = api.portal.get().absolute_url_path()
+                self.request.response.setCookie("teacher_login", teacher[0].UID, path=cookie_path)
+
+                return self.request.response.redirect('{}/teacher-area/teacher-area'.format(self.context.portal_url()))
+ 
+        self.context.plone_utils.addPortalMessage(_(u'Your Username or Password is not vaild'), 'error')
+
+    
+class TeacherInfo(BrowserView):
+    template = ViewPageTemplateFile("template/teacher_info.pt")
+    def __call__(self):
+        request = self.request
+        teacher_uid = self.request.cookies.get("teacher_login", "")
+        teacher = api.content.find(UID=teacher_uid, sort_on='getObjPositionInParent')
+        if len(teacher) != 1:
+            return self.request.response.redirect('{}/teacher-area/teacher-login'.format(self.context.portal_url()))
+        self.teacher = teacher[0]
+
+        if request.form.get('widget-form-btn', '') == 'widget-form-btn':
+            teacherFields = ['certification', 'study', 'qualified_teacher', 'ethnic_teacher', 'education', 'experience', 'teaching_years', 'remarks', 'email']
+            data = {}
+            url = self.teacher.getURL()
+            headers = {
+                'Accept': "application/json",
+                'Content-Type': "application/json",
+                'Authorization': "Basic YWRtaW46MTIzNDU2",
+            }
+            for field in teacherFields:
+                value = request.form.get(field, '')
+                if value: 
+                    data.update({field: value})
+            image = request.form.get('image', '')
+            if image:
+                data.update(
+                    {
+                        "image": {
+                            "content-type": image.headers['content-type'],
+                            "filename": image.filename,
+                            "encoding": "base64",
+                            "data": image.read().encode('base64')
+                        }
+                    }
+                )
+         
+            response = requests.request("PATCH", url, headers=headers, json=data)
+            self.context.plone_utils.addPortalMessage(_(u'The Teacher info is success update'), 'info')
+        return self.template()
+
+
+class TeacherArea(BrowserView):
+    template = ViewPageTemplateFile("template/teacher_area.pt")
+    def __call__(self):
+        request = self.request
+        teacher_uid = self.request.cookies.get("teacher_login", "")
+        teacher = api.content.get(UID=teacher_uid)
+        if not teacher:
+            return self.request.response.redirect('{}/teacher-area/teacher-login'.format(self.context.portal_url()))
+        self.teacher = teacher
+
+        return self.template()
+
+    def getTeacherField(self, item):
+        fields = ['localLang'     , 'certification', 'study'     , 'qualified_teacher', \
+                  'ethnic_teacher', 'education'    , 'experience', 'teaching_years'   , 'remarks'] 
+        fieldsName = {'localLang' : _(u'Local Language')         , 'certification'    : _(u'Ethnic language certification'), 
+                      'study'     : _(u'Revitalization study')   , 'qualified_teacher': _(u'Teaching class (Qualified teacher)'), 
+                      'ethnic_teacher': _(u'Teaching class (Ethnic teacher)'), 'education'      : _(u'Education'),
+                      'experience'    : _(u'work experience')                , 'teaching_years' : _(u'Teaching years'),
+                      'remarks'       : _(u'Remarks')} 
+        fieldsDict = OrderedDict()
+        for field in fields:
+            field_value = getattr(item, field, '')
+            if field_value:
+                fieldsDict.update({fieldsName[field]: field_value})
+        if fieldsDict.has_key(fieldsName['localLang']):
+            localLangValue = '\r\n'.join([lang.split(',')[1] for lang in fieldsDict[fieldsName['localLang']].split('/')])
+            fieldsDict[fieldsName['localLang']] = localLangValue
+        return fieldsDict
+
+    def getCourse(self):
+        teacher_uid = self.teacher.UID()
+        portal = api.portal.get()
+        if portal['language_study'].has_key('latest'):
+            context = portal['language_study']['latest']['class_intro']
+            course = api.content.find(context=context, portal_type='Course', course_teacher=teacher_uid, sort_on='getObjPositionInParent')
+            return course
+        return []
+
+    def getTwoWeekCourse(self):
+        current_time = datetime.datetime.now().date()
+        date_list = [current_time + datetime.timedelta(days=x) for x in range(0, 14)]
+        courses = self.getCourse()
+        prepareList = []
+        self.courseList = []
+        self.notPrepare = []
+        self.todayPrepare = []
+        for course in courses:
+            prepares = api.content.find(context=course.getObject(), portal_type='Prepare', start_date=date_list, sort_on='getObjPositionInParent')
+            if len(prepares) != 0:
+                self.courseList.append(course)
+                for prepare in prepares: 
+                    if not prepare.getObject().file:
+                        self.notPrepare.append(prepare)
+                    if prepare.start_date == current_time:
+                        self.todayPrepare.append(prepare) 
+                prepareList.extend(prepares)
+
+        if len(prepareList) != 0:
+            prepareList.sort(key=lambda r: r.start_date)
+
+        return prepareList
 
 
 class PloneRootView(BrowserView):
     pass
+
 
 class CourseView(BrowserView):
     pass
@@ -367,7 +602,7 @@ class CourseListingView(FolderView):
         return sort_on
 
     def getPrepare(self, obj):
-        prepare = api.content.find(context=obj, portal_type="Prepare")
+        prepare = api.content.find(context=obj, portal_type="Prepare", sort_on='getObjPositionInParent')
         return prepare
 
     def results(self, **kwargs):
