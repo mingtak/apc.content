@@ -13,66 +13,75 @@
                     tal:define="toc context/table_of_contents|nothing;">
 
 <form method="POST" enctype="multipart/form-data">
-  <table>
-    <input type="hidden" name="file-upload-widget">
-    <tr>
-        <td>
-          <p>上課日期</p>
-        </td>
-        <td>
-          <p>上傳檔案</p>
-        </td>
-        <td>
-          <p>目前檔案</p>
-        </td>
-        <td>
-        </td>
-    </tr>
-    <tal:repeat tal:repeat="item view/getPrepare">
-      <tr>
-          <td>
-            <p>${item/Title}</p>
+  <div class="pat-autotoc autotabs"
+       data-pat-autotoc="section:fieldset;levels:legend;">
+    <fieldset>
+      <legend>課程大綱</legend>
+      <table>
+        <tr>
+          <td colspan=4>
+            <p>課程大綱</p>
           </td>
-          <td>
-            <input type="file" name="file-${item/UID}">
+        </tr>
+        <tr>
+          <td colspan=4>
+            <textarea name="course_outline" class="pat-tinymce"
+                      data-pat-tinymce='{"relatedItems": {
+                                            "vocabularyUrl": "/relateditems-test.json"
+                                        }}'>
+              <tal:content tal:condition="python: view.getCourse().course_outline" tal:content="python: view.getCourse().course_outline.raw" />
+            </textarea>
           </td>
-          <td>
-            <a tal:condition="python: item.getObject().file" href="${item/getURL}/@@download/file">${python: item.getObject().file.filename}</a>
-          </td>
-          <td rowspan=2>
-            <input type="submit" value="send" style="float:right;" i18n:attributes="value">
-          </td>
-      </tr>
-      <tr>
-        <td >
-          <p>課程主題</p>
-        </td>
-        <td colspan=2>
-          <textarea name="text-${item/UID}" cols="40" rows="5">${python: item.getObject().description}</textarea>
-        </td>
-      </tr>
-    </tal:repeat>
-    <tr>
-      <td colspan=4>
-        <p>課程大綱</p>
-      </td>
-    </tr>
-    <tr>
-      <td colspan=4>
-        <textarea name="course_outline" class="pat-tinymce"
-                  data-pat-tinymce='{"relatedItems": {
-                                        "vocabularyUrl": "/relateditems-test.json"
-                                    }}'>
-          <tal:content tal:condition="python: view.getCourse().course_outline" tal:content="python: view.getCourse().course_outline.raw" />
-        </textarea>
-      </td>
-    </tr>
-    <tr>
-      <td colspan=4>
-        <input type="submit" value="all send" style="float:right;" i18n:attributes="value">
-      </td>
-    </tr>
-  </table>
+        </tr>
+      </table>
+    </fieldset>
+    <fieldset>
+      <legend>課堂備課</legend>
+      <table>
+        <input type="hidden" name="file-upload-widget">
+        <tr>
+            <td>
+              <p>上課日期</p>
+            </td>
+            <td>
+              <p>上傳檔案</p>
+            </td>
+            <td>
+              <p>目前檔案</p>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tal:repeat tal:repeat="item view/getPrepare">
+          <tr>
+              <td>
+                <p>${item/Title}</p>
+              </td>
+              <td>
+                <input type="file" name="file-${item/UID}" accept="application/pdf">
+              </td>
+              <td>
+                <a tal:condition="python: item.getObject().file" href="${item/getURL}/@@download/file">${python: item.getObject().file.filename}</a>
+              </td>
+              <td rowspan=2>
+                <input type="submit" value="send" style="float:right;" i18n:attributes="value">
+              </td>
+          </tr>
+          <tr>
+            <td >
+              <p>課程主題</p>
+            </td>
+            <td colspan=2>
+              <textarea name="text-${item/UID}" cols="40" rows="5">${python: item.getObject().description}</textarea>
+            </td>
+          </tr>
+        </tal:repeat>
+      </table>
+    </fieldset>
+  </div>
+  <div style="height: 50px;">
+    <input type="submit" value="all send" style="float:right;" i18n:attributes="value">
+  </div>
 </form>
 
 </metal:content-core>

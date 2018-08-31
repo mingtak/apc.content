@@ -1,7 +1,19 @@
 <?xml version="1.0"?>
 <object name="portal_catalog">
+  <index name="course_teacher" meta_type="FieldIndex">
+    <indexed_attr value="course_teacher" />
+  </index>
+  <column value="course_teacher"/>
+  <index name="start_date" meta_type="FieldIndex">
+    <indexed_attr value="start_date" />
+  </index>
+  <column value="start_date"/>
   <index name="hashSHA256" meta_type="FieldIndex">
     <indexed_attr value="hashSHA256" />
   </index>
   <column value="hashSHA256"/>
+  <index name="teacher_id" meta_type="FieldIndex">
+    <indexed_attr value="teacher_id" />
+  </index>
+  <column value="teacher_id"/>
 </object>

@@ -21,29 +21,30 @@
   </tr>
   <tr>
     <td>
-      <p>課程名稱</p>
+      <p>授課老師</p>
     </td>
     <td >
-      <p>授課老師</p>
+      <p>課程名稱</p>
     </td>
     <td>
       <p>發送郵件</p>
     </td>
   </tr>
-  <tal:repeat tal:repeat="item view/getCourse">
+  <tal:repeat tal:define="teachers view/getCourseTeachers"
+              tal:repeat="item teachers">
     <tr>
       <form method="POST" class="course-form"  action="">
         <td>
-          <p>${item/Title}</p>
-        </td>
-        <td >
-          <p tal:condition="python: hasattr(item.getObject().teacher, 'to_object')">
-            ${python: item.getObject().teacher.to_object.title}
-          </p>
+          <p>${item/title}</p>
         </td>
         <td>
-          <input type="submit" value="send mail" tal:condition="python: hasattr(item.getObject().teacher, 'to_object')" i18n:attributes="value" style="float:right;">
-          <input type="hidden" name="id" value="${item/hashSHA256}" tal:condition="python: hasattr(item.getObject().teacher, 'to_object')">
+          <tal:repeat tal:repeat="course python: teachers[item]">
+            <p>${course/Title}</p>
+          </tal:repeat>
+        </td>
+        <td>
+          <input type="submit" value="send mail" i18n:attributes="value" style="float:right;">
+          <input type="hidden" name="id" value="${python: view.getHashSHA256(item.UID())}">
         </td>
       </form>
     </tr>

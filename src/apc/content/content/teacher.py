@@ -65,6 +65,23 @@ class ITeacher(model.Schema):
         required=False
     )
 
+    fieldset(_(u'Link Effective Date'), fields=['link_date'])
+    link_date = schema.Date(
+        title=_(u'Prepare Lessons Link Effective Date'),
+        required=False,
+    )
+
+    fieldset(_(u'Teacher ID PW'), fields=['teacher_id', 'teacher_pw'])
+    teacher_id = schema.TextLine(
+        title=_(u'Teacher Username'),
+        required=False,
+    )
+
+    teacher_pw = schema.TextLine(
+        title=_(u'Teacher Password'),
+        required=False,
+    )
+
 
 @implementer(ITeacher)
 class Teacher(Item):
