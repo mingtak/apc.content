@@ -20,6 +20,7 @@ from collections import defaultdict
 import requests
 import datetime
 import hashlib
+from DateTime import DateTime
 
 logger = logging.getLogger("apc.content")
 
@@ -220,7 +221,7 @@ class PrepareLessons(BrowserView):
 
                     file_data =  upload_file.read()
                     if file_data:
-                        date.update(
+                        data.update(
                             { \
                                 "file": { \
                                 "content-type": upload_file.headers['content-type'], \
@@ -244,7 +245,9 @@ class PrepareLessons(BrowserView):
     def getPrepare(self):
         courseUID = self.course.UID
         course = api.content.get(UID=courseUID)
-        prepare = api.content.find(context=course, portal_type="Prepare", sort_on='getObjPositionInParent')
+#        import pdb ; pdb.set_trace()
+        prepare = api.content.find(context=course, portal_type="Prepare",
+                                   start={'query':DateTime(), 'range':'min'}, sort_on='getObjPositionInParent')
         return prepare
 
 
