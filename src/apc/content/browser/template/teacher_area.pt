@@ -89,7 +89,7 @@ portal = api.portal.get()
                     </div>
 -->
                     <div class="col-xs-12 col-sm-4">
-                      <a href="${parent_url}" class="title">${parent_title}</a>
+                      <span class="title">${parent_title}</span>
                     </div>
                     <div class="col-xs-12 col-sm-4">
                       <a href="${item_url}" class="title">${item_title}</a> (<a href="${view/context/portal_url}/teacher-area/uni-lessons/@@prepare_uni_lessons?id=${obj/UID}">前往備課</a>)
@@ -195,20 +195,22 @@ portal = api.portal.get()
                                           item_date obj/course_date;
                                           item_time obj/course_time;">
                     <div class="tr-list row">
-                      <div class="col-xs-12 col-sm-3 col-md-2">
-                        <li class="publish-date"><a href="${view/context/portal_url}/teacher-area/prepare-course/@@prepare_lessons?id=${item/UID}"><i class="far fa-edit"></i><span class="d-none d-md-block">進入備課</span></a></li>
-                      </div>
-                      <div class="col-xs-12 col-sm-4">
-                        <a href="${item_url}" class="title">${item_title}</a>
-                      </div>
-                      <div class="col-xs-12 col-sm-4">
+                      <div class="col-xs-12 col-sm-3">
                         <span class="bold-title">${item_place}</span>
                       </div>
-                      <div class="col-xs-12 col-sm-4 col-md-2">
-                        <span class="bold-title">${item_date}</span>
+                      <div class="col-xs-12 col-sm-3">
+                        ${item_title} (<a target="_blank" href="${item_url}" class="title">預覽</a>)
                       </div>
-                      <div class="col-xs-12 col-sm-4 col-md-2 col-md-push-8 ">
-                        <span class="bold-title">${item_time}</span>
+                      <div class="col-xs-12 col-sm-3">
+                        <span class="bold-title">${item_date} ${item_time}</span>
+                      </div>
+                      <div class="col-xs-12 col-sm-3">
+                          <a target="_blank" href="${view/context/portal_url}/teacher-area/prepare-course/@@prepare_lessons?id=${item/UID}#autotoc-item-autotoc-0">
+                              <span class="d-none d-md-block">課程大綱</span>
+                          </a> / 
+                          <a target="_blank" href="${view/context/portal_url}/teacher-area/prepare-course/@@prepare_lessons?id=${item/UID}#autotoc-item-autotoc-1">
+                              <span class="d-none d-md-block">課堂備課</span>
+                          </a>
                       </div>
                     </div>
                     <div class="border-solid" />

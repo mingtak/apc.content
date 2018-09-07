@@ -632,6 +632,7 @@ class PrepareView(BrowserView):
 
 class PdfEmbeded(BrowserView):
     template = ViewPageTemplateFile("template/pdf_embeded.pt")
+#    template = ViewPageTemplateFile("template/search_from_id.pt")
     def __call__(self):
         request = self.request
         context = self.context
@@ -658,3 +659,18 @@ class Rollcall(BrowserView):
 #        import pdb; pdb.set_trace()
 
         return
+
+
+class SearchFromId(BrowserView):
+
+    template = ViewPageTemplateFile("template/search_from_id.pt")
+    def __call__(self):
+        request = self.request
+        context = self.context
+        portal = api.portal.get()
+
+        id = request.form.get('id')
+        self.brain = None
+        if id:
+            self.brain = api.content.find(context=portal['language_study']['latest'], Type='Course', id=id)
+        return self.template()

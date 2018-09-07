@@ -167,5 +167,13 @@
       layer="apc.content.interfaces.IApcContentLayer"
       permission="zope2.View"
   />
+
+  <browser:page
+      name="search_from_id"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      class=".views.SearchFromId"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
  
 </configure>
