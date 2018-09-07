@@ -55,6 +55,16 @@
 
 <script tal:condition="view/canRollcall">
    $(document).ready(function(){
+
+
+// 目前設定為60秒後跳出來
+// TODO: 細節未完
+setTimeout(function(){
+       $(".teacher-rollcall").colorbox({inline:true, width:"50%", open:true});
+    }, 60000
+);
+
+
        // colorbox
        $(".teacher-rollcall").colorbox({inline:true, width:"50%"});
 
