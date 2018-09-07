@@ -23,7 +23,8 @@ class IPrepare(model.Schema):
         required=False,
     )
 
-    file = namedfile.NamedFile(
+#    file = namedfile.NamedFile(
+    file = namedfile.NamedBlobFile(
         title=_(u'Teaching material'),
         required=False,
     )

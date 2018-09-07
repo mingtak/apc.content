@@ -10,8 +10,12 @@
 <metal:content-core define-macro="content-core"
                     tal:define="toc context/table_of_contents|nothing;">
 
+<?python
+from plone import api
+portal = api.portal.get()
+?>
   <div style="height: 50px;">
-      <span style="float:left;">您好 ${view/teacher/Title} 老師</span>
+      <span style="float:left;">您好 <b style="color:blue">${view/teacher/Title}</b> 老師</span>
       <button class="btn context" style="float:right;" onclick="logout()">登出</button>
   </div>
 
@@ -21,9 +25,10 @@
                             todayPrepares view/todayPrepare;
                             courses  view/courseList;">
       <fieldset>
-        <legend >公告</legend>
+        <legend >公告總覽</legend>
         <div class="announcement">
           <tal:todayCourse tal:switch="python: len(todayPrepares)!=0">
+
             <h4>今日課程</h4>
             <div class="title-border-bottom" />
             <tal:case tal:case="True">
@@ -61,7 +66,7 @@
           <div class="border-dotted" />
 
           <tal:condition tal:condition="python: len(notPrepares)!=0">
-            <h4>近兩週尚未備課課程</h4>
+            <h4>近期尚未完成備課課程</h4>
             <div class="title-border-bottom" />
             <ul>
               <tal:repeat tal:repeat="item notPrepares">
@@ -75,14 +80,19 @@
                                         parent_date  parent/course_date;
                                         parent_time  parent/course_time;">
                   <div class="tr-list row">
-                    <div class="col-xs-12 col-sm-3 col-md-2">
-                      <li class="publish-date"><a href="${view/context/portal_url}/teacher-area/uni-lessons/@@prepare_uni_lessons?id=${obj/UID}"><i class="far fa-edit"></i><span class="d-none d-md-block">進入備課</span></a></li>
+<!--                    <div class="col-xs-12 col-sm-3 col-md-2">
+                      <li class="publish-date">
+                          <a href="${view/context/portal_url}/teacher-area/uni-lessons/@@prepare_uni_lessons?id=${obj/UID}">
+                              <i class="far fa-edit"></i><span class="d-none d-md-block">進入備課</span>
+                          </a>
+                      </li>
+                    </div>
+-->
+                    <div class="col-xs-12 col-sm-4">
+                      <span class="title">${parent_title}</span>
                     </div>
                     <div class="col-xs-12 col-sm-4">
-                      <a href="${item_url}" class="title">${item_title}</a>
-                    </div>
-                    <div class="col-xs-12 col-sm-4">
-                      <a href="${parent_url}" class="title">${parent_title}</a>
+                      <a href="${item_url}" class="title">${item_title}</a> (<a href="${view/context/portal_url}/teacher-area/uni-lessons/@@prepare_uni_lessons?id=${obj/UID}">前往備課</a>)
                     </div>
                   </div>
                   <div class="border-solid" />
@@ -92,7 +102,7 @@
             <div class="border-dotted" />
           </tal:condition>
 
-          <h4>近兩週課堂</h4>
+          <h4>最近兩週課堂列表</h4>
           <tal:twoWeek tal:switch="python: len(prepares) != 0">
             <tal:case tal:case="True">
               <ul id="two-week-prepare">
@@ -108,23 +118,23 @@
                                           parent_time  parent/course_time;">
                     <div class="prepare">
                       <div class="tr-list row">
-                        <div class="col-xs-12 col-sm-3 col-md-2">
+                        <div class="col-sm-6 col-md-2">
                           <li class="publish-date">
                             ${python: item.start_date.strftime('%Y-%m-%d')}
                           </li>
                         </div>
-                        <div class="col-xs-6 col-sm-4">
+                        <div class="col-sm-6 col-md-1">
                           <span class="bold-title">${parent_time}</span>
                         </div>
-                        <div class="col-xs-6 col-sm-4">
+                        <div class="col-sm-12 col-md-2">
                           <span class="bold-title">${parent_place}</span>
                         </div>
-                        <div class="col-xs-12" />
-                        <div class="col-xs-12 col-sm-4 col-sm-offset-3 col-md-offset-2">
-                          <a href="${item_url}" class="title">${item_title}</a>
-                        </div>
-                        <div class="col-xs-12 col-sm-4 col-md-6">
+                        <div class="col-sm-12 col-md-3">
                           <a href="${parent_url}" class="title">${parent_title}</a>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                          <a href="${item_url}" class="title">${item_title}</a>
+                           (<a href="${view/context/portal_url}/teacher-area/uni-lessons/@@prepare_uni_lessons?id=${obj/UID}">前往備課</a>)
                         </div>
                       </div>
                       <div class="border-solid" />
@@ -171,7 +181,7 @@
 
 
       <fieldset>
-        <legend>本學期課程</legend>
+        <legend>備課上傳教材</legend>
         <tal:latest tal:switch="python: len(prepares) != 0">
           <tal:case tal:case="True">
             <div class="announcement">
@@ -185,20 +195,22 @@
                                           item_date obj/course_date;
                                           item_time obj/course_time;">
                     <div class="tr-list row">
-                      <div class="col-xs-12 col-sm-3 col-md-2">
-                        <li class="publish-date"><a href="${view/context/portal_url}/teacher-area/prepare-course/@@prepare_lessons?id=${item/UID}"><i class="far fa-edit"></i><span class="d-none d-md-block">進入備課</span></a></li>
-                      </div>
-                      <div class="col-xs-12 col-sm-4">
-                        <a href="${item_url}" class="title">${item_title}</a>
-                      </div>
-                      <div class="col-xs-12 col-sm-4">
+                      <div class="col-xs-12 col-sm-3">
                         <span class="bold-title">${item_place}</span>
                       </div>
-                      <div class="col-xs-12 col-sm-4 col-md-2">
-                        <span class="bold-title">${item_date}</span>
+                      <div class="col-xs-12 col-sm-3">
+                        ${item_title} (<a target="_blank" href="${item_url}" class="title">預覽</a>)
                       </div>
-                      <div class="col-xs-12 col-sm-4 col-md-2 col-md-push-8 ">
-                        <span class="bold-title">${item_time}</span>
+                      <div class="col-xs-12 col-sm-3">
+                        <span class="bold-title">${item_date} ${item_time}</span>
+                      </div>
+                      <div class="col-xs-12 col-sm-3">
+                          <a target="_blank" href="${view/context/portal_url}/teacher-area/prepare-course/@@prepare_lessons?id=${item/UID}#autotoc-item-autotoc-0">
+                              <span class="d-none d-md-block">課程大綱</span>
+                          </a> / 
+                          <a target="_blank" href="${view/context/portal_url}/teacher-area/prepare-course/@@prepare_lessons?id=${item/UID}#autotoc-item-autotoc-1">
+                              <span class="d-none d-md-block">課堂備課</span>
+                          </a>
                       </div>
                     </div>
                     <div class="border-solid" />
@@ -215,7 +227,7 @@
 
 
       <fieldset>
-        <legend>基本資料</legend>
+        <legend>教師基本資料</legend>
         <div>
           <tal:info tal:define="item python: view.teacher;
                                   item_title item/title;
