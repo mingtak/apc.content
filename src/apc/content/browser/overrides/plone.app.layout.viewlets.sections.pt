@@ -6,8 +6,16 @@
      tal:condition="portal_tabs"
      i18n:domain="plone">
 
+<?python
+from plone import api
+portal = api.portal.get()
+images = portal['resource']['cover_slider'].getChildNodes()
+siteName = 'site-%s' % portal.absolute_url().split('//')[1].split('.')[0]
+?>
+
+
   <p class="hiddenStructure" i18n:translate="heading_sections">Navigation</p>
-  <nav class="plone-navbar" id="portal-globalnav-wrapper">
+  <nav class="plone-navbar" id="portal-globalnav-wrapper" tal:condition="python:siteName == 'site-apc'">
     <div class="container">
       <div class="plone-navbar-header">
         <button type="button" class="plone-navbar-toggle" data-toggle="collapse" data-target="#portal-globalnav-collapse">
@@ -25,7 +33,7 @@
             <tal:tabs tal:repeat="tab portal_tabs">
               <li tal:define="tid tab/id"
                   tal:attributes="id string:portaltab-${tid};
-                                  class python:selected_tab==tid and 'selected' or nothing">
+                                  class python:selected_tab==tid and 'selected %s' % siteName or siteName">
                   <a href=""
                      tal:content="tab/name"
                      tal:attributes="href tab/url;
@@ -39,11 +47,9 @@
       </div>
     </div>
   </nav>
-<?python
-from plone import api
-portal = api.portal.get()
-images = portal['resource']['cover_slider'].getChildNodes()
-?>
+
+
+
 <div class="slider" tal:condition="python:portal.portal_type == context.portal_type">
 
     <!-- Place somewhere in the <body> of your page -->
