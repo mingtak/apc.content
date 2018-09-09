@@ -19,12 +19,12 @@ class ILiveClass(model.Schema):
 
     localLang = schema.TextLine(
         title=_(u'Local Language'),
-        required=True,
+        required=False,
     )
 
     teachSchool = RelationChoice(
         title=_(u"Teach School"),
-        required=True,
+        required=False,
         source=CatalogSource(Type='School')
     )
 
@@ -39,7 +39,7 @@ class ILiveClass(model.Schema):
 
     teacher = RelationChoice(
         title=_(u"Teacher"),
-        required=True,
+        required=False,
         source=CatalogSource(Type='Teacher')
     )
 
