@@ -469,6 +469,10 @@ class TeacherArea(BrowserView):
 
         return self.template()
 
+    def getPathname(self):
+        cookie_path = api.portal.get().absolute_url_path()
+        return cookie_path
+
     def getTeacherField(self, item):
         fields = ['localLang'     , 'certification', 'study'     , 'qualified_teacher', \
                   'ethnic_teacher', 'education'    , 'experience', 'teaching_years'   , 'remarks'] 

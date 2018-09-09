@@ -268,8 +268,7 @@ portal = api.portal.get()
 
   <script>
       function logout(){
-        var path = location.pathname.split("/")[1]
-        document.cookie = 'teacher_login=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/' + path;
+        document.cookie = 'teacher_login=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=${view/getPathname}';
         document.location.reload();
       };
 
