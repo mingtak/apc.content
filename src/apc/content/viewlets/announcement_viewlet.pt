@@ -50,17 +50,17 @@ portal = api.portal.get()
 
   <div class="row">
     <div class="col-xs-12 announcement">
-      <h3><i class="fas fa-film fa-2x"></i><span class="text">最新課程影片</span></h3>
+      <h3><i class="fas fa-film fa-2x"></i><span class="text">正在直播</span></h3>
     </div>
     <div class="col-xs-12" style="margin-bottom:20px;" />
     <div class="col-xs-12 announcement">
       <div class="row">
-        <tal:repeat tal:repeat="item python:api.content.find(context=portal['language_study'], Type='Prepare', sort_on='start', sort_order='reverse')">
+        <tal:repeat tal:repeat="item python:api.content.find(context=portal['live_video'], Type='LiveClass', sort_on='start', sort_order='reverse')">
          <tal:obj define="obj item/getObject" condition="obj/embeded">
           <div class="col-xs-6 col-md-3" style="text-align:center;">
             <a href="${item/getURL}" class="title">${item/Title}</a>
-            <div style="margin-bottom:10px;"
-                 tal:content="structure obj/embeded">
+            <div style="margin-bottom:10px;">
+              <img src="${portal/absolute_url}/resource/images/live/@@images/image">
             </div>
           </div>
          </tal:obj>
