@@ -14,11 +14,11 @@ from apc.content import _
 
 
 class ICourse(model.Schema):
-
+    """
     title = schema.TextLine(
         title=_(u'Title'),
         required=True,
-    )
+    )"""
 
     local_language = schema.TextLine(
         title=_(u'Local Language'),
@@ -36,14 +36,14 @@ class ICourse(model.Schema):
         value_type=RelationChoice(
                      title=u"School",
                      source=CatalogSource(
-                         portal_type='School')
+                         portal_type=['School', 'Folder'])
         ),
         required=False,
     )
 
     hire_school = RelationChoice(
         title=_(u'Hire School'),
-        source=CatalogSource(portal_type='School'),
+        source=CatalogSource(portal_type=['School', 'Folder']),
         required=False,
     )
 

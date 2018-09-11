@@ -17,8 +17,9 @@ def courseTeacher(obj):
 
 @indexer(ICourse)
 def courseSchools(obj):
-    schools = [school.to_object.UID() for school in obj.school]
-    return schools
+    if obj.school:
+        schools = [school.to_object.UID() for school in obj.school]
+        return schools
 
 @indexer(IPrepare)
 def start_date(obj):
