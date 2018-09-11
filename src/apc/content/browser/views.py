@@ -400,6 +400,7 @@ class TeacherInit(BrowserView):
 
         cookie_path = api.portal.get().absolute_url_path()
         self.request.response.setCookie("teacher_login", self.teacher.UID, path=cookie_path)
+        self.teacher.getObject().reindexObject()
 
         return self.request.response.redirect('{}/teacher-area/teacher-area'.format(self.context.portal_url())) 
 
@@ -694,7 +695,8 @@ class SchoolInit(BrowserView):
         if request.form.get('widget-form-btn', '') == 'widget-form-btn':
             portal_catalog = getToolByName(self.context, 'portal_catalog')
             index_id = portal_catalog.Indexes['school_id']
-            school_id = request.form.get('schoo_id', '')
+ 
+            school_id = request.form.get('school_id', '')
             school_pw = request.form.get('school_pw', '')
             if request.form.get('widget-registered-btn', '') == 'widget-registered-btn':
                 if school_id == self.school.school_id or school_id not in index_id.uniqueValues():
@@ -709,13 +711,14 @@ class SchoolInit(BrowserView):
         return self.template()
 
     def initSchool(self, school_id, school_pw, hashSHA256):
-        alsoProvides(self.request, IDisableCSRFProtection)
+        alsoProvides(self.request, IDisableCSRFProtection) 
         self.school.getObject().school_id = school_id
         self.school.getObject().school_pw = school_pw
+        self.school.getObject().reindexObject()
 
-        current_time = datetime.datetime.now().date()
-        effective_date = current_time - datetime.timedelta(days=3)
-        self.school.getObject().link_date = effective_date
+        #current_time = datetime.datetime.now().date()
+        #effective_date = current_time - datetime.timedelta(days=3)
+        #self.school.getObject().link_date = effective_date
 
         cookie_path = api.portal.get().absolute_url_path()
         self.request.response.setCookie("school_login", self.school.UID, path=cookie_path)
@@ -745,60 +748,58 @@ class SchoolArea(BrowserView):
             return self.request.response.redirect('{}/school-area/school-login'.format(self.context.portal_url()))
         self.school = school
 
+        if request.get("widget-form-btn", "") == "widget-namelist-form":
+            self.updateNamelist()
+            return request.response.redirect(self.request.URL)
+
         return self.template()
 
     def getPathname(self):
         cookie_path = api.portal.get().absolute_url_path()
         return cookie_path
 
-    def getSchoolField(self, item):
-        fields = ['localLang'     , 'certification', 'study'     , 'qualified_school', \
-                  'ethnic_school', 'education'    , 'experience', 'teaching_years'   , 'remarks'] 
-        fieldsName = {'localLang' : _(u'Local Language')         , 'certification'    : _(u'Ethnic language certification'), 
-                      'study'     : _(u'Revitalization study')   , 'qualified_school': _(u'Teaching class (Qualified school)'), 
-                      'ethnic_school': _(u'Teaching class (Ethnic school)'), 'education'      : _(u'Education'),
-                      'experience'    : _(u'work experience')                , 'teaching_years' : _(u'Teaching years'),
-                      'remarks'       : _(u'Remarks')} 
-        fieldsDict = OrderedDict()
-        for field in fields:
-            field_value = getattr(item, field, '')
-            if field_value:
-                fieldsDict.update({fieldsName[field]: field_value})
-        if fieldsDict.has_key(fieldsName['localLang']):
-            localLangValue = '\r\n'.join([lang.split(',')[1] for lang in fieldsDict[fieldsName['localLang']].split('/')])
-            fieldsDict[fieldsName['localLang']] = localLangValue
-        return fieldsDict
-
     def getCourse(self):
         school_uid = self.school.UID()
-        portal = api.portal.get()
-        if portal['language_study'].has_key('latest'):
-            context = portal['language_study']['latest']['class_intro']
-            course = api.content.find(context=context, portal_type='Course', course_school=school_uid, sort_on='getObjPositionInParent')
-            return course
-        return []
+        course = api.content.find(portal_type='Course', course_schools=school_uid)
+        return course
 
-    def getTwoWeekCourse(self):
-        current_time = datetime.datetime.now().date()
-        date_list = [current_time + datetime.timedelta(days=x) for x in range(0, 14)]
-        courses = self.getCourse()
-        prepareList = []
-        self.courseList = []
-        self.notPrepare = []
-        self.todayPrepare = []
-        for course in courses:
-            prepares = api.content.find(context=course.getObject(), portal_type='Prepare', start_date=date_list, sort_on='getObjPositionInParent')
-            if len(prepares) != 0:
-                self.courseList.append(course)
-                for prepare in prepares: 
-                    if not prepare.getObject().file:
-                        self.notPrepare.append(prepare)
-                    if prepare.start_date == current_time:
-                        self.todayPrepare.append(prepare) 
-                prepareList.extend(prepares)
-
-        if len(prepareList) != 0:
-            prepareList.sort(key=lambda r: r.start_date)
-
-        return prepareList
-
+    def getNamelist(self, course):
+        school_title = safe_unicode(self.school.title)
+        school_city = safe_unicode(self.school.getParentNode().title)
+        studentList = course.studentList
+        nameList = ''
+        otherList = ''
+        if studentList:
+            studentList = course.studentList.split('\r\n')
+            nameList = []
+            otherList = []
+            for student in studentList:
+                school = student.split(',')
+                city  = safe_unicode(school[0])
+                title = safe_unicode(school[1])
+                name  = safe_unicode(school[2])
+                if city == school_city and title == school_title:
+                    nameList.append(name)
+                else:
+                    otherList.append(student)
+            nameList     = '\r\n'.join(nameList)
+            otherList    = '\r\n'.join(otherList)
+        
+        return {'nameList': nameList, 'otherList': otherList}
+        
+    def updateNamelist(self):
+        school_title = self.school.title
+        school_city = self.school.getParentNode().title
+        nameHeader = '{},{},'.format(school_city.encode('utf8'), school_title.encode('utf8'))
+        nameList = self.request.get('nameList', '') 
+        otherList = self.request.get('otherList', '')
+        uid = self.request.get('uid', '')
+        course = api.content.get(UID=uid)
+        studentList = otherList.split('\r\n')
+        if course and nameList:
+            alsoProvides(self.request, IDisableCSRFProtection)
+            for name in nameList.split('\r\n'):
+                if name: 
+                    studentList.append(nameHeader+name)
+            course.studentList = '\r\n'.join(studentList)
+            self.context.plone_utils.addPortalMessage(course.title + _(u' student list already update'), 'info')

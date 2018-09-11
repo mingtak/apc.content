@@ -20,7 +20,9 @@
   </tal:switch>
 
   <label for="teacher_pw"><span i18n:translate="">password</span>:</label>
-  <input type="password" class="form-control" id="teacher_pw" name="teacher_pw" pattern="[a-zA-Z0-9]{6,}" required>
+  <input type="password" class="form-control" id="teacher_pw" name="teacher_pw" 
+         oninput="this.setCustomValidity('');validatePassword();"
+         pattern="[a-zA-Z0-9]{6,}" required>
   <label for="teacher_pw_confirm"><span i18n:translate="">confirm password</span>:</label>
   <input type="password" class="form-control" id="teacher_pw_confirm" onkeyup="validatePassword()" required>
 

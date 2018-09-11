@@ -5,8 +5,11 @@
     i18n_domain="apc.content">
 
     <adapter name="course_teacher" factory=".indexers.courseTeacher" />
+    <adapter name="course_schools" factory=".indexers.courseSchools" />
     <adapter name="start_date" factory=".indexers.start_date" />
-    <adapter name="hashSHA256" factory=".indexers.hashSHA256" />
+    <adapter name="hashSHA256" factory=".indexers.hashSHA256_teacher" />
+    <adapter name="hashSHA256" factory=".indexers.hashSHA256_school" />
     <adapter name="teacher_id" factory=".indexers.teacherID" />
+    <adapter name="school_id" factory=".indexers.schoolID" />
 
 </configure>
