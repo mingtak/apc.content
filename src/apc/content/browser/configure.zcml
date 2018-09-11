@@ -133,6 +133,22 @@
   />
 
   <browser:page
+      name="school_init"
+      for="plone.app.contenttypes.interfaces.ILink"
+      class=".views.SchoolInit"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
+  <browser:page
+      name="school_area"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      class=".views.SchoolArea"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
+  <browser:page
       name="course_view"
       for="apc.content.content.course.ICourse"
       template="template/course_view.pt"
