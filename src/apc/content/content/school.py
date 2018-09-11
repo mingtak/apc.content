@@ -21,6 +21,17 @@ class ISchool(model.Schema):
         required=False
     )
 
+    fieldset(_(u'School ID PW'), fields=['school_id', 'school_pw'])
+    school_id = schema.TextLine(
+        title=_(u'School Login Id'),
+        required=False,
+    )
+
+    school_pw = schema.TextLine(
+        title=_(u'School Password'),
+        required=False,
+    )
+
     # directives.widget(level=RadioFieldWidget)
     # level = schema.Choice(
     #     title=_(u'Sponsoring Level'),
