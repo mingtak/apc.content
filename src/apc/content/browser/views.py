@@ -748,6 +748,10 @@ class SchoolArea(BrowserView):
             return self.request.response.redirect('{}/school-area/school-login'.format(self.context.portal_url()))
         self.school = school
 
+        if request.get("widget-form-btn", "") == "widget-email-form":
+            self.updateEmail()
+            return request.response.redirect(self.request.URL)
+
         if request.get("widget-form-btn", "") == "widget-namelist-form":
             self.updateNamelist()
             return request.response.redirect(self.request.URL)
@@ -787,6 +791,13 @@ class SchoolArea(BrowserView):
         
         return {'nameList': nameList, 'otherList': otherList}
         
+    def updateEmail(self):
+        email = self.request.get('email', '') 
+        if email:
+            alsoProvides(self.request, IDisableCSRFProtection)
+            self.school.email = email
+            self.context.plone_utils.addPortalMessage(_(u'Email already update'), 'info')
+
     def updateNamelist(self):
         school_title = self.school.title
         school_city = self.school.getParentNode().title

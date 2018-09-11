@@ -20,11 +20,6 @@ class ISchool(model.Schema):
         required=False
     )
 
-    namelist = schema.Text(
-        title=_(u'Class Namelist'),
-        required=False
-    )
-
     seed = schema.Bool(
         title=_(u'Seed School'),
         default=False,
