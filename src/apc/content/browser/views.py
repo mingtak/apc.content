@@ -89,7 +89,7 @@ class MatchResult(BrowserView):
         return classroom
 
 
-    def courseMatch(self, language, level, can_lv, req_lv, school, school):
+    def courseMatch(self, language, level, can_lv, req_lv, school, teacher):
         """ 比對等級/人數 """
         if int(can_lv) and int(req_lv):
             for cTime in school.classTime:
