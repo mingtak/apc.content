@@ -4,6 +4,10 @@
     <indexed_attr value="course_teacher" />
   </index>
   <column value="course_teacher"/>
+  <index name="course_schools" meta_type="KeywordIndex">
+    <indexed_attr value="course_schools" />
+  </index>
+
   <index name="start_date" meta_type="FieldIndex">
     <indexed_attr value="start_date" />
   </index>
@@ -16,4 +20,8 @@
     <indexed_attr value="teacher_id" />
   </index>
   <column value="teacher_id"/>
+  <index name="school_id" meta_type="FieldIndex">
+    <indexed_attr value="school_id" />
+  </index>
+  <column value="school_id"/>
 </object>

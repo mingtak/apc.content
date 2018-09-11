@@ -13,11 +13,11 @@
                     tal:define="toc context/table_of_contents|nothing;">
 <h4>教師登入</h4>
 <form method="POST">
-  <label for="teacher_id"><span i18n:translate="">username</span>:</label>
-  <input type="text" class="form-control" id="teacher_id" name="teacher_id" required>
+  <label for="school_id"><span i18n:translate="">username</span>:</label>
+  <input type="text" class="form-control" id="school_id" name="school_id" required>
 
-  <label for="teacher_pw"><span i18n:translate="">password</span>:</label>
-  <input type="password" class="form-control" id="teacher_pw" name="teacher_pw" required>
+  <label for="school_pw"><span i18n:translate="">password</span>:</label>
+  <input type="password" class="form-control" id="school_pw" name="school_pw" required>
 
   <input type="checkbox" id="show_pw" onclick="showPW()">
   <label for="show_pw"><span i18n:translate="">show password</span></label>
@@ -30,7 +30,7 @@
 
 <script>
   function showPW(){
-    var pw   = document.getElementById("teacher_pw");
+    var pw   = document.getElementById("school_pw");
     if (pw.type === "password") {
         pw.type   = "text";
     } else {
