@@ -25,6 +25,53 @@ from DateTime import DateTime
 logger = logging.getLogger("apc.content")
 
 
+class SchoolIdPwdList(BrowserView):
+
+    template = ViewPageTemplateFile("template/school_id_pwd_list.pt")
+    def __call__(self):
+        alsoProvides(self.request, IDisableCSRFProtection)
+        context = self.context
+        request = self.request
+        self.portal = api.portal.get()
+
+        brain = api.content.find(Type='Course')
+        schoolList = []
+        self.result = []
+        for item in brain:
+            obj = item.getObject()
+            if obj.school:
+                for school in obj.school:
+                    if school.to_object.id in schoolList:
+                        continue
+                    else:
+                        schObj = school.to_object
+                        schoolList.append(schObj.id)
+                        self.result.append('%s\t%s\t%s\t%s\n' % (schObj.id, schObj.title, schObj.school_id, schObj.school_pw))
+                        logger.info('append ok, %s' % schObj.title)
+        return self.template()
+
+
+""" 
+class SetSchoolPwd(BrowserView):
+
+    def __call__(self):
+        alsoProvides(self.request, IDisableCSRFProtection)
+        context = self.context
+        request = self.request
+        self.portal = api.portal.get()
+
+        brain = api.content.find(Type='School')
+        for item in brain:
+            obj = item.getObject()
+            id = 's%s' % item.id
+            pwd = 's%s' % item.id[::-1]
+            obj.school_id = id
+            obj.school_pw = pwd
+            obj.reindexObject()
+            logger.info('update ok, %s' % item.Title)
+        return
+"""
+
 class LiveClassView(BrowserView):
     """ Live Class View """
     template = ViewPageTemplateFile("template/live_class_view.pt")
@@ -774,11 +821,12 @@ class SchoolArea(BrowserView):
         nameList = ''
         otherList = ''
         if studentList:
-            studentList = course.studentList.split('\r\n')
+            studentList = course.studentList.strip().split('\r\n')
             nameList = []
             otherList = []
             for student in studentList:
                 school = student.split(',')
+#                import pdb;pdb.set_trace()
                 city  = safe_unicode(school[0])
                 title = safe_unicode(school[1])
                 name  = safe_unicode(school[2])

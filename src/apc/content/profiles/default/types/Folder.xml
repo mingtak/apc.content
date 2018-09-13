@@ -58,6 +58,7 @@
     <element value="course_listing"/>
     <element value="match_system"/>
     <element value="teacher_area"/>
+    <element value="school_area"/>
   </property>
 
   <!-- Method aliases -->

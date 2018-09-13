@@ -191,5 +191,22 @@
       layer="apc.content.interfaces.IApcContentLayer"
       permission="zope2.View"
   />
- 
+
+  <browser:page
+      name="school_id_pwd_list"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      class=".views.SchoolIdPwdList"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="cmf.ManagePortal"
+  />
+
+<!-- 批次設定學校老師帳密
+  <browser:page
+      name="set_school_pwd"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      class=".views.SetSchoolPwd"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="cmf.ManagePortal"
+  />
+-->
 </configure>

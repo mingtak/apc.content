@@ -27,7 +27,7 @@ portal = api.portal.get()
           <form method="POST">
             <div class="tr-list row">
               <div class="col-sm-2" style="text-align:right;">
-                <p>學校信箱:</p>
+                <p>學校聯絡人Email:</p>
               </div>
               <div class="col-sm-8">
                 <input type="email" name="email" value="${view/school/email}" required>
@@ -41,6 +41,11 @@ portal = api.portal.get()
           </form>
         </div>
         <ul class="announcement">
+<br>
+<li>請依各共學組編號填入上課學生姓名做為上課點名使用</li>
+<li>為確保學生隱私，請將學生姓名部分隱去，如王Ｏ明, 姑Ｏ．Ｏ絲</li>
+<li>直接填寫學生姓名即可，一行一位學生姓名</li>
+<br>
           <tal:repeat tal:repeat="item course">
             <tal:define tal:define="obj item/getObject;
                                     item_title item/Title;
@@ -58,7 +63,7 @@ portal = api.portal.get()
                     <a href="${item_url}" class="title">${item_title}</a>
                   </div>
                   <div class="col-sm-12 col-md-4">
-                     (<a href="javascript:;" onclick="showNamelist('${item_uid}')">編輯名單</a>)
+                     (<a href="javascript:;" onclick="showNamelist('${item_uid}')">編輯學生名單</a>)
                   </div>
                 </div>
                 <div class="border-solid" />
