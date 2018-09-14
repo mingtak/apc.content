@@ -51,6 +51,28 @@ class SchoolIdPwdList(BrowserView):
         return self.template()
 
 
+class TeacherIdPwdList(BrowserView):
+
+    template = ViewPageTemplateFile("template/school_id_pwd_list.pt")
+    def __call__(self):
+        alsoProvides(self.request, IDisableCSRFProtection)
+        context = self.context
+        request = self.request
+        self.portal = api.portal.get()
+
+        brain = api.content.find(Type='Teacher')
+        teacherList = []
+        self.result = []
+        for item in brain:
+            obj = item.getObject()
+            if obj.teacher_id:
+                schObj = obj
+                teacherList.append(obj.id)
+                self.result.append('%s\t%s\t%s\n' % (schObj.title, schObj.teacher_id, schObj.teacher_pw))
+                logger.info('append ok, %s' % schObj.title)
+        return self.template()
+
+
 """ 
 class SetSchoolPwd(BrowserView):
 
