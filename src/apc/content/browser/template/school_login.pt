@@ -11,20 +11,20 @@
 <metal:content-core fill-slot="content-core">
 <metal:content-core define-macro="content-core"
                     tal:define="toc context/table_of_contents|nothing;">
-<h4>教師登入</h4>
+<h4>學校教師登入</h4>
 <form method="POST">
-  <label for="school_id"><span i18n:translate="">username</span>:</label>
+  <label for="school_id"><span>登入帳號</span>:</label>
   <input type="text" class="form-control" id="school_id" name="school_id" required>
 
-  <label for="school_pw"><span i18n:translate="">password</span>:</label>
+  <label for="school_pw"><span>密碼</span>:</label>
   <input type="password" class="form-control" id="school_pw" name="school_pw" required>
 
   <input type="checkbox" id="show_pw" onclick="showPW()">
-  <label for="show_pw"><span i18n:translate="">show password</span></label>
+  <label for="show_pw"><span>顯示密碼</span></label>
 
   <div style="text-align: right; margin: 10px 0 10px 0;" >
     <input type="hidden" name="widget-form-btn" value="widget-form-btn">
-    <button type="submit" class="context" i18n:translate="">submit</button>
+    <button type="submit" class="context">登入</button>
   </div>
 </form>
 
