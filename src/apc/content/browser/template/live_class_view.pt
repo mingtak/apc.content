@@ -12,7 +12,7 @@
 <metal:content-core define-macro="content-core"
                     tal:define="toc context/table_of_contents|nothing;">
   <ul>
-    <li><b>課程編號:</b>${context/id}</li>
+    <li><b>課程編號:</b>${python:context.title[:4]}</li>
     <li><b>課程名稱:</b>${context/title}</li>
     <li><b>課程直播:</b>
         <div tal:content="structure context/embeded"></div>

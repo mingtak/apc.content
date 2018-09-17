@@ -35,6 +35,10 @@
         title="apc.content: Add Teacher"
     />
 
+    <permission
+        id="apc.content.AddStudent"
+        title="apc.content: Add Student"
+    />
         
 
   </configure>

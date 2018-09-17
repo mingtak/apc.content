@@ -4,6 +4,7 @@
   <!--<object name="example_ct" meta_type="Dexterity FTI"/>-->
   <object meta_type="Dexterity FTI" name="Teacher"/>
   <object meta_type="Dexterity FTI" name="School"/>
+  <object meta_type="Dexterity FTI" name="Student"/>
   <object meta_type="Dexterity FTI" name="LiveClass"/>
   <object meta_type="Dexterity FTI" name="Course"/>
   <object meta_type="Dexterity FTI" name="Prepare"/>

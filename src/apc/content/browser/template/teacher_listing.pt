@@ -10,12 +10,18 @@
 <metal:content-core define-macro="content-core"
           tal:define="toc context/table_of_contents|nothing;">
 
+<?python
+from plone import api
+portal = api.portal.get()
+?>
+
 <div id="site-content" class="site-content clearfix">
   <div id="inner-content" class="inner-content-wrap">
     <metal:listingmacro define-macro="listing">
       <tal:results define="batch context/relatedItems;">
         <tal:listing condition="batch">
           <tal:repeat tal:repeat="item batch">
+<tal:obj condition="item/to_object">
             <tal:define tal:define="obj python:item.to_object;
                                     item_title obj/title;
                                     item_url obj/absolute_url;
@@ -24,7 +30,11 @@
               <div class="row">
                 <div class="col-xs-12 col-md-4">
                   <div style="text-align: center; position: relative;">
-                  <img class="teacher-img" src="${item_url}/@@images/image"
+                  <img tal:condition="obj/image"
+                       class="teacher-img" src="${item_url}/@@images/image"
+                       style="border: 1px solid transparent; border-radius: 20px;">
+                  <img tal:condition="not:obj/image"
+                       class="teacher-img" src="${portal/absolute_url}/resource/images/user/@@images/image/preview"
                        style="border: 1px solid transparent; border-radius: 20px;">
                   <!-- locallang icon -->
                   <!--<img src="${item_url}/@@images/image" style="border: 1px solid transparent; border-radius: 50%; width: auto; max-height: 60px; position: absolute; left: 0;">-->
@@ -47,6 +57,7 @@
                 </div>
               </div>
             </tal:define>
+</tal:obj>
           </tal:repeat>
           <!-- pagination-area-start -->
 <!--          <div class="themesflat-pagination clearfix">
