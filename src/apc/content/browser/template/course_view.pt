@@ -34,7 +34,7 @@
     </div>
     <p tal:condition="item_hireSchool"><strong>聘用學校: </strong>${python: item_hireSchool.to_object.title}</p>
     <p tal:condition="item_teacher"><strong>族語師資: </strong><strong><a href="${python: item_teacher.to_object.absolute_url()}">${python: item_teacher.to_object.title}</a></strong></p>
-    <p><strong>授課地點: </strong><strong>&nbsp;:&nbsp; &nbsp;新北市景新國小</strong></p>
+    <p><strong>授課地點: </strong>${item_place}</p>
     <p><strong>授課日期: </strong>${item_courseDate}</p>
     <p><strong>授課時間: </strong>${item_courseTime}</p>
   </div>
