@@ -30,6 +30,11 @@ def start_date(obj):
     date = obj.start.date()
     return date
 
+@indexer(IPrepare)
+def leaveALesson(obj):
+    if obj.leave:
+        return True
+
 @indexer(ITeacher)
 def hashSHA256_teacher(obj):
     uid = obj.UID()

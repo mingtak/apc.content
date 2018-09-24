@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2018-08-26 17:36+0000\n"
+"POT-Creation-Date: 2018-09-24 13:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,31 +17,63 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: apc.content\n"
 
+#: ./browser/views.py:886
+msgid " student list already update"
+msgstr ""
+
+#: ./content/student.py:29
+msgid "Address"
+msgstr ""
+
 #: ./content/prepare.py:22
 msgid "Agenda"
 msgstr ""
 
-#: ./content/course.py:35
+#: ./content/course.py:34
 msgid "Alliance Schools"
+msgstr ""
+
+#: ./content/course.py:88
+msgid "Bank Name and Branch Name"
+msgstr ""
+
+#: ./content/student.py:24
+msgid "Birthday"
 msgstr ""
 
 #: ./behaviors/optional.py:25
 msgid "Class Time"
 msgstr ""
 
+#: ./content/course.py:87
+msgid "Co Reading Bank"
+msgstr ""
+
+#: ./content/course.py:93
+msgid "Co Reading Bank Account"
+msgstr ""
+
+#: ./content/course.py:82
+msgid "Co Reading Id"
+msgstr ""
+
+#: ./content/course.py:77
+msgid "Co Reading Name"
+msgstr ""
+
 #: ./profiles/default/types/Course.xml
 msgid "Course"
 msgstr ""
 
-#: ./content/course.py:62
+#: ./content/course.py:61
 msgid "Course Date"
 msgstr ""
 
-#: ./content/course.py:72
+#: ./content/course.py:71
 msgid "Course Outline"
 msgstr ""
 
-#: ./content/course.py:67
+#: ./content/course.py:66
 msgid "Course Time"
 msgstr ""
 
@@ -51,21 +83,28 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: ./browser/views.py:300
+#: ./browser/template/teacher_info.pt:55
+#: ./browser/views.py:551
 #: ./content/teacher.py:44
 msgid "Education"
 msgstr ""
 
+#: ./content/school.py:19
 #: ./content/teacher.py:64
 msgid "Email"
 msgstr ""
 
+#: ./browser/views.py:869
+msgid "Email already update"
+msgstr ""
+
 #: ./content/live_class.py:47
-#: ./content/prepare.py:38
+#: ./content/prepare.py:39
 msgid "Embeded Code"
 msgstr ""
 
-#: ./browser/views.py:298
+#: ./browser/template/teacher_info.pt:43
+#: ./browser/views.py:549
 #: ./content/teacher.py:24
 msgid "Ethnic language certification"
 msgstr ""
@@ -74,7 +113,7 @@ msgstr ""
 msgid "Format example: D20,Language Name,1,1,1/A01,Language Name,0,1,3/..., 0,0,0 or 0,1,3 mapping to primary-intermediate-advanced"
 msgstr ""
 
-#: ./content/course.py:45
+#: ./content/course.py:44
 msgid "Hire School"
 msgstr ""
 
@@ -86,11 +125,15 @@ msgstr ""
 msgid "Installs the apc.content add-on."
 msgstr ""
 
-#: ./browser/views.py:282
+#: ./browser/views.py:425
 msgid "It is success mail to "
 msgstr ""
 
-#: ./content/course.py:76
+#: ./content/student.py:34
+msgid "Learning Course"
+msgstr ""
+
+#: ./content/teacher.py:68
 msgid "Link Effective Date"
 msgstr ""
 
@@ -103,17 +146,17 @@ msgid "LiveClass"
 msgstr ""
 
 #: ./behaviors/optional.py:19
-#: ./browser/views.py:298
-#: ./content/course.py:24
+#: ./browser/views.py:549
+#: ./content/course.py:23
 msgid "Local Language"
 msgstr ""
 
 #: ./browser/template/course_listing.pt:66
-#: ./browser/template/teacher_listing.pt:60
+#: ./browser/template/teacher_listing.pt:71
 msgid "No results were found."
 msgstr ""
 
-#: ./content/course.py:57
+#: ./content/course.py:56
 msgid "Place of Study"
 msgstr ""
 
@@ -125,7 +168,7 @@ msgstr ""
 msgid "Prepare"
 msgstr ""
 
-#: ./content/course.py:78
+#: ./content/teacher.py:70
 msgid "Prepare Lessons Link Effective Date"
 msgstr ""
 
@@ -137,21 +180,23 @@ msgstr ""
 msgid "Related"
 msgstr ""
 
-#: ./browser/views.py:302
+#: ./browser/template/teacher_info.pt:64
+#: ./browser/views.py:553
 #: ./content/teacher.py:59
 msgid "Remarks"
 msgstr ""
 
-#: ./browser/views.py:299
+#: ./browser/template/teacher_info.pt:46
+#: ./browser/views.py:550
 #: ./content/teacher.py:29
 msgid "Revitalization study"
 msgstr ""
 
-#: ./content/prepare.py:48
+#: ./content/prepare.py:49
 msgid "Roll Call, Not On Call"
 msgstr ""
 
-#: ./content/prepare.py:43
+#: ./content/prepare.py:44
 msgid "Roll Call, On Call"
 msgstr ""
 
@@ -159,22 +204,58 @@ msgstr ""
 msgid "School"
 msgstr ""
 
-#: ./content/school.py:19
+#: ./content/school.py:29
+msgid "School ID PW"
+msgstr ""
+
+#: ./content/school.py:31
+msgid "School Login Id"
+msgstr ""
+
+#: ./content/school.py:36
+msgid "School Password"
+msgstr ""
+
+#: ./content/school.py:24
 msgid "Seed School"
 msgstr ""
 
-#: ./content/course.py:51
+#: ./profiles/default/types/Student.xml
+msgid "Student"
+msgstr ""
+
+#: ./content/student.py:39
+msgid "Student ID PW"
+msgstr ""
+
+#: ./content/student.py:19
+msgid "Student Id"
+msgstr ""
+
+#: ./content/course.py:50
 msgid "Student List"
+msgstr ""
+
+#: ./content/student.py:46
+msgid "Student Password"
+msgstr ""
+
+#: ./content/student.py:41
+msgid "Student Username"
 msgstr ""
 
 #: ./content/live_class.py:26
 msgid "Teach School"
 msgstr ""
 
-#: ./content/course.py:29
+#: ./content/course.py:28
 #: ./content/live_class.py:41
 #: ./profiles/default/types/Teacher.xml
 msgid "Teacher"
+msgstr ""
+
+#: ./content/teacher.py:74
+msgid "Teacher ID PW"
 msgstr ""
 
 #: ./content/teacher.py:19
@@ -185,34 +266,56 @@ msgstr ""
 msgid "Teacher Info"
 msgstr ""
 
-#: ./browser/views.py:300
+#: ./content/teacher.py:81
+msgid "Teacher Password"
+msgstr ""
+
+#: ./content/teacher.py:76
+msgid "Teacher Username"
+msgstr ""
+
+#: ./browser/template/teacher_info.pt:52
+#: ./browser/views.py:551
 #: ./content/teacher.py:39
 msgid "Teaching class (Ethnic teacher)"
 msgstr ""
 
-#: ./browser/views.py:299
+#: ./browser/template/teacher_info.pt:49
+#: ./browser/views.py:550
 #: ./content/teacher.py:34
 msgid "Teaching class (Qualified teacher)"
 msgstr ""
 
-#: ./content/prepare.py:27
+#: ./content/prepare.py:28
 msgid "Teaching material"
 msgstr ""
 
-#: ./browser/views.py:301
+#: ./browser/template/teacher_info.pt:61
+#: ./browser/views.py:552
 #: ./content/teacher.py:54
 msgid "Teaching years"
+msgstr ""
+
+#: ./browser/views.py:526
+msgid "The Teacher info is success update"
 msgstr ""
 
 #: ./browser/template/prepare_lessons_not_effective.pt:14
 msgid "This Link is not Effective"
 msgstr ""
 
-#: ./browser/views.py:284
+#: ./browser/views.py:774
+msgid "This School ID is already be used"
+msgstr ""
+
+#: ./browser/views.py:453
+msgid "This Teacher ID is already be used"
+msgstr ""
+
+#: ./browser/views.py:427
 msgid "This teacher has not email: "
 msgstr ""
 
-#: ./content/course.py:19
 #: ./content/prepare.py:17
 msgid "Title"
 msgstr ""
@@ -231,7 +334,16 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: ./browser/template/prepare_lessons.pt:72
+#: ./content/course.py:18
+msgid "Virtual Meeting Room"
+msgstr ""
+
+#: ./browser/views.py:486
+msgid "Your Username or Password is not vaild"
+msgstr ""
+
+#: ./browser/template/prepare_lessons.pt:83
+#: ./browser/template/prepare_uni_lessons.pt:57
 msgid "all send"
 msgstr ""
 
@@ -243,23 +355,52 @@ msgstr ""
 msgid "apc.content (uninstall)"
 msgstr ""
 
-#: ./content/course.py:52
+#: ./content/course.py:75
+msgid "coReading"
+msgstr ""
+
+#: ./browser/template/school_init.pt:26
+#: ./browser/template/teacher_init.pt:26
+msgid "confirm password"
+msgstr ""
+
+#: ./content/course.py:51
 msgid "format: city,school_name,student_name"
 msgstr ""
 
-#: ./browser/template/prepare_lessons.pt:43
+#: ./browser/template/teacher_init.pt:22
+msgid "password"
+msgstr ""
+
+#: ./browser/template/prepare_lessons.pt:67
+#: ./browser/template/prepare_uni_lessons.pt:43
 msgid "send"
 msgstr ""
 
-#: ./browser/template/course_prepare.pt:19
+#: ./browser/template/send_teacher_link.pt:19
 msgid "send all mail"
 msgstr ""
 
-#: ./browser/template/course_prepare.pt:45
+#: ./browser/template/send_teacher_link.pt:46
 msgid "send mail"
 msgstr ""
 
-#: ./browser/views.py:301
+#: ./browser/template/school_init.pt:30
+#: ./browser/template/teacher_init.pt:30
+msgid "show password"
+msgstr ""
+
+#: ./browser/template/school_init.pt:35
+#: ./browser/template/teacher_init.pt:35
+msgid "submit"
+msgstr ""
+
+#: ./browser/template/teacher_init.pt:16
+msgid "username"
+msgstr ""
+
+#: ./browser/template/teacher_info.pt:58
+#: ./browser/views.py:552
 #: ./content/teacher.py:49
 msgid "work experience"
 msgstr ""

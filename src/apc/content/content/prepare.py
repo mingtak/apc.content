@@ -50,6 +50,12 @@ class IPrepare(model.Schema):
         required=False,
     )
 
+    fieldset(_(u'Leave a Lesson'), fields=['leave'])
+    leave = schema.Text(
+        title=_(u'Leave a Lesson'),
+        required=False,
+    )
+
 
 @implementer(IPrepare)
 class Prepare(Item):

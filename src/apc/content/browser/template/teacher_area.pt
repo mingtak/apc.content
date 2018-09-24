@@ -142,6 +142,7 @@ portal = api.portal.get()
                   </tal:define>
                 </tal:repeat>
               </ul>
+            </tal:case>
             <tal:case tal:case="False">
               <p style="color: #3994c0;">近兩週沒課</p>
             </tal:case>

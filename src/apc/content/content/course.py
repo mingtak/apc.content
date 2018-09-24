@@ -72,6 +72,28 @@ class ICourse(model.Schema):
         required=False,
     )
 
+    fieldset(_(u'coReading'), fields=['coReadingName', 'coReadingId', 'coReadingBank', 'coReadingAccount'])
+    coReadingName = schema.TextLine(
+        title=_(u'Co Reading Name'),
+        required=False,
+    )
+
+    coReadingId = schema.TextLine(
+        title=_(u'Co Reading Id'),
+        required=False,
+    )
+
+    coReadingBank = schema.TextLine(
+        title=_(u'Co Reading Bank'),
+        description=_(u'Bank Name and Branch Name'),
+        required=False,
+    )
+
+    coReadingAccount = schema.TextLine(
+        title=_(u'Co Reading Bank Account'),
+        required=False,
+    )
+
 
 @implementer(ICourse)
 class Course(Container):

@@ -1,6 +1,8 @@
 <?python
 from plone import api
+from Products.CMFPlone.utils import safe_unicode
 portal = api.portal.get()
+leaveBrain = api.content.find(leaveALesson=True, sort_on='modified', sort_order='reverse', sort_limit=2)
 ?>
 
 <div class="container" id="announcement_viewlet">
@@ -31,18 +33,20 @@ portal = api.portal.get()
       <ul>
         <table>
           <tbody>
-           <tal:repeat tal:repeat="item python:list(portal['news']['news01'].getChildNodes())[:6]">
+           <tal:repeat tal:repeat="item leaveBrain">
             <tr class="tr-list">
-              <td width="100"><li class="publish-date">${python:item.created().strftime('%Y-%m-%d')}</li></td>
+              <td width="100"><li class="publish-date">${python:item.modified.strftime('%Y-%m-%d')}</li></td>
               <td>
-                  <a href="${item/absolute_url}" class="title">${item/title}</a>
+${python:'%s-%s:%s' % (safe_unicode(item.getObject().getParentNode().title), safe_unicode(item.Title), safe_unicode(item.getObject().leave))}
+<!--                  <a href="${item/absolute_url}" class="title">${item/title}</a>
+-->
               </td>
             </tr>
            </tal:repeat>
           </tbody>
         </table>
       </ul>
-      <div class="readmore">[<a href="${portal/absolute_url}/news/news01">閱讀更多</a>]</div>
+<!--      <div class="readmore">[<a href="${portal/absolute_url}/news/news01">閱讀更多</a>]</div> -->
     </div>
   </div>
 

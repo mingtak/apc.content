@@ -13,14 +13,14 @@
                     tal:define="toc context/table_of_contents|nothing;">
 <h4>學校帳號設定</h4>
 <form method="POST">
-  <label for="school_id"><span i18n:translate="">登入帳號</span>:</label>
+  <label for="school_id"><span>登入帳號</span>:</label>
   <tal:switch tal:switch="python: True if not view.school.getObject().school_id else False">
   <input tal:case="True"  type="text" class="form-control" id="school_id" name="school_id" required>
   <input tal:case="False" type="text" class="form-control" id="school_id" name="school_id" readonly
          value="${python: view.school.getObject().school_id}">
   </tal:switch>
 
-  <label for="school_pw"><span i18n:translate="">密碼</span>:</label>
+  <label for="school_pw"><span>密碼</span>:</label>
   <input type="password" class="form-control" id="school_pw" name="school_pw" oninput="this.setCustomValidity('');validatePassword();"
          pattern="[a-zA-Z0-9]{6,}" required>
   <label for="school_pw_confirm"><span i18n:translate="">confirm password</span>:</label>
