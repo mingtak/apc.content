@@ -11,5 +11,5 @@
     <adapter name="hashSHA256" factory=".indexers.hashSHA256_school" />
     <adapter name="teacher_id" factory=".indexers.teacherID" />
     <adapter name="school_id" factory=".indexers.schoolID" />
-
+    <adapter name="vMeetingRoom" factory=".indexers.vMeetingRoom" />
 </configure>

@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
 <object name="portal_catalog">
+  <index name="vMeetingRoom" meta_type="FieldIndex">
+    <indexed_attr value="vMeetingRoom" />
+  </index>
+  <column value="vMeetingRoom"/>
+
   <index name="course_teacher" meta_type="FieldIndex">
     <indexed_attr value="course_teacher" />
   </index>

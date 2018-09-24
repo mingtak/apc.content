@@ -14,11 +14,10 @@ from apc.content import _
 
 
 class ICourse(model.Schema):
-    """
-    title = schema.TextLine(
-        title=_(u'Title'),
-        required=True,
-    )"""
+    vMeetingRoom = schema.TextLine(
+        title=_(u'Virtual Meeting Room'),
+        required=False,
+    )
 
     local_language = schema.TextLine(
         title=_(u'Local Language'),

@@ -11,6 +11,10 @@ import hashlib
 
 
 @indexer(ICourse)
+def vMeetingRoom(obj):
+    return obj.vMeetingRoom
+
+@indexer(ICourse)
 def courseTeacher(obj):
     uid = obj.teacher.to_object.UID
     return uid
