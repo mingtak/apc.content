@@ -50,7 +50,7 @@ portal = api.portal.get()
                       <span class="bold-title">${parent_place}</span>
                     </div>
                     <div class="col-xs-12 col-sm-4">
-                      <a href="${item_url}" class="title">${item_title}</a>
+                      <a href="${item_url}" class="title toclass" target='_blank' style="color:#3788b8">${item_title}(前往課堂上課)</a>
                     </div>
                     <div class="col-xs-12" />
                   </div>
@@ -80,14 +80,7 @@ portal = api.portal.get()
                                         parent_date  parent/course_date;
                                         parent_time  parent/course_time;">
                   <div class="tr-list row">
-<!--                    <div class="col-xs-12 col-sm-3 col-md-2">
-                      <li class="publish-date">
-                          <a href="${view/context/portal_url}/teacher-area/uni-lessons/@@prepare_uni_lessons?id=${obj/UID}">
-                              <i class="far fa-edit"></i><span class="d-none d-md-block">進入備課</span>
-                          </a>
-                      </li>
-                    </div>
--->
+
                     <div class="col-xs-12 col-sm-4">
                       <span class="title">${parent_title}</span>
                     </div>
@@ -150,33 +143,6 @@ portal = api.portal.get()
 
           <div class="border-dotted" />
           
-          <tal:condition tal:condition="python: len(courses) != 0">  
-            <h4>近兩週課程</h4>
-            <ul>
-              <tal:repeat tal:repeat="item courses">
-                <tal:define tal:define="obj item/getObject;
-                                        item_title item/Title;
-                                        item_url item/getURL;
-                                        item_place obj/place;
-                                        item_date obj/course_date;
-                                        item_time obj/course_time;">
-                  <div class="tr-list row">
-                    <div class="col-xs-12 col-sm-3 col-md-2">
-                      <li class="publish-date">${item_date}<br> ${item_time}</li>
-                    </div>
-                    <div class="col-xs-12 col-sm-4">
-                      <span class="bold-title">${item_place}</span>
-                    </div>
-                    <div class="col-xs-12 col-sm-4">
-                      <a href="${item_url}" class="title">${item_title}</a>
-                    </div>
-                    <div class="col-xs-12" />
-                  </div>
-                  <div class="border-solid" />
-                </tal:define>
-              </tal:repeat>
-            </ul>
-          </tal:condition>
         </div>
       </fieldset>
 
@@ -207,7 +173,7 @@ portal = api.portal.get()
                       </div>
                       <div class="col-xs-12 col-sm-3">
                           <a target="_blank" href="${view/context/portal_url}/teacher-area/prepare-course/@@prepare_lessons?id=${item/UID}#autotoc-item-autotoc-0">
-                              <span class="d-none d-md-block">課程大綱</span>
+                              <span class="d-none d-md-block">學期課程大綱</span>
                           </a> / 
                           <a target="_blank" href="${view/context/portal_url}/teacher-area/prepare-course/@@prepare_lessons?id=${item/UID}#autotoc-item-autotoc-1">
                               <span class="d-none d-md-block">課堂備課</span>
@@ -236,7 +202,12 @@ portal = api.portal.get()
             <div class="row">
               <div class="col-xs-12 col-md-4">
                 <div style="text-align: center; position: relative;">
-                <img src="${item_url}/@@images/image" style="border: 1px solid transparent; border-radius: 20px; width: 100%;">
+                <img tal:condition="python:item.image"
+                     src="${item_url}/@@images/image"
+                     style="border: 1px solid transparent; border-radius: 20px; width: 100%;">
+                <img tal:condition="python:not item.image"
+                     src="${portal/absolute_url}/resource/images/user/@@images/image/preview"
+                     style="border: 1px solid transparent; border-radius: 20px; width: 100%;">
                 <!-- locallang icon -->
                 <!--<img src="${item_url}/@@images/image" style="border: 1px solid transparent; border-radius: 50%; width: auto; max-height: 60px; position: absolute; left: 0;">-->
                 </div>

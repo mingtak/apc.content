@@ -37,7 +37,7 @@ leaveBrain = api.content.find(leaveALesson=True, sort_on='modified', sort_order=
             <tr class="tr-list">
               <td width="100"><li class="publish-date">${python:item.modified.strftime('%Y-%m-%d')}</li></td>
               <td>
-${python:'%s-%s:%s' % (safe_unicode(item.getObject().getParentNode().title), safe_unicode(item.Title), safe_unicode(item.getObject().leave))}
+<p tal:replace="structure python:'%s' % safe_unicode(item.getObject().leave).replace('\n', '<br>')"></p>
 <!--                  <a href="${item/absolute_url}" class="title">${item/title}</a>
 -->
               </td>

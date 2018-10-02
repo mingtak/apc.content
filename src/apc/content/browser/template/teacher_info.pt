@@ -11,7 +11,13 @@
 <metal:content-core fill-slot="content-core">
 <metal:content-core define-macro="content-core"
                     tal:define="toc context/table_of_contents|nothing;">
-<h4>教師個人資料設定</h4>
+
+<?python
+from plone import api
+portal = api.portal.get()
+?>
+<a href="${portal/absolute_url}/teacher-area" style="float:right">回到專師專區</a>
+<h4>${view/teacher/Title} 個人資料設定</h4>
 
 <form method="POST" enctype="multipart/form-data" >
 
@@ -41,16 +47,16 @@
   <input type="email" class="form-control" id="email" name="email" value="${python: view.teacher.getObject().email}">
 
   <label for="certification" i18n:translate="">Ethnic language certification</label>
-  <textarea class="form-control" id="certification" name="certification" >${python: view.teacher.getObject().certification}</textarea>
+  <input type="text" class="form-control" id="certification" name="certification" value="${python: view.teacher.getObject().certification}">
 
   <label for="study" i18n:translate="">Revitalization study</label>
-  <textarea class="form-control" id="study" name="study" >${python: view.teacher.getObject().study}</textarea>
+  <input type="text" class="form-control" id="study" name="study" value="${python: view.teacher.getObject().study}">
 
   <label for="qualified_teacher" i18n:translate="">Teaching class (Qualified teacher)</label>
-  <textarea class="form-control" id="qualified_teacher" name="qualified_teacher" >${python: view.teacher.getObject().qualified_teacher}</textarea>
+  <input type="text" class="form-control" id="qualified_teacher" name="qualified_teacher" value="${python: view.teacher.getObject().qualified_teacher}">
 
   <label for="ethnic_teacher" i18n:translate="">Teaching class (Ethnic teacher)</label>
-  <textarea class="form-control" id="ethnic_teacher" name="ethnic_teacher" >${python: view.teacher.getObject().ethnic_teacher}</textarea>
+  <input type="text" class="form-control" id="ethnic_teacher" name="ethnic_teacher" value="${python: view.teacher.getObject().ethnic_teacher}">
 
   <label for="education" i18n:translate="">Education</label>
   <textarea class="form-control" id="education" name="education" >${python: view.teacher.getObject().education}</textarea>
@@ -59,14 +65,14 @@
   <textarea class="form-control" id="experience" name="experience" >${python: view.teacher.getObject().experience}</textarea>
 
   <label for="teaching_years" i18n:translate="">Teaching years</label>
-  <textarea class="form-control" id="teaching_years" name="teaching_years">${python: view.teacher.getObject().teaching_years}</textarea>
+  <input type="text" class="form-control" id="teaching_years" name="teaching_years" value="${python: view.teacher.getObject().teaching_years}">
 
   <label for="remarks" i18n:translate="">Remarks</label>
   <textarea class="form-control" id="remarks" name="remarks">${python: view.teacher.getObject().remarks}</textarea>
 
   <div style="text-align: right; margin: 10px 0 10px 0;" >
     <input type="hidden" name="widget-form-btn" value="widget-form-btn">
-    <input type="submit" class="context">
+    <input type="submit" class="context" value="儲存">
   </div>
 
 </form>

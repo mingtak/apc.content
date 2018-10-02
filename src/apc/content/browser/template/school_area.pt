@@ -43,7 +43,7 @@ portal = api.portal.get()
         <ul class="announcement">
 <br>
 <li>請依各共學組編號填入上課學生姓名做為上課點名使用</li>
-<li>為確保學生隱私，請將學生姓名部分隱去，如王Ｏ明, 姑Ｏ．Ｏ絲</li>
+<li>為確保學生隱私，請將學生姓名部分隱去，如:<br>王Ｏ明<br>姑Ｏ．Ｏ絲</li>
 <li>直接填寫學生姓名即可，一行一位學生姓名</li>
 <br>
           <tal:repeat tal:repeat="item course">
@@ -54,15 +54,15 @@ portal = api.portal.get()
                                     item_id item/id;">
               <div class="prepare">
                 <div class="tr-list row">
-                  <div class="col-sm-6 col-md-3">
+                  <div class="col-sm-4 col-md-2">
                     <li class="publish-date">
                       ${item_id}
                     </li>
                   </div>
-                  <div class="col-sm-12 col-md-4">
+                  <div class="col-sm-4 col-md-4">
                     <a href="${item_url}" class="title">${item_title}</a>
                   </div>
-                  <div class="col-sm-12 col-md-4">
+                  <div class="col-sm-4 col-md-6">
                      (<a href="javascript:;" onclick="showNamelist('${item_uid}')">編輯學生名單</a>)
                   </div>
                 </div>
@@ -71,12 +71,12 @@ portal = api.portal.get()
               <div class="prepare namelist-${item_uid} namelist">
                 <div class="tr-list row">
                   <form method="POST">
-                  <div class="col-xs-10">
+                  <div class="col-xs-3">
                     <input type="hidden" name="uid" value="${item_uid}">
                     <input type="hidden" name="otherList" value="${python: view.getNamelist(obj)['otherList']}">
                     <textarea name="nameList" required>${python: view.getNamelist(obj)['nameList']}</textarea>
                   </div>
-                  <div class="col-xs-2">
+                  <div class="col-xs-9">
                     <input type="hidden" name="widget-form-btn" value="widget-namelist-form">
                     <button type="submit" class="btn context" >送出</button>
                   </div>
