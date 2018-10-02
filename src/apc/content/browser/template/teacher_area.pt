@@ -50,7 +50,7 @@ portal = api.portal.get()
                       <span class="bold-title">${parent_place}</span>
                     </div>
                     <div class="col-xs-12 col-sm-4">
-                      <a href="${item_url}" class="title toclass" target='_blank' style="color:#3788b8">${item_title}(前往課堂上課)</a>
+                      <a href="${item_url}/pdf_embeded" class="title toclass" target='_blank' style="color:#3788b8">${item_title}(前往課堂上課)</a>
                     </div>
                     <div class="col-xs-12" />
                   </div>

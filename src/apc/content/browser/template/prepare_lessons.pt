@@ -89,7 +89,7 @@
               <p>上課日期</p>
             </td>
             <td>
-              <p>上傳檔案</p>
+              <p>上傳檔案(pdf)</p>
             </td>
             <td>
               <p>目前檔案</p>
@@ -100,7 +100,7 @@
         <tal:repeat tal:repeat="item view/getPrepare">
           <tr>
               <td>
-                <p>${item/Title}</p>
+                <p style="color:blue">${item/Title}</p>
               </td>
               <td>
                 <input type="file" name="file-${item/UID}" accept="application/pdf">

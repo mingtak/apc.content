@@ -13,8 +13,11 @@
                     tal:define="toc context/table_of_contents|nothing;">
 
 
-<a tal:condition="view/canRollcall"
+<a tal:condition="python:view.canRollcall and context.getParentNode().studentList"
    href="#teacher-rollcall" class="teacher-rollcall">教師上課點名</a>
+
+<p style="color:red" tal:condition="python:view.canRollcall and not context.getParentNode().studentList">學校尚未匯入上課學生名單</p>
+
 
     <h3><b>課堂名稱:</b>${context/title}</h3>
 
@@ -37,7 +40,7 @@
 
 
 
-<div class="rollcall" tal:condition="view/canRollcall">
+<div class="rollcall" tal:condition="python:view.canRollcall and context.getParentNode().studentList">
  <div id="teacher-rollcall">
   <h3>教師上課點名</h3><hr>
   <b>未到課請打勾</b>
@@ -61,7 +64,7 @@
 // TODO: 細節未完
 setTimeout(function(){
        $(".teacher-rollcall").colorbox({inline:true, width:"50%", open:true});
-    }, 60000
+    }, 300000
 );
 
 

@@ -711,8 +711,9 @@ class PdfEmbeded(BrowserView):
         request = self.request
         context = self.context
 
-        #TODO: 老師登入權限
-        if not api.user.is_anonymous():
+        teacher_uid = self.request.cookies.get("teacher_login", "")
+        teacher = api.content.get(UID=teacher_uid)
+        if teacher or not api.user.is_anonymous():
             self.canRollcall = True
         else:
             self.canRollcall = False
