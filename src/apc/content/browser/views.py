@@ -73,6 +73,30 @@ class TeacherIdPwdList(BrowserView):
         return self.template()
 
 
+class AllSchoolList(BrowserView):
+
+    template = ViewPageTemplateFile("template/all_school_list.pt")
+    def __call__(self):
+        context = self.context
+        request = self.request
+        self.portal = api.portal.get()
+
+        self.brain = api.content.find(Type='School', sort_on='id')
+        return self.template()
+
+
+class AllCourseList(BrowserView):
+
+    template = ViewPageTemplateFile("template/all_course_list.pt")
+    def __call__(self):
+        context = self.context
+        request = self.request
+        self.portal = api.portal.get()
+
+        self.brain = api.content.find(Type='Course', sort_on='id')
+        return self.template()
+
+
 """ 
 class SetSchoolPwd(BrowserView):
 
@@ -618,7 +642,10 @@ class TeacherView(BrowserView):
             if field_value:
                 fieldsDict.update({fieldsName[field]: field_value})
         if fieldsDict.has_key(fieldsName['localLang']):
-            localLangValue = '\r\n'.join([lang.split(',')[1] for lang in fieldsDict[fieldsName['localLang']].split('/')])
+            try:
+                localLangValue = '\r\n'.join([lang.split(',')[1] for lang in fieldsDict[fieldsName['localLang']].split('/')])
+            except:
+                localLangValue = ''
             fieldsDict[fieldsName['localLang']] = localLangValue
         return fieldsDict
 
@@ -649,7 +676,10 @@ class TeacherListingView(FolderView):
             if field_value:
                 fieldsDict.update({fieldsName[field]: field_value})
         if fieldsDict.has_key(fieldsName['localLang']):
-            localLangValue = '\r\n'.join([lang.split(',')[1] for lang in fieldsDict[fieldsName['localLang']].split('/')])
+            try:
+                localLangValue = '\r\n'.join([lang.split(',')[1] for lang in fieldsDict[fieldsName['localLang']].split('/')])
+            except:
+                localLangValue = ''
             fieldsDict[fieldsName['localLang']] = localLangValue
         return fieldsDict
 

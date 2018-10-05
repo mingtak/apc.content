@@ -208,6 +208,22 @@
       permission="cmf.ManagePortal"
   />
 
+  <browser:page
+      name="all_course_list"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      class=".views.AllCourseList"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="cmf.ManagePortal"
+  />
+
+  <browser:page
+      name="all_school_list"
+      for="*"
+      class=".views.AllSchoolList"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="cmf.ManagePortal"
+  />
+
 <!-- 批次設定學校老師帳密
   <browser:page
       name="set_school_pwd"

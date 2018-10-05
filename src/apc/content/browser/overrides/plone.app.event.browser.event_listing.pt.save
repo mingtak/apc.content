@@ -62,17 +62,9 @@
             <span class="cal_wkday" tal:content="python:startf['wkday_name']">Tue</span>
         </div>
 
-<?python
-from Products.CMFPlone.utils import safe_unicode
-?>
-
         <div class="cal_info clearfix">
-          <h2 class="tileHeadline" style="margin-top:8px"><a href="" itemprop="url" class="url" tal:attributes="href data/url">
-            <span itemprop="summary" class="summary" style="font-size: 16px;"
-                  tal:define="courseTitle python:data.context.getParentNode().title;
-                              courseSN python:courseTitle[0:6];
-                              courseName python:courseTitle[7:]"
-                  tal:content="structure python:u'共學組編號:%s<br>課程:%s' % (courseSN, courseName)">Title</span>
+          <h2 class="tileHeadline"><a href="" itemprop="url" class="url" tal:attributes="href data/url">
+            <span itemprop="summary" class="summary" tal:content="python:'%s-(%s)' % (data.title, data.getParent)">Title</span>
           </a></h2>
           <div class="documentByLine">
 <!--            <tal:date tal:replace="structure python:view.formatted_date(data)"/> -->

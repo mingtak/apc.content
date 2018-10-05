@@ -13,29 +13,34 @@ from apc.content import _
 
 class ITeacher(model.Schema):
 
-    fieldset(_('Teacher Info'), fields=['image', 'certification', 'study', 'qualified_teacher', 'ethnic_teacher', 'education', 'experience', 'teaching_years', 'remarks'])
+    fieldset(_('Teacher Info'), fields=['image', 'nameSpell', 'certification', 'study', 'qualified_teacher', 'ethnic_teacher', 'education', 'experience', 'teaching_years', 'remarks'])
 
     image = namedfile.NamedBlobImage(
         title=_(u'Teacher Image'),
         required=False,
     )
 
-    certification = schema.Text(
+    nameSpell = schema.TextLine(
+        title=_(u'Name Spell'),
+        required=False,
+    )
+
+    certification = schema.TextLine(
         title=_(u"Ethnic language certification"),
         required=False
     )
 
-    study = schema.Text(
+    study = schema.TextLine(
         title=_(u"Revitalization study"),
         required=False
     )
 
-    qualified_teacher = schema.Text(
+    qualified_teacher = schema.TextLine(
         title=_(u"Teaching class (Qualified teacher)"),
         required=False
     )
 
-    ethnic_teacher = schema.Text(
+    ethnic_teacher = schema.TextLine(
         title=_(u"Teaching class (Ethnic teacher)"),
         required=False
     )
@@ -50,7 +55,7 @@ class ITeacher(model.Schema):
         required=False
     )
 
-    teaching_years = schema.Text(
+    teaching_years = schema.TextLine(
         title=_(u"Teaching years"),
         required=False
     )

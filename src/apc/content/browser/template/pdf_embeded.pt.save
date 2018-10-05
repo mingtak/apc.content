@@ -41,11 +41,16 @@
     <ul tal:define="students python:context.getParentNode().studentList">
       <li tal:repeat="item python:students.split('\n')">
           <input type="checkbox" class="confirm" data-student="${item}" name="rollcall"> |
+
+
           <span class="info" tal:content="python:item.split(',')[2]" />
           <span class="info" tal:content="python:item.split(',')[1]" />
           <span class="info" tal:content="python:item.split(',')[0]" />
-
       </li>
+
+
+
+
     </ul>
 <hr>
 <a href="javascript:void(0)" class="button-field context update-rollcall">確認點名結果/送出</a>

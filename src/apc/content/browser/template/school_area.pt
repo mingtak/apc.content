@@ -43,7 +43,7 @@ portal = api.portal.get()
         <ul class="announcement">
 <br>
 <li>請依各共學組編號填入上課學生姓名做為上課點名使用</li>
-<li>為確保學生隱私，請將學生姓名部分隱去，如:<br>王Ｏ明<br>姑Ｏ．Ｏ絲</li>
+<!-- <li>為確保學生隱私，請將學生姓名部分隱去，如:<br>王Ｏ明<br>姑Ｏ．Ｏ絲</li> -->
 <li>直接填寫學生姓名即可，一行一位學生姓名</li>
 <br>
           <tal:repeat tal:repeat="item course">
