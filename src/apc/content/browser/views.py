@@ -294,41 +294,58 @@ class PrepareLessons(BrowserView):
             if self.course.course_teacher != self.teacher.UID():
                 return self.request.response.redirect('{}/teacher-area/teacher-area'.format(self.context.portal_url()))
 
-            prepareUIDList = [item.UID for item in self.getPrepare()]
             if request.form.has_key('file-upload-widget'):
-                course_outline = request.get('course_outline', '')
-                if course_outline:
-                    alsoProvides(self.request, IDisableCSRFProtection)
-                    self.course.getObject().course_outline = RichTextValue(course_outline)
-                for uid in prepareUIDList:
+                prepareList = request.get('prepare', '')
+                for prepare in prepareList:
+                    uid = prepare.get('uid', '')
                     item = api.content.get(UID=uid)
                     url = item.absolute_url()
-                    upload_file = request.form['file-'+uid]
-                    upload_text = request.form['text-'+uid]
+                    upload_topic = prepare.get('topic', '')
+                    upload_text  = prepare.get('description', '')
+                    data = {"description": upload_text, "topic": upload_topic}
+
+                    data.update({"vacation": False})
+                    if prepare.get('vacation', '') == 'true':
+                        data.update({"vacation": True})
+
+                    file = prepare.get('file', '')
+                    file_data = self.checkUploadFile(file, 'file') 
+                    if file_data: 
+                        data.update(file_data)
+
+                    file2 = prepare.get('file2', '')
+                    file_data2 = self.checkUploadFile(file2, 'file2') 
+                    if file_data2: 
+                        data.update(file_data2)
+
+                    file3 = prepare.get('file3', '')
+                    file_data3 = self.checkUploadFile(file3, 'file3') 
+                    if file_data3: 
+                        data.update(file_data3)
+
                     headers = {
                         'Accept': "application/json",
                         'Content-Type': "application/json",
                         'Authorization': "Basic YWRtaW46MTIzNDU2",
                     }
-                    data = {"description": upload_text}
-
-                    file_data =  upload_file.read()
-                    if file_data:
-                        data.update(
-                            { \
-                                "file": { \
-                                "content-type": upload_file.headers['content-type'], \
-                                "filename": upload_file.filename, \
-                                "encoding": "base64", \
-                                "data": file_data.encode('base64') \
-                                } \
-                            } \
-                        )
                     response = requests.request("PATCH", url, headers=headers, json=data)
                 self.request.response.redirect(self.request.URL)
             return self.template()
         else:
             return self.request.response.redirect('{}/teacher-area/teacher-area'.format(self.context.portal_url()))
+
+    def checkUploadFile(self, file, name):
+        file_data = file.read() 
+        if file_data: 
+            return { 
+                     name: { 
+                     "content-type": file.headers['content-type'], 
+                     "filename": file.filename, 
+                     "encoding": "base64", 
+                     "data": file_data.encode('base64') 
+                     } 
+                   }
+        return 
 
     def getCourse(self):
         courseUID = self.course.UID
@@ -338,9 +355,9 @@ class PrepareLessons(BrowserView):
     def getPrepare(self):
         courseUID = self.course.UID
         course = api.content.get(UID=courseUID)
-#        import pdb ; pdb.set_trace()
-        prepare = api.content.find(context=course, portal_type="Prepare",
-                                   start={'query':DateTime(), 'range':'min'}, sort_on='getObjPositionInParent')
+#        prepare = api.content.find(context=course, portal_type="Prepare",
+#                                   start={'query':DateTime(), 'range':'min'}, sort_on='getObjPositionInParent')
+        prepare = api.content.find(context=course, portal_type="Prepare", sort_on='getObjPositionInParent')
         return prepare
 
 
@@ -373,8 +390,29 @@ class PrepareUniLessons(BrowserView):
 
     def updatePrepare(self):
         request = self.request
-        upload_file = request.form.get('file', '')
-        upload_text = request.form.get('text', '')
+        upload_topic = request.form.get('topic', '')
+        upload_text = request.form.get('description', '')
+
+        data = {"description": upload_text, "upload_topic": upload_topic}
+
+        data.update({"vacation": False})
+        if request.get('vacation', '') == 'true':
+            data.update({"vacation": True})
+
+        file = request.get('file', '')
+        file_data = self.checkUploadFile(file, 'file') 
+        if file_data: 
+            data.update(file_data)
+
+        file2 = request.get('file2', '')
+        file_data2 = self.checkUploadFile(file2, 'file2') 
+        if file_data2: 
+            data.update(file_data2)
+
+        file3 = request.get('file3', '')
+        file_data3 = self.checkUploadFile(file3, 'file3') 
+        if file_data3: 
+            data.update(file_data3)
 
         url = self.prepare.getURL()
         headers = {
@@ -382,21 +420,21 @@ class PrepareUniLessons(BrowserView):
             'Content-Type': "application/json",
             'Authorization': "Basic YWRtaW46MTIzNDU2",
         }
-        data = {"description": upload_text}
-
-        file_data =  upload_file.read()
-        if file_data:
-            data.update(
-                { \
-                    "file": { \
-                        "content-type": upload_file.headers['content-type'], \
-                        "filename": upload_file.filename, \
-                        "encoding": "base64", \
-                        "data": file_data.encode('base64') \
-                    } \
-                } \
-            )
         response = requests.request("PATCH", url, headers=headers, json=data)
+
+    def checkUploadFile(self, file, name):
+        file_data = file.read() 
+        if file_data: 
+            return { 
+                     name: { 
+                     "content-type": file.headers['content-type'], 
+                     "filename": file.filename, 
+                     "encoding": "base64", 
+                     "data": file_data.encode('base64') 
+                     } 
+                   }
+        return 
+
 
 class SendTeacherLink(BrowserView):
     template = ViewPageTemplateFile("template/send_teacher_link.pt")
@@ -521,7 +559,7 @@ class TeacherInfo(BrowserView):
         self.teacher = teacher[0]
 
         if request.form.get('widget-form-btn', '') == 'widget-form-btn':
-            teacherFields = ['certification', 'study', 'qualified_teacher', 'ethnic_teacher', 'education', 'experience', 'teaching_years', 'remarks', 'email']
+            teacherFields = ['certification', 'study', 'qualified_teacher', 'ethnic_teacher', 'education', 'experience', 'teaching_years', 'remarks', 'email', 'gender', 'nameSpell', 'aboriginalsLang']
             data = {}
             url = self.teacher.getURL()
             headers = {
@@ -531,8 +569,7 @@ class TeacherInfo(BrowserView):
             }
             for field in teacherFields:
                 value = request.form.get(field, '')
-                if value: 
-                    data.update({field: value})
+                data.update({field: value})
             image = request.form.get('image', '')
             if image:
                 data.update(
@@ -548,6 +585,7 @@ class TeacherInfo(BrowserView):
          
             response = requests.request("PATCH", url, headers=headers, json=data)
             self.context.plone_utils.addPortalMessage(_(u'The Teacher info is success update'), 'info')
+            return self.request.response.redirect('{}/teacher-area/teacher-info'.format(self.context.portal_url()))
         return self.template()
 
 
@@ -568,10 +606,11 @@ class TeacherArea(BrowserView):
         return cookie_path
 
     def getTeacherField(self, item):
-        fields = ['localLang'     , 'certification', 'study'     , 'qualified_teacher', \
-                  'ethnic_teacher', 'education'    , 'experience', 'teaching_years'   , 'remarks'] 
-        fieldsName = {'localLang' : _(u'Local Language')         , 'certification'    : _(u'Ethnic language certification'), 
-                      'study'     : _(u'Revitalization study')   , 'qualified_teacher': _(u'Teaching class (Qualified teacher)'), 
+        fields = ['nameSpell'     , 'aboriginalsLang', 'localLang' , 'certification'    , 'study' , 'qualified_teacher', \
+                  'ethnic_teacher', 'education'      , 'experience', 'teaching_years'   , 'remarks'] 
+        fieldsName = {'nameSpell' : _(u'Name Spell')           , 'aboriginalsLang'  : _(u'Aboriginals Language'),
+                      'localLang' : _(u'Local Language')       , 'certification'    : _(u'Ethnic language certification'),
+                      'study'     : _(u'Revitalization study') , 'qualified_teacher': _(u'Teaching class (Qualified teacher)'), 
                       'ethnic_teacher': _(u'Teaching class (Ethnic teacher)'), 'education'      : _(u'Education'),
                       'experience'    : _(u'work experience')                , 'teaching_years' : _(u'Teaching years'),
                       'remarks'       : _(u'Remarks')} 
@@ -617,6 +656,45 @@ class TeacherArea(BrowserView):
             prepareList.sort(key=lambda r: r.start_date)
 
         return prepareList
+
+
+class TeacherChangePW(BrowserView):
+    template = ViewPageTemplateFile("template/teacher_changePW.pt")
+    def __call__(self):
+        request = self.request
+        teacher_uid = self.request.cookies.get("teacher_login", "")
+        teacher = api.content.get(UID=teacher_uid)
+        if not teacher:
+            return self.request.response.redirect('{}/teacher-area/teacher-login'.format(self.context.portal_url()))
+        self.teacher = teacher
+        
+        if request.get('widget-resetPW-btn', '') == 'widget-resetPW-btn':
+            current_pw = request.get('current_pw', '') 
+            change_pw = request.get('teacher_pw', '')
+            if self.checkPW(current_pw):
+                self.changePW(change_pw)
+            else: 
+                self.context.plone_utils.addPortalMessage(_(u'Your current password is not vaild'), 'error')
+
+        return self.template()
+
+    def getPathname(self):
+        cookie_path = api.portal.get().absolute_url_path()
+        return cookie_path
+
+    def checkPW(self, currentPW):
+        if currentPW == self.teacher.teacher_pw:
+            return True
+        return False
+
+    def changePW(self, change_pw):
+        alsoProvides(self.request, IDisableCSRFProtection)
+        self.teacher.teacher_pw = change_pw
+
+        cookie_path = api.portal.get().absolute_url_path()
+        self.request.response.setCookie("teacher_login", '', path=cookie_path)
+	self.context.plone_utils.addPortalMessage(_(u'Your password is already change please login again'), 'info')
+        return self.request.response.redirect('{}/teacher-area/teacher-login'.format(self.context.portal_url()))
 
 
 class PloneRootView(BrowserView):
@@ -893,10 +971,16 @@ class SchoolArea(BrowserView):
         return {'nameList': nameList, 'otherList': otherList}
         
     def updateEmail(self):
-        email = self.request.get('email', '') 
+        name      = self.request.get('name', '') 
+        telephone = self.request.get('telephone', '') 
+        phone     = self.request.get('phone', '') 
+        email     = self.request.get('email', '') 
         if email:
             alsoProvides(self.request, IDisableCSRFProtection)
-            self.school.email = email
+            self.school.name      = name     
+            self.school.telephone = telephone
+            self.school.phone     = phone    
+            self.school.email     = email    
             self.context.plone_utils.addPortalMessage(_(u'Email already update'), 'info')
 
     def updateNamelist(self):
@@ -915,3 +999,55 @@ class SchoolArea(BrowserView):
                     studentList.append(nameHeader+name)
             course.studentList = '\r\n'.join(studentList)
             self.context.plone_utils.addPortalMessage(course.title + _(u' student list already update'), 'info')
+
+
+class SchoolChangePW(BrowserView):
+    template = ViewPageTemplateFile("template/school_changePW.pt")
+    def __call__(self):
+        request = self.request
+        school_uid = self.request.cookies.get("school_login", "")
+        school = api.content.get(UID=school_uid)
+        if not school:
+            return self.request.response.redirect('{}/school-area/school-login'.format(self.context.portal_url()))
+        self.school = school
+        
+        if request.get('widget-resetPW-btn', '') == 'widget-resetPW-btn':
+            current_pw = request.get('current_pw', '') 
+            change_pw = request.get('school_pw', '')
+            if self.checkPW(current_pw):
+                self.changePW(change_pw)
+            else: 
+                self.context.plone_utils.addPortalMessage(_(u'Your current password is not vaild'), 'error')
+
+        return self.template()
+
+    def getPathname(self):
+        cookie_path = api.portal.get().absolute_url_path()
+        return cookie_path
+
+    def checkPW(self, currentPW):
+        if currentPW == self.school.school_pw:
+            return True
+        return False
+
+    def changePW(self, change_pw):
+        alsoProvides(self.request, IDisableCSRFProtection)
+        self.school.school_pw = change_pw
+
+        cookie_path = api.portal.get().absolute_url_path()
+        self.request.response.setCookie("school_login", '', path=cookie_path)
+	self.context.plone_utils.addPortalMessage(_(u'Your password is already change please login again'), 'info')
+        return self.request.response.redirect('{}/school-area/school-login'.format(self.context.portal_url()))
+
+
+class LiveListing(BrowserView):
+    """ Live Listing View """
+    template = ViewPageTemplateFile("template/live_listing.pt")
+
+    def __call__(self):
+        context = self.context
+        request = self.request
+        self.portal = api.portal.get()
+        self.brain = api.content.find(Type='LiveClass')
+        return self.template()
+

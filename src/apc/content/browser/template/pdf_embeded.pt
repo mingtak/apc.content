@@ -23,15 +23,28 @@
 
 
     <b>課堂教材:</b><br>
-<h4 tal:condition="not:context/file">教材尚未上傳</h4>
-<iframe tal:condition="context/file">
-        src="${python:'%s/@@display-file/file/%s' %(context.absolute_url(), context.file.filename)}"
-        width="100%" height="100%" style="height:600px">
-    This browser does not support PDFs. Please download the PDF to view it:
-</iframe>
-
-
-
+<h4 tal:condition="not: python: context.file or context.file2 or context.file3 ">教材尚未上傳</h4>
+<file tal:condition="context/file" tal:switch="python: True if 'pdf' in context.file.contentType else False">
+  <object width="100%" height="100%" style="height:600px" type="application/pdf" tal:case="True"
+          data="${python:'%s/@@display-file/file/%s' %(context.absolute_url(), context.file.filename)}">
+    <embed src="${python:'%s/@@display-file/file/%s' %(context.absolute_url(), context.file.filename)}" type="application/pdf" />
+  </object>
+  <a tal:case="False" href="${view/context/absolute_url}/@@download/file">下載教材 ${python: context.file.filename}</a>
+</file>
+<file tal:condition="context/file2" tal:switch="python: True if 'pdf' in context.file2.contentType else False">
+  <object width="100%" height="100%" style="height:600px" type="application/pdf" tal:case="True"
+          data="${python:'%s/@@display-file/file2/%s' %(context.absolute_url(), context.file2.filename)}">
+    <embed src="${python:'%s/@@display-file/file2/%s' %(context.absolute_url(), context.file2.filename)}" type="application/pdf" />
+  </object>
+  <a tal:case="False" href="${view/context/absolute_url}/@@download/file2">下載教材 ${python: context.file2.filename}</a>
+</file>
+<file tal:condition="context/file3" tal:switch="python: True if 'pdf' in context.file3.contentType else False">
+  <object width="100%" height="100%" style="height:600px" type="application/pdf" tal:case="True"
+          data="${python:'%s/@@display-file/file3/%s' %(context.absolute_url(), context.file3.filename)}">
+    <embed src="${python:'%s/@@display-file/file3/%s' %(context.absolute_url(), context.file3.filename)}" type="application/pdf" />
+  </object>
+  <a tal:case="False" href="${view/context/absolute_url}/@@download/file3">下載教材 ${python: context.file3.filename}</a>
+</file>
 
 <div class="rollcall" tal:condition="python:view.canRollcall and context.getParentNode().studentList">
  <div id="teacher-rollcall">
@@ -40,11 +53,12 @@
   <div>
     <ul tal:define="students python:context.getParentNode().studentList">
       <li tal:repeat="item python:students.split('\n')">
+<tal:cond condition="python:len(item.split(',')) == 3">
           <input type="checkbox" class="confirm" data-student="${item}" name="rollcall"> |
           <span class="info" tal:content="python:item.split(',')[2]" />
           <span class="info" tal:content="python:item.split(',')[1]" />
           <span class="info" tal:content="python:item.split(',')[0]" />
-
+</tal:cond>
       </li>
     </ul>
 <hr>

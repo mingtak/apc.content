@@ -18,21 +18,19 @@ portal = api.portal.get()
 
   <tal:define tal:define="item python: view.context;
                           item_title item/title;
+                          item_gender item/gender;
                           item_url item/absolute_url;">
     <div class="row">
       <div class="col-xs-12 col-md-4">
-        <div style="text-align: center; position: relative;">
-                  <img tal:condition="context/image"
-                       class="teacher-img" src="${item_url}/@@images/image"
-                       style="border: 1px solid transparent; border-radius: 20px; width: auto; max-height: 175px;">
-                  <img tal:condition="not:context/image"
-                       class="teacher-img" src="${portal/absolute_url}/resource/images/user/@@images/image/preview"
-                       style="border: 1px solid transparent; border-radius: 20px; width: auto; max-height: 175px;">
-
-
-        <!-- locallang icon -->
-        <!--<img src="${item_url}/@@images/image" style="border: 1px solid transparent; border-radius: 50%; width: auto; max-height: 60px; position: absolute; left: 0;">-->
-        </div>
+	<div style="text-align: center; position: relative;"
+	     tal:switch="python: item.image != None">
+	  <img tal:case="True"
+	       src="${item_url}/@@images/image/preview"
+	       style="border: 1px solid transparent; border-radius: 20px; max-height: 300px; max-width: 100%;">
+	  <img tal:case="False"
+	       src="${view/context/portal_url}/resource/images/default-${item_gender}/@@images/image/preview"
+	       style="border: 1px solid transparent; border-radius: 20px; max-height: 300px; max-width: 100%;">
+	</div>
       </div>
       <div class="col-xs-12 col-md-8">
         <h3 style="color: #fa9901; font-weight: bold; ">${item_title}</h3>

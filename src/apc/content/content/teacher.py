@@ -6,6 +6,7 @@ from plone.namedfile import field as namedfile
 from plone.supermodel import model
 from plone.supermodel.directives import fieldset
 from z3c.form.browser.radio import RadioFieldWidget
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from zope import schema
 from zope.interface import implementer
 from apc.content import _
@@ -13,15 +14,32 @@ from apc.content import _
 
 class ITeacher(model.Schema):
 
-    fieldset(_('Teacher Info'), fields=['image', 'nameSpell', 'certification', 'study', 'qualified_teacher', 'ethnic_teacher', 'education', 'experience', 'teaching_years', 'remarks'])
+    gender = SimpleVocabulary(
+               [SimpleTerm(value=u'man', title=_(u'man')),
+                SimpleTerm(value=u'woman', title=_(u'woman'))]
+             )
+
+    fieldset(_('Teacher Info'), fields=['image', 'gender', 'nameSpell', 'aboriginalsLang', 'certification', 'study', 'qualified_teacher', 'ethnic_teacher', 'education', 'experience', 'teaching_years', 'remarks'])
 
     image = namedfile.NamedBlobImage(
         title=_(u'Teacher Image'),
         required=False,
     )
 
+    gender = schema.Choice(
+        title=_(u'Gender'),
+        vocabulary=gender,
+        default='man',
+        required=True,
+    )
+
     nameSpell = schema.TextLine(
         title=_(u'Name Spell'),
+        required=False,
+    )
+
+    aboriginalsLang = schema.TextLine(
+        title=_(u'Aboriginals Language'),
         required=False,
     )
 

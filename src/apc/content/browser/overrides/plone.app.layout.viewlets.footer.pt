@@ -1,5 +1,9 @@
 <div class="row">
 	<div class="col-xs-12">
+		<a href="./teacher-area">教師專區</a>
+        <a href="./school-area">學校專區</a>	
+	</div>
+	<div class="col-xs-12">
 原住民族委員會版權所有 © ${view/year} 新北市新莊區中平路439號北棟14F/15F/16F 　郵遞區號:24220　總機：02-89953456 89953457 89953458
 	</div>
 </div>

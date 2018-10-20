@@ -27,6 +27,30 @@ portal = api.portal.get()
           <form method="POST">
             <div class="tr-list row">
               <div class="col-sm-2" style="text-align:right;">
+                <p>學校聯絡人 姓名:</p>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" name="name" value="${view/school/name}">
+              </div>
+            </div>
+            <div class="tr-list row">
+              <div class="col-sm-2" style="text-align:right;">
+                <p>學校聯絡人 電話:</p>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" name="telephone" value="${view/school/telephone}">
+              </div>
+            </div>
+            <div class="tr-list row">
+              <div class="col-sm-2" style="text-align:right;">
+                <p>學校聯絡人 手機:</p>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" name="phone" value="${view/school/phone}">
+              </div>
+            </div>
+            <div class="tr-list row">
+              <div class="col-sm-2" style="text-align:right;">
                 <p>學校聯絡人Email:</p>
               </div>
               <div class="col-sm-8">

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2018-09-24 13:17+0000\n"
+"POT-Creation-Date: 2018-10-18 09:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,390 +14,472 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
-#: ./browser/views.py:886
+#: ../browser/views.py:980
 msgid " student list already update"
 msgstr "學生名單已更新"
 
-#: ./content/student.py:29
+#: ../browser/template/teacher_info.pt:66
+#: ../browser/views.py:590
+#: ../content/teacher.py:42
+msgid "Aboriginals Language"
+msgstr "族語"
+
+#: ../content/student.py:29
 msgid "Address"
 msgstr "地址"
 
-#: ./content/prepare.py:22
-msgid "Agenda"
-msgstr "課堂概要"
-
-#: ./content/course.py:34
+#: ../content/course.py:34
 msgid "Alliance Schools"
 msgstr "聯盟學校"
 
-#: ./content/course.py:88
+#: ../content/course.py:88
 msgid "Bank Name and Branch Name"
 msgstr "銀行與分行名稱"
 
-#: ./content/student.py:24
+#: ../content/student.py:24
 msgid "Birthday"
 msgstr "生日"
 
-#: ./behaviors/optional.py:25
+#: ../behaviors/optional.py:25
 msgid "Class Time"
 msgstr "可上課時段"
 
-#: ./content/course.py:87
+#: ../content/course.py:87
 msgid "Co Reading Bank"
 msgstr "伴讀人員帳戶銀行名稱"
 
-#: ./content/course.py:93
+#: ../content/course.py:93
 msgid "Co Reading Bank Account"
 msgstr "伴讀人員銀行帳戶"
 
-#: ./content/course.py:82
+#: ../content/course.py:82
 msgid "Co Reading Id"
 msgstr "伴讀人員身份證號"
 
-#: ./content/course.py:77
+#: ../content/course.py:77
 msgid "Co Reading Name"
 msgstr "伴讀人員姓名"
 
-#: ./profiles/default/types/Course.xml
+#: ../content/school.py:26
+msgid "Contact Name"
+msgstr "聯絡人"
+
+#: ../profiles/default/types/Course.xml
 msgid "Course"
 msgstr "課程"
 
-#: ./content/course.py:61
+#: ../content/course.py:61
 msgid "Course Date"
 msgstr "授課日期"
 
-#: ./content/course.py:71
+#: ../content/course.py:71
 msgid "Course Outline"
 msgstr "課程大綱"
 
-#: ./content/course.py:66
+#: ../content/course.py:66
 msgid "Course Time"
 msgstr "授課時間"
 
-#: ./profiles/default/types/Course.xml
-#: ./profiles/default/types/LiveClass.xml
-#: ./profiles/default/types/Prepare.xml
+#: ../profiles/default/types/Course.xml
+#: ../profiles/default/types/LiveClass.xml
+#: ../profiles/default/types/Prepare.xml
 msgid "Edit"
 msgstr "編輯"
 
-#: ./browser/template/teacher_info.pt:55
-#: ./browser/views.py:551
-#: ./content/teacher.py:44
+#: ../browser/template/teacher_info.pt:81
+#: ../browser/views.py:593
+#: ../content/teacher.py:67
 msgid "Education"
 msgstr "學歷"
 
-#: ./content/school.py:19
-#: ./content/teacher.py:64
+#: ../content/school.py:41
+#: ../content/teacher.py:87
 msgid "Email"
 msgstr ""
 
-#: ./browser/views.py:869
+#: ../browser/views.py:963
 msgid "Email already update"
 msgstr "Email 已更新"
 
-#: ./content/live_class.py:47
-#: ./content/prepare.py:39
+#: ../content/live_class.py:47
+#: ../content/prepare.py:59
 msgid "Embeded Code"
 msgstr "嵌入碼"
 
-#: ./browser/template/teacher_info.pt:43
-#: ./browser/views.py:549
-#: ./content/teacher.py:24
+#: ../browser/template/teacher_info.pt:69
+#: ../browser/views.py:591
+#: ../content/teacher.py:47
 msgid "Ethnic language certification"
 msgstr "族語認證"
 
-#: ./behaviors/optional.py:20
+#: ../behaviors/optional.py:20
 msgid "Format example: D20,Language Name,1,1,1/A01,Language Name,0,1,3/..., 0,0,0 or 0,1,3 mapping to primary-intermediate-advanced"
 msgstr ""
 
-#: ./content/course.py:44
+#: ../browser/template/teacher_info.pt:49
+#: ../content/teacher.py:30
+msgid "Gender"
+msgstr "性別"
+
+#: ../content/course.py:44
 msgid "Hire School"
 msgstr "聘用學校"
 
-#: ./browser/template/prepare_lessons_not_effective.pt:15
+#: ../browser/template/prepare_lessons_not_effective.pt:15
 msgid "If you have any question"
 msgstr "如果您有任何問題"
 
-#: ./configure.zcml:29
+#: ../configure.zcml:29
 msgid "Installs the apc.content add-on."
 msgstr ""
 
-#: ./browser/views.py:425
+#: ../browser/views.py:466
 msgid "It is success mail to "
 msgstr "已成功寄給 "
 
-#: ./content/student.py:34
+#: ../content/student.py:34
 msgid "Learning Course"
 msgstr "學習課程"
 
-#: ./content/teacher.py:68
+#: ../content/prepare.py:73
+msgid "Leave a Lesson"
+msgstr "課堂公告"
+
+#: ../content/teacher.py:91
 msgid "Link Effective Date"
 msgstr "連結有效日期"
 
-#: ./profiles/default/types/LiveClass.xml
+#: ../profiles/default/types/LiveClass.xml
 msgid "Live Class Video"
 msgstr "直播教學影片"
 
-#: ./profiles/default/types/LiveClass.xml
+#: ../profiles/default/types/LiveClass.xml
 msgid "LiveClass"
 msgstr "直播"
 
-#: ./behaviors/optional.py:19
-#: ./browser/views.py:549
-#: ./content/course.py:23
+#: ../behaviors/optional.py:19
+#: ../browser/views.py:591
+#: ../content/course.py:23
 msgid "Local Language"
 msgstr "族語教學"
 
-#: ./browser/template/course_listing.pt:66
-#: ./browser/template/teacher_listing.pt:71
+#: ../browser/template/teacher_info.pt:63
+#: ../browser/views.py:590
+#: ../content/teacher.py:37
+msgid "Name Spell"
+msgstr "族名"
+
+#: ../browser/template/course_listing.pt:66
+#: ../browser/template/teacher_listing.pt:71
 msgid "No results were found."
 msgstr "查詢不到任何結果"
 
-#: ./content/course.py:56
+#: ../content/school.py:36
+msgid "Phone"
+msgstr "手機"
+
+#: ../content/course.py:56
 msgid "Place of Study"
 msgstr "授課地點"
 
-#: ./browser/template/prepare_lessons_not_effective.pt:16
+#: ../browser/template/prepare_lessons_not_effective.pt:16
 msgid "Please connect with admin"
 msgstr "請與網站管理員聯繫"
 
-#: ./profiles/default/types/Prepare.xml
+#: ../profiles/default/types/Prepare.xml
 msgid "Prepare"
 msgstr "備課"
 
-#: ./content/teacher.py:70
+#: ../content/prepare.py:27
+msgid "Prepare Description"
+msgstr "課堂內容"
+
+#: ../content/teacher.py:93
 msgid "Prepare Lessons Link Effective Date"
 msgstr "備課檔案連結有效日期"
 
-#: ./profiles/default/types/Prepare.xml
+#: ../content/prepare.py:22
+msgid "Prepare Theme"
+msgstr "課堂主題"
+
+#: ../profiles/default/types/Prepare.xml
 msgid "Prepare lessons"
 msgstr "備課檔案"
 
-#: ./content/live_class.py:34
+#: ../content/live_class.py:34
 msgid "Related"
 msgstr "關聯的"
 
-#: ./browser/template/teacher_info.pt:64
-#: ./browser/views.py:553
-#: ./content/teacher.py:59
+#: ../browser/template/teacher_info.pt:90
+#: ../browser/views.py:595
+#: ../content/teacher.py:82
 msgid "Remarks"
 msgstr "備註"
 
-#: ./browser/template/teacher_info.pt:46
-#: ./browser/views.py:550
-#: ./content/teacher.py:29
+#: ../browser/template/teacher_info.pt:72
+#: ../browser/views.py:592
+#: ../content/teacher.py:52
 msgid "Revitalization study"
 msgstr "振興人員研習"
 
-#: ./content/prepare.py:49
+#: ../content/prepare.py:69
 msgid "Roll Call, Not On Call"
 msgstr "點名未到課"
 
-#: ./content/prepare.py:44
+#: ../content/prepare.py:64
 msgid "Roll Call, On Call"
 msgstr "點名 到課"
 
-#: ./profiles/default/types/School.xml
+#: ../profiles/default/types/School.xml
 msgid "School"
 msgstr "學校"
 
-#: ./content/school.py:29
+#: ../content/school.py:24
+msgid "School Cotact"
+msgstr "學校聯絡人"
+
+#: ../content/school.py:46
 msgid "School ID PW"
 msgstr "學校帳密"
 
-#: ./content/school.py:31
+#: ../content/school.py:48
 msgid "School Login Id"
 msgstr "學校登入帳號"
 
-#: ./content/school.py:36
+#: ../content/school.py:53
 msgid "School Password"
 msgstr "學校登入密碼"
 
-#: ./content/school.py:24
+#: ../content/school.py:19
 msgid "Seed School"
 msgstr "優先學校"
 
-#: ./profiles/default/types/Student.xml
+#: ../profiles/default/types/Student.xml
 msgid "Student"
 msgstr "學生"
 
-#: ./content/student.py:39
+#: ../content/student.py:39
 msgid "Student ID PW"
 msgstr "學生帳密"
 
-#: ./content/student.py:19
+#: ../content/student.py:19
 msgid "Student Id"
 msgstr "學生登入帳號"
 
-#: ./content/course.py:50
+#: ../content/course.py:50
 msgid "Student List"
 msgstr "學生清單"
 
-#: ./content/student.py:46
+#: ../content/student.py:46
 msgid "Student Password"
 msgstr "學生登入密碼"
 
-#: ./content/student.py:41
+#: ../content/student.py:41
 msgid "Student Username"
 msgstr "學生帳號"
 
-#: ./content/live_class.py:26
+#: ../content/live_class.py:26
 msgid "Teach School"
 msgstr "上課學校"
 
-#: ./content/course.py:28
-#: ./content/live_class.py:41
-#: ./profiles/default/types/Teacher.xml
+#: ../content/course.py:28
+#: ../content/live_class.py:41
+#: ../profiles/default/types/Teacher.xml
 msgid "Teacher"
 msgstr "授課教師"
 
-#: ./content/teacher.py:74
+#: ../content/teacher.py:97
 msgid "Teacher ID PW"
 msgstr "族語教師帳密"
 
-#: ./content/teacher.py:19
+#: ../content/teacher.py:25
 msgid "Teacher Image"
 msgstr "教師照片"
 
-#: ./content/teacher.py:16
+#: ../content/teacher.py:22
 msgid "Teacher Info"
 msgstr "教師資訊"
 
-#: ./content/teacher.py:81
+#: ../content/teacher.py:104
 msgid "Teacher Password"
 msgstr "族語教師密碼"
 
-#: ./content/teacher.py:76
+#: ../content/teacher.py:99
 msgid "Teacher Username"
 msgstr "族語教師帳號"
 
-#: ./browser/template/teacher_info.pt:52
-#: ./browser/views.py:551
-#: ./content/teacher.py:39
+#: ../browser/template/teacher_info.pt:78
+#: ../browser/views.py:593
+#: ../content/teacher.py:62
 msgid "Teaching class (Ethnic teacher)"
 msgstr "教學類（族語教師）"
 
-#: ./browser/template/teacher_info.pt:49
-#: ./browser/views.py:550
-#: ./content/teacher.py:34
+#: ../browser/template/teacher_info.pt:75
+#: ../browser/views.py:592
+#: ../content/teacher.py:57
 msgid "Teaching class (Qualified teacher)"
 msgstr "教學類（合格師資）"
 
-#: ./content/prepare.py:28
+#: ../content/prepare.py:32
 msgid "Teaching material"
 msgstr "教材"
 
-#: ./browser/template/teacher_info.pt:61
-#: ./browser/views.py:552
-#: ./content/teacher.py:54
+#: ../browser/template/teacher_info.pt:87
+#: ../browser/views.py:594
+#: ../content/teacher.py:77
 msgid "Teaching years"
 msgstr "教學年資"
 
-#: ./browser/views.py:526
+#: ../content/school.py:31
+msgid "Telephone"
+msgstr "電話"
+
+#: ../browser/views.py:566
 msgid "The Teacher info is success update"
 msgstr "族語教師資料已更新"
 
-#: ./browser/template/prepare_lessons_not_effective.pt:14
+#: ../browser/template/prepare_lessons_not_effective.pt:14
 msgid "This Link is not Effective"
 msgstr "此連結已經失效"
 
-#: ./browser/views.py:774
+#: ../browser/views.py:862
 msgid "This School ID is already be used"
 msgstr "這個學校帳號已被使用"
 
-#: ./browser/views.py:453
+#: ../browser/views.py:494
 msgid "This Teacher ID is already be used"
 msgstr "這個族語教師帳號已被使用"
 
-#: ./browser/views.py:427
+#: ../browser/views.py:468
 msgid "This teacher has not email: "
 msgstr "這位老師沒有信箱"
 
-#: ./content/prepare.py:17
+#: ../content/prepare.py:17
 msgid "Title"
 msgstr "標題"
 
-#: ./content/live_class.py:32
+#: ../content/live_class.py:32
 msgid "Training Center"
 msgstr ""
 
-#: ./configure.zcml:38
+#: ../configure.zcml:38
 msgid "Uninstalls the apc.content add-on."
 msgstr ""
 
-#: ./profiles/default/types/Course.xml
-#: ./profiles/default/types/LiveClass.xml
-#: ./profiles/default/types/Prepare.xml
+#: ../browser/template/prepare_lessons.pt:112
+msgid "Vacation"
+msgstr "放假"
+
+#: ../profiles/default/types/Course.xml
+#: ../profiles/default/types/LiveClass.xml
+#: ../profiles/default/types/Prepare.xml
 msgid "View"
 msgstr ""
 
-#: ./content/course.py:18
+#: ../content/course.py:18
 msgid "Virtual Meeting Room"
 msgstr "虛擬教室"
 
-#: ./browser/views.py:486
+#: ../browser/views.py:527
 msgid "Your Username or Password is not vaild"
 msgstr "您輸入的帳號或密碼無效"
 
-#: ./browser/template/prepare_lessons.pt:83
-#: ./browser/template/prepare_uni_lessons.pt:57
+#: ../browser/views.py:656
+msgid "Your current password is not vaild"
+msgstr "您的目前密碼輸入錯誤"
+
+#: ../browser/views.py:675
+msgid "Your password is already change please login again"
+msgstr "您的密碼已變更，請重新登入"
+
+#: ../browser/template/prepare_lessons.pt:148
+#: ../browser/template/prepare_uni_lessons.pt:57
 msgid "all send"
 msgstr "全部送出"
 
-#: ./configure.zcml:29
+#: ../configure.zcml:29
 msgid "apc.content"
 msgstr ""
 
-#: ./configure.zcml:38
+#: ../configure.zcml:38
 msgid "apc.content (uninstall)"
 msgstr ""
 
-#: ./content/course.py:75
+#: ../browser/template/school_changePW.pt:23
+#: ../browser/template/teacher_changePW.pt:23
+msgid "change password"
+msgstr "更改密碼"
+
+#: ../content/course.py:75
 msgid "coReading"
 msgstr "伴讀人員"
 
-#: ./browser/template/school_init.pt:26
-#: ./browser/template/teacher_init.pt:26
+#: ../browser/template/school_changePW.pt:27
+#: ../browser/template/school_init.pt:26
+#: ../browser/template/teacher_changePW.pt:27
 msgid "confirm password"
 msgstr "確認密碼"
 
-#: ./content/course.py:51
+#: ../browser/template/school_changePW.pt:21
+#: ../browser/template/teacher_changePW.pt:21
+msgid "current password"
+msgstr "目前密碼"
+
+#: ../content/course.py:51
 msgid "format: city,school_name,student_name"
 msgstr ""
 
-#: ./browser/template/teacher_init.pt:22
+#: ../browser/template/teacher_info.pt:52
+#: ../content/teacher.py:18
+msgid "man"
+msgstr "男"
+
+#: ../browser/template/teacher_init.pt:22
 msgid "password"
 msgstr "密碼"
 
-#: ./browser/template/prepare_lessons.pt:67
-#: ./browser/template/prepare_uni_lessons.pt:43
+#: ../browser/template/prepare_lessons.pt:95
+#: ../browser/template/prepare_uni_lessons.pt:43
 msgid "send"
 msgstr "送出"
 
-#: ./browser/template/send_teacher_link.pt:19
+#: ../browser/template/send_teacher_link.pt:19
 msgid "send all mail"
 msgstr "寄出全部郵件"
 
-#: ./browser/template/send_teacher_link.pt:46
+#: ../browser/template/send_teacher_link.pt:46
 msgid "send mail"
 msgstr "寄出郵件"
 
-#: ./browser/template/school_init.pt:30
-#: ./browser/template/teacher_init.pt:30
+#: ../browser/template/school_changePW.pt:31
+#: ../browser/template/school_init.pt:30
+#: ../browser/template/teacher_changePW.pt:31
 msgid "show password"
 msgstr "顯示密碼"
 
-#: ./browser/template/school_init.pt:35
-#: ./browser/template/teacher_init.pt:35
+#: ../browser/template/school_changePW.pt:35
+#: ../browser/template/school_init.pt:35
+#: ../browser/template/teacher_changePW.pt:35
 msgid "submit"
 msgstr "送出"
 
-#: ./browser/template/teacher_init.pt:16
+#: ../browser/template/school_changePW.pt:17
+#: ../browser/template/teacher_changePW.pt:17
+#: ../browser/template/teacher_init.pt:16
 msgid "username"
 msgstr "帳號"
 
-#: ./browser/template/teacher_info.pt:58
-#: ./browser/views.py:552
-#: ./content/teacher.py:49
+#: ../content/prepare.py:47
+msgid "vacation"
+msgstr "放假"
+
+#: ../browser/template/teacher_info.pt:54
+#: ../content/teacher.py:19
+msgid "woman"
+msgstr "女"
+
+#: ../browser/template/teacher_info.pt:84
+#: ../browser/views.py:594
+#: ../content/teacher.py:72
 msgid "work experience"
 msgstr "工作經驗"

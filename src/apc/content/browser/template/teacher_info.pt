@@ -20,11 +20,11 @@ portal = api.portal.get()
 <h4>${view/teacher/Title} 個人資料設定</h4>
 
 <form method="POST" enctype="multipart/form-data" >
-
-  <div class="field pat-inlinevalidation kssattr-fieldname-form.widgets.image">
+  <div class="field pat-inlinevalidation kssattr-fieldname-form.widgets.image" 
+       tal:switch="python: view.teacher.getObject().image != None">
     <label for="form-widgets-image" class="horizontal">教師照片</label>
     <div class="fieldErrorBox"></div>
-    <span id="form-widgets-image" class="named-image-widget namedblobimage-field">
+    <span id="form-widgets-image" class="named-image-widget namedblobimage-field" tal:case="True">
       <span>
         <img src="${view/teacher/getURL}/@@images/image/preview" height="127" width="auto">
         <br>
@@ -41,10 +41,30 @@ portal = api.portal.get()
           <script type="text/javascript">document.getElementById('form-widgets-image-input').disabled=true;</script>
       </div>
     </span>
+    <span id="form-widgets-image" class="named-image-widget namedblobimage-field" tal:case="False">
+        <input type="file" class="form-control" id="form-widgets-image-input" name="image" accept="image/*" >
+    </span>
   </div>
+ 
+  <label i18n:translate="">Gender</label>
+  <div class="radio">
+    <input type="radio" name="gender" value="man" id="man">
+    <label for="man" i18n:translate="">man</label>
+    <input type="radio" name="gender" value="woman" id="woman">
+    <label for="woman" i18n:translate="">woman</label>
+  </div>
+  <script>
+    $('input:radio[name="gender"]').filter('[value="${python: view.teacher.getObject().gender}"]').attr('checked', true);
+  </script>
 
   <label for="email">Email</label>
   <input type="email" class="form-control" id="email" name="email" value="${python: view.teacher.getObject().email}">
+
+  <label for="nameSpell" i18n:translate="">Name Spell</label>
+  <input type="text" class="form-control" id="nameSpell" name="nameSpell" value="${python: view.teacher.getObject().nameSpell}">
+
+  <label for="aboriginalsLang" i18n:translate="">Aboriginals Language</label>
+  <input type="text" class="form-control" id="aboriginalsLang" name="aboriginalsLang" value="${python: view.teacher.getObject().aboriginalsLang}">
 
   <label for="certification" i18n:translate="">Ethnic language certification</label>
   <input type="text" class="form-control" id="certification" name="certification" value="${python: view.teacher.getObject().certification}">
@@ -76,6 +96,7 @@ portal = api.portal.get()
   </div>
 
 </form>
+
 </metal:content-core>
 </metal:content-core>
 

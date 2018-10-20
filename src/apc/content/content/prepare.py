@@ -18,15 +18,35 @@ class IPrepare(model.Schema):
         required=True,
     )
 
-    description = schema.Text(
-        title=_(u'Agenda'),
+    topic = schema.TextLine(
+        title=_(u'Prepare Theme'),
         required=False,
     )
 
-#    file = namedfile.NamedFile(
+    description = schema.Text(
+        title=_(u'Prepare Description'),
+        required=False,
+    )
+
     file = namedfile.NamedBlobFile(
         title=_(u'Teaching material'),
         required=False,
+    )
+
+    file2 = namedfile.NamedBlobFile(
+        title=_(u'Teaching material'),
+        required=False,
+    )
+
+    file3 = namedfile.NamedBlobFile(
+        title=_(u'Teaching material'),
+        required=False,
+    )
+
+    vacation = schema.Bool(
+        title=_(u'vacation'),
+        default=False,
+        required=True
     )
 
     """ 

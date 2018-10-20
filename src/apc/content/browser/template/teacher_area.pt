@@ -15,7 +15,7 @@ from plone import api
 portal = api.portal.get()
 ?>
   <div style="height: 50px;">
-      <span style="float:left;">您好 <b style="color:blue">${view/teacher/Title}</b> 老師</span>
+      <span style="float:left;">您好 <b style="color:blue">${view/teacher/Title}</b></span>
       <button class="btn context" style="float:right;" onclick="logout()">登出</button>
   </div>
 
@@ -172,9 +172,6 @@ portal = api.portal.get()
                         <span class="bold-title">${item_date} ${item_time}</span>
                       </div>
                       <div class="col-xs-12 col-sm-3">
-                          <a target="_blank" href="${view/context/portal_url}/teacher-area/prepare-course/@@prepare_lessons?id=${item/UID}#autotoc-item-autotoc-0">
-                              <span class="d-none d-md-block">學期課程大綱</span>
-                          </a> / 
                           <a target="_blank" href="${view/context/portal_url}/teacher-area/prepare-course/@@prepare_lessons?id=${item/UID}#autotoc-item-autotoc-1">
                               <span class="d-none d-md-block">課堂備課</span>
                           </a>
@@ -198,18 +195,18 @@ portal = api.portal.get()
         <div>
           <tal:info tal:define="item python: view.teacher;
                                   item_title item/title;
+                                  item_gender item/gender;
                                   item_url item/absolute_url;">
             <div class="row">
               <div class="col-xs-12 col-md-4">
-                <div style="text-align: center; position: relative;">
-                <img tal:condition="python:item.image"
-                     src="${item_url}/@@images/image"
-                     style="border: 1px solid transparent; border-radius: 20px; width: 100%;">
-                <img tal:condition="python:not item.image"
-                     src="${portal/absolute_url}/resource/images/user/@@images/image/preview"
-                     style="border: 1px solid transparent; border-radius: 20px; width: 100%;">
-                <!-- locallang icon -->
-                <!--<img src="${item_url}/@@images/image" style="border: 1px solid transparent; border-radius: 50%; width: auto; max-height: 60px; position: absolute; left: 0;">-->
+                <div style="text-align: center; position: relative;"
+                     tal:switch="python: view.teacher.image != None">
+                  <img tal:case="True"
+		       src="${item_url}/@@images/image/preview"
+                       style="border: 1px solid transparent; border-radius: 20px; max-height: 300px; max-width: 100%;">
+                  <img tal:case="False"
+                       src="${view/context/portal_url}/resource/images/default-${item_gender}/@@images/image/preview"
+                       style="border: 1px solid transparent; border-radius: 20px; max-height: 300px; max-width: 100%;">
                 </div>
               </div>
               <div class="col-xs-12 col-md-8">
@@ -217,6 +214,7 @@ portal = api.portal.get()
                 <a href="${view/context/portal_url}/teacher-area/teacher-info" style="float: right; border: 0;">
                   <i class="far fa-edit"></i><span class="d-none d-md-block">編輯</span>
                 </a>
+		<a href="./teacher-area/change-password" style="float:right; border: 0; margin: 0 10px;">更改密碼</a>
                 <div style="width:100%; border: 1px solid #e0dede; margin: 5px 0 10px 0;" />
                 <table style="border: 0;">
                   <tal:repeat tal:repeat="field python: view.getTeacherField(item).iteritems()">

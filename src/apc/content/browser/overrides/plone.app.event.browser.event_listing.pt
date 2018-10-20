@@ -36,6 +36,16 @@
 <tal:def define="batch view/events;
                  toLocalizedTime nocall: context/@@plone/toLocalizedTime;">
 
+<style>
+  .hasVacation{
+    color: red;
+  }
+  .cal_month.hasVacation{
+    background-color: red !important;
+    color: white;
+  }
+</style>
+
     <section>
         <form action="search_from_id" method="get">
             <input type="text" name="id"
@@ -49,7 +59,8 @@
     <tal:items repeat="data batch">
 
       <article itemscope itemtype="http://data-vocabulary.org/Event" class="vevent tileItem"
-          tal:define="startf python:view.date_speller(data.start)">
+          tal:define="startf python:view.date_speller(data.start);
+                      hasVacation python: 'hasVacation' if data.context.vacation else ''">
 
         <ul class="hiddenStructure">
           <li itemprop="startDate" class="dtstart" tal:content="data/start/isoformat">end</li>
@@ -57,9 +68,9 @@
         </ul>
 
         <div class="cal_date">
-            <span class="cal_month" tal:content="string:${startf/month_name}">Oct.</span>
-            <span class="cal_day" tal:content="string:${startf/day}">15</span>
-            <span class="cal_wkday" tal:content="python:startf['wkday_name']">Tue</span>
+            <span class="cal_month ${hasVacation}" tal:content="string:${startf/month_name}">Oct.</span>
+            <span class="cal_day ${hasVacation}" tal:content="string:${startf/day}">15</span>
+            <span class="cal_wkday ${hasVacation}" tal:content="python:startf['wkday_name']">Tue</span>
         </div>
 
 <?python
@@ -67,13 +78,15 @@ from Products.CMFPlone.utils import safe_unicode
 ?>
 
         <div class="cal_info clearfix">
-          <h2 class="tileHeadline" style="margin-top:8px"><a href="" itemprop="url" class="url" tal:attributes="href data/url">
-            <span itemprop="summary" class="summary" style="font-size: 16px;"
-                  tal:define="courseTitle python:data.context.getParentNode().title;
-                              courseSN python:courseTitle[0:6];
-                              courseName python:courseTitle[7:]"
-                  tal:content="structure python:u'共學組編號:%s<br>課程:%s' % (courseSN, courseName)">Title</span>
-          </a></h2>
+          <h2 class="tileHeadline" style="margin-top:8px">
+            <a href="" itemprop="url" class="url ${hasVacation}" tal:attributes="href data/url">
+              <span itemprop="summary" class="summary ${hasVacation}" style="font-size: 16px;"
+                    tal:define="courseTitle python:data.context.getParentNode().title;
+                                courseSN python:courseTitle[0:6];
+                                courseName python:courseTitle[6:]"
+                    tal:content="structure python:u'共學組編號:%s<br>課程:%s' % (courseSN, courseName)">Title</span>
+            </a>
+          </h2>
           <div class="documentByLine">
 <!--            <tal:date tal:replace="structure python:view.formatted_date(data)"/> -->
             <div itemprop="location" class="location"

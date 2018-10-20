@@ -14,17 +14,34 @@ from apc.content import _
 class ISchool(model.Schema):
     """ Marker interface and Dexterity Python Schema for School
     """
+    
+    seed = schema.Bool(
+        title=_(u'Seed School'),
+        default=False,
+        required=False
+    )
+
+    fieldset(_('School Cotact'), fields=['name', 'telephone', 'phone', 'email'])
+    name = schema.TextLine(
+        title=_(u'Contact Name'),
+        required=False
+    )
+
+    telephone = schema.TextLine(
+        title=_(u'Telephone'),
+        required=False
+    )
+
+    phone = schema.TextLine(
+        title=_(u'Phone'),
+        required=False
+    )
 
     email = schema.TextLine(
         title=_(u'Email'),
         required=False
     )
 
-    seed = schema.Bool(
-        title=_(u'Seed School'),
-        default=False,
-        required=False
-    )
 
     fieldset(_(u'School ID PW'), fields=['school_id', 'school_pw'])
     school_id = schema.TextLine(
