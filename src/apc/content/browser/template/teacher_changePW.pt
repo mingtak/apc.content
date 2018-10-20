@@ -1,0 +1,81 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+
+<h4>重設密碼</h4>
+<form method="POST">
+  <label for="teacher_id"><span i18n:translate="">username</span>:</label>
+  <input type="text" class="form-control" id="teacher_id" name="teacher_id" 
+         value="${python: view.teacher.teacher_id}" readonly>
+
+  <label for="teacher_pw"><span i18n:translate="">current password</span>:</label>
+  <input type="password" class="form-control" id="current_pw" name="current_pw" required>
+  <label for="teacher_pw"><span i18n:translate="">change password</span>:</label>
+  <input type="password" class="form-control" id="teacher_pw" name="teacher_pw" 
+         oninput="this.setCustomValidity('');validatePassword();"
+         pattern="[a-zA-Z0-9]{4,}" required>
+  <label for="teacher_pw_confirm"><span i18n:translate="">confirm password</span>:</label>
+  <input type="password" class="form-control" id="teacher_pw_confirm" onkeyup="validatePassword()" required>
+
+  <input type="checkbox" id="show_pw" onclick="showPW()">
+  <label for="show_pw"><span i18n:translate="">show password</span></label>
+
+  <div style="text-align: right; margin: 10px 0 10px 0;" >
+    <input type="hidden" name="widget-resetPW-btn" value="widget-resetPW-btn">
+    <button type="submit" class="context" i18n:translate="">submit</button>
+  </div>
+</form>
+
+<script>
+  function showPW(){
+    var current_pw = document.getElementById("current_pw");
+    var pw   = document.getElementById("teacher_pw");
+    var c_pw = document.getElementById("teacher_pw_confirm");
+    if (current_pw.type === "password" && pw.type === "password" && c_pw.type === "password") {
+        current_pw.type = "text";
+        pw.type   = "text";
+        c_pw.type = "text";
+    } else {
+        current_pw.type = "password";
+        pw.type   = "password";
+        c_pw.type = "password";
+    }
+  }
+
+  function validatePassword(){
+    var password = document.getElementById("teacher_pw")
+      , confirm_password = document.getElementById("teacher_pw_confirm");
+    if(password.value != confirm_password.value) {
+      confirm_password.setCustomValidity("與密碼不符");
+    } else {
+      confirm_password.setCustomValidity('');
+    }
+  }
+  
+  document.getElementById("teacher_pw").oninvalid = function(event) {
+    event.target.setCustomValidity("密碼格式只能包含為 數字及英文字母大小寫 且 至少四個字元");
+  }  
+</script>
+
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+
+
+
+
+
+
