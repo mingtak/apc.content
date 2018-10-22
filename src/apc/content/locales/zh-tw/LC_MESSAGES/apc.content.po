@@ -22,7 +22,7 @@ msgstr "學生名單已更新"
 #: ../browser/views.py:590
 #: ../content/teacher.py:42
 msgid "Aboriginals Language"
-msgstr "族語"
+msgstr "教授族語"
 
 #: ../content/student.py:29
 msgid "Address"
@@ -143,7 +143,7 @@ msgstr "學習課程"
 
 #: ../content/prepare.py:73
 msgid "Leave a Lesson"
-msgstr "課堂公告"
+msgstr "課堂停/補課公告"
 
 #: ../content/teacher.py:91
 msgid "Link Effective Date"

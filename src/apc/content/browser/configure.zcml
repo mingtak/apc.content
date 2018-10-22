@@ -248,6 +248,14 @@
       permission="cmf.ManagePortal"
   />
 
+  <browser:page
+      name="make_up_listing"
+      for="*"
+      class=".views.MakeUpListing"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="cmf.ManagePortal"
+  />
+
 <!-- 批次設定學校老師帳密
   <browser:page
       name="set_school_pwd"

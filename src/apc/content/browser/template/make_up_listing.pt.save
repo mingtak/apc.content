@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  lang="en"
+  metal:use-macro="context/main_template/macros/master"
+  i18n:domain="apc.content">
+<body>
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+          tal:define="toc context/table_of_contents|nothing;">
+
+<h3>停/補課列表</h3>
+<table>
+  <tr>
+    <th>課程名稱</th>
+    <th>族語教師</th>
+    <th>共學學校</th>
+    <th>停課日期</th>
+    <th>補課日期</th>
+    <th>註記已補課</th>
+  </tr>
+
+  <tal:tr tal:repeat="item view/brain">
+    <tr tal:define="obj item/getObject;
+          ">
+      <td>${python:obj.getParentNode().title}</td>
+      <td>族語教師</td>
+      <td>共學學校</td>
+      <td>停課日期</td>
+      <td>補課日期</td>
+      <td>註記已補課</td>
+    </tr>
+  </tal:tr>
+
+
+</table>
+
+
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+
+

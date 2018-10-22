@@ -14,6 +14,7 @@
 <?python
 from plone import api
 portal = api.portal.get()
+brain = api.content.find(course_teacher=context.UID())
 ?>
 
   <tal:define tal:define="item python: view.context;
@@ -42,6 +43,18 @@ portal = api.portal.get()
               <td style="border: 0; width: 70%; white-space: pre-line;">${python: field[1]}</td>
             </tr>
           </tal:repeat>
+
+
+            <tr>
+              <td style="border: 0; width: 30%;">教授共學課程:</td>
+              <td style="border: 0; width: 70%;">
+                  <tal:item tal:repeat="item brain">
+                      <a href="${item/getURL}">${item/Title}</a> <span tal:condition="not:repeat/item/end">/</span>
+                  </tal:item>
+              </td>
+            </tr>
+
+
         </table>
       </div>
       <div class="col-xs-12">

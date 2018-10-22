@@ -1,0 +1,72 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  lang="en"
+  metal:use-macro="context/main_template/macros/master"
+  i18n:domain="apc.content">
+<body>
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+          tal:define="toc context/table_of_contents|nothing;">
+<?python
+from plone import api
+portal = api.portal.get()
+?>
+
+<h3>停/補課列表<h3>
+<h5 style="color:red">(紅色字為未補課)</h5>
+
+<table>
+  <tr>
+    <th>課程名稱</th>
+    <th>族語教師</th>
+    <th>共學學校</th>
+    <th>停課日期</th>
+    <th>補課日期<br>(請直接填入日期,例 9月5日, 10月12日)</th>
+    <th>公告內容</th>
+    <th>註記已補課</th>
+    <th>送出</th>
+  </tr>
+
+  <tal:tr tal:repeat="item view/brain">
+<form action="${portal/absolute_url}/@@make_up_listing" method='post'>
+    <tr tal:define="obj item/getObject;
+                    course python:obj.getParentNode()"
+        class="make-up-${obj/makeUp}">
+      <td>${course/title}</td>
+      <td>${course/teacher/to_object/title}</td>
+      <td>
+          <span tal:repeat="school course/school">
+            ${school/to_object/title} <tal:cond condition="not:repeat/school/end"> <br> </tal:cond>
+          </span>
+      </td>
+      <td>${python:item.id.split('_')[-2]}月${python:item.id.split('_')[-1]}日</td>
+      <td style="padding:8px">
+        <input type="text" name="make-up-day"
+               tal:attributes="value obj/makeUpDay">
+        <input type="hidden" name="uid" value="${item/UID}">
+      </td>
+      <td style="padding:8px">
+        <textarea name="leave">${obj/leave}</textarea>
+      </td>
+      <td style="padding:8px">
+        <input type="checkbox" name="already-make-up" tal:attributes="checked obj/makeUp">
+      </td>
+      <td style="padding:8px">
+        <input type="submit" name="submit" value="確認送出">
+      </td>
+    </tr>
+</form>
+  </tal:tr>
+
+
+</table>
+
+
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>

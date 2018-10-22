@@ -11,6 +11,7 @@
 <metal:content-core fill-slot="content-core">
 <metal:content-core define-macro="content-core"
                     tal:define="toc context/table_of_contents|nothing;">
+<h3 tal:condition="context/vacation" style="color:red">本周放假</h3>
   <ul>
     <li><b>課堂名稱:</b>${context/title}</li>
     <li><b>課堂概要:</b><br>

@@ -70,12 +70,21 @@ class IPrepare(model.Schema):
         required=False,
     )
 
-    fieldset(_(u'Leave a Lesson'), fields=['leave'])
+    fieldset(_(u'Leave a Lesson'), fields=['leave', 'makeUp', 'makeUpDay'])
     leave = schema.Text(
         title=_(u'Leave a Lesson'),
         required=False,
     )
 
+    makeUp = schema.Bool(
+        title=_(u'Make up a missed lesson'),
+        required=False,
+    )
+
+    makeUpDay = schema.TextLine(
+        title=_(u'Make Up Day'),
+        required=False,
+    )
 
 @implementer(IPrepare)
 class Prepare(Item):

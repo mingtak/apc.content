@@ -25,6 +25,39 @@ from DateTime import DateTime
 logger = logging.getLogger("apc.content")
 
 
+class MakeUpListing(BrowserView):
+    """ Make Up Listing View """
+    template = ViewPageTemplateFile("template/make_up_listing.pt")
+
+    def makeUp(self, uid, makeUpDay, alreadyMakeUp, leave):
+        if not (makeUpDay and leave):
+            api.portal.show_message(message=u'補課日期未填或公告內容未填', request=self.request, type='error')
+            return
+        obj = api.content.find(UID=uid)[0].getObject()
+        obj.makeUp = alreadyMakeUp
+        obj.title = safe_unicode(makeUpDay)
+        obj.makeUpDay = safe_unicode(makeUpDay)
+        obj.leave = safe_unicode(leave)
+        api.portal.show_message(message=u'已更新 %s 補課資訊' % obj.title, request=self.request, type='info')
+
+
+    def __call__(self):
+        context = self.context
+        request = self.request
+        portal = api.portal.get()
+        self.brain = api.content.find(Type='Prepare', leaveALesson=True)
+
+        uid = request.form.get('uid')
+        makeUpDay = request.form.get('make-up-day')
+        alreadyMakeUp = True if request.form.get('already-make-up') else False
+        leave = request.form.get('leave')
+        if uid:
+            self.makeUp(uid, makeUpDay, alreadyMakeUp, leave)
+            return self.template()
+
+        return self.template()
+
+
 class SchoolIdPwdList(BrowserView):
 
     template = ViewPageTemplateFile("template/school_id_pwd_list.pt")
@@ -620,8 +653,10 @@ class TeacherArea(BrowserView):
             if field_value:
                 fieldsDict.update({fieldsName[field]: field_value})
         if fieldsDict.has_key(fieldsName['localLang']):
-            localLangValue = '\r\n'.join([lang.split(',')[1] for lang in fieldsDict[fieldsName['localLang']].split('/')])
-            fieldsDict[fieldsName['localLang']] = localLangValue
+            fieldsDict.pop(fieldsName['localLang'])
+#            localLangValue = '\r\n'.join([lang.split(',')[1] for lang in fieldsDict[fieldsName['localLang']].split('/')])
+#            fieldsDict[fieldsName['localLang']] = localLangValue
+#            fieldsDict[fieldsName['localLang']] = item.aboriginalsLang
         return fieldsDict
 
     def getCourse(self):

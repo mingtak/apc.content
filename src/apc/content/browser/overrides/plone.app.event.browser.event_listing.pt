@@ -58,7 +58,7 @@
     <section>
     <tal:items repeat="data batch">
 
-      <article itemscope itemtype="http://data-vocabulary.org/Event" class="vevent tileItem"
+      <article itemscope itemtype="http://data-vocabulary.org/Event" class="vevent tileItem" style="padding: initial; height:initial"
           tal:define="startf python:view.date_speller(data.start);
                       hasVacation python: 'hasVacation' if data.context.vacation else ''">
 
@@ -80,6 +80,7 @@ from Products.CMFPlone.utils import safe_unicode
         <div class="cal_info clearfix">
           <h2 class="tileHeadline" style="margin-top:8px">
             <a href="" itemprop="url" class="url ${hasVacation}" tal:attributes="href data/url">
+<p tal:condition="hasVacation">本周放假</p>
               <span itemprop="summary" class="summary ${hasVacation}" style="font-size: 16px;"
                     tal:define="courseTitle python:data.context.getParentNode().title;
                                 courseSN python:courseTitle[0:6];
@@ -89,11 +90,22 @@ from Products.CMFPlone.utils import safe_unicode
           </h2>
           <div class="documentByLine">
 <!--            <tal:date tal:replace="structure python:view.formatted_date(data)"/> -->
+
+<span>共學學校:</span>
+<tal:school repeat="item python:data.context.school">
+  <span>${item/to_object/title}</span><span tal:condition="not:repeat/item/end"> / </span>
+</tal:school>
+<br>
+<span>族語教師:</span>
+<span tal:condition="data/context/teacher">${data/context/teacher/to_object/title}</span>
+
+
             <div itemprop="location" class="location"
                 tal:condition="data/location"
                 tal:content="data/location">location</div>
           </div>
 
+<span>課堂內容:</span>
           <p itemprop="description" class="description" tal:condition="data/description" tal:content="data/description" />
 
           <ul class="horizontal metadata">

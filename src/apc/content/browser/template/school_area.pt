@@ -80,11 +80,11 @@ portal = api.portal.get()
                 <div class="tr-list row">
                   <div class="col-sm-4 col-md-2">
                     <li class="publish-date">
-                      ${item_id}
+                      ${python:item_id[0:6]}
                     </li>
                   </div>
                   <div class="col-sm-4 col-md-4">
-                    <a href="${item_url}" class="title">${item_title}</a>
+                    <a href="${item_url}" class="title">${python:item_title[6:]}</a>
                   </div>
                   <div class="col-sm-4 col-md-6">
                      (<a href="javascript:;" onclick="showNamelist('${item_uid}')">編輯學生名單</a>)
