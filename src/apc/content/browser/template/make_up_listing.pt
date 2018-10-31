@@ -14,7 +14,7 @@ from plone import api
 portal = api.portal.get()
 ?>
 
-<h3>停/補課列表<h3>
+<h3>停/補課列表</h3>
 <h5 style="color:red">(紅色字為未補課)</h5>
 
 <table>
