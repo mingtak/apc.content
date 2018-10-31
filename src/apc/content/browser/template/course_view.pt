@@ -26,7 +26,7 @@
   <div>
     <p><span style="font-size: 14pt;"><strong>${item_title}</strong></span></p>
     <p><strong>虛擬教室編號: </strong>${item_id}</p>
-    <p><strong>族語教學: </strong>${item_lang}</p>
+    <p><strong>族語別: </strong>${item_lang}</p>
     <div style="white-space: pre-line;" tal:condition="item_schools">
         <strong>聯盟學校: </strong>
         <ul><li tal:repeat="item python:[school.to_object.title for school in item_schools]">${item/title}</li>

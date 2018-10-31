@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from plone.app.textfield import RichText
+from plone.directives import form
 from plone.autoform import directives
 from plone.dexterity.content import Container
 from plone.namedfile import field as namedfile
@@ -14,6 +15,16 @@ from apc.content import _
 
 
 class ICourse(model.Schema):
+    id = schema.TextLine(
+        title=_(u'CoStudy Course Id'),
+        required=True,
+    )
+
+    description = schema.Text(
+        title=_(u'CoStudy Course Description'),
+        required=False,
+    )
+
     vMeetingRoom = schema.TextLine(
         title=_(u'Virtual Meeting Room'),
         required=False,
@@ -52,16 +63,19 @@ class ICourse(model.Schema):
         required=False,
     )
 
+    form.mode(place='hidden')
     place = schema.TextLine(
         title=_(u'Place of Study'),
         required=False,
     )
 
+    form.mode(course_date='hidden')
     course_date = schema.TextLine(
         title=_(u'Course Date'),
         required=False,
     )
 
+    form.mode(course_time='hidden')
     course_time = schema.TextLine(
         title=_(u'Course Time'),
         required=False,

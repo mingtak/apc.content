@@ -29,11 +29,11 @@
                                     item_courseOutline obj/course_outline;">
               <div>
                 <p><span style="font-size: 14pt;"><strong>${item_title}</strong></span></p>
-                <p><strong>班 別: </strong>
+                <p><strong>共學組編號: </strong>
                   <a href="${item_url}" style="border-bottom: none;">${item_id}</a>
                 </p>
-                <p><strong>族語教學: </strong>${item_lang}</p>
-                <p style="white-space: pre-line;" tal:condition="item_schools"><strong>聯盟學校: </strong>${python: '\r\n'.join([school.to_object.title for school in item_schools])}</p>
+                <p><strong>族語別: </strong>${item_lang}</p>
+                <p style="white-space: pre-line;" tal:condition="item_schools"><strong>共學學校: </strong>${python: '\r\n'.join([school.to_object.title for school in item_schools])}</p>
                 <p tal:condition="item_hireSchool"><strong>主辦學校: </strong>${python: item_hireSchool.to_object.title}</p>
                 <p tal:condition="item_teacher"><strong>族語師資: </strong><strong><a href="${python: item_teacher.to_object.absolute_url()}">${python: item_teacher.to_object.title}</a></strong></p>
                 <p><strong>授課地點: </strong>${item_place}</p>

@@ -166,7 +166,7 @@ msgstr "直播"
 #: ../browser/views.py:652
 #: ../content/course.py:23
 msgid "Local Language"
-msgstr "族語教學"
+msgstr "族語別"
 
 #: ../content/prepare.py:85
 msgid "Make Up Day"
