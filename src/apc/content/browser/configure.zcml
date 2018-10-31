@@ -201,6 +201,15 @@
   />
 
   <browser:page
+      name="course_student"
+      for="*"
+      template="template/course_student.pt"
+      class=".views.CourseStudent"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="cmf.ManagePortal"
+  />
+
+  <browser:page
       name="search_from_id"
       for="plone.app.contenttypes.interfaces.IFolder"
       class=".views.SearchFromId"

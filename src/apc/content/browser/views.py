@@ -356,6 +356,9 @@ class PrepareLessons(BrowserView):
                     if file_data3: 
                         data.update(file_data3)
 
+                    for del_file in [prepare.get('del_file', ''), prepare.get('del_file2', ''), prepare.get('del_file3', '')]:
+                        if del_file: 
+                            data.update({del_file: ''}) 
                     headers = {
                         'Accept': "application/json",
                         'Content-Type': "application/json",
@@ -447,6 +450,10 @@ class PrepareUniLessons(BrowserView):
         if file_data3: 
             data.update(file_data3)
 
+        for del_file in [request.get('del_file', ''), request.get('del_file2', ''), request.get('del_file3', '')]:
+            if del_file: 
+                data.update({del_file: ''})
+ 
         url = self.prepare.getURL()
         headers = {
             'Accept': "application/json",
@@ -738,6 +745,12 @@ class PloneRootView(BrowserView):
 
 class CourseView(BrowserView):
     pass
+
+
+class CourseStudent(BrowserView):
+    def getStudents(self):
+        courses = api.content.find(portal_type="Course")
+        return courses
 
 
 class TeacherView(BrowserView):

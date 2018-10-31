@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2018-10-18 09:36+0000\n"
+"POT-Creation-Date: 2018-10-25 10:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,12 +14,12 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
-#: ../browser/views.py:980
+#: ../browser/views.py:1043
 msgid " student list already update"
 msgstr "學生名單已更新"
 
 #: ../browser/template/teacher_info.pt:66
-#: ../browser/views.py:590
+#: ../browser/views.py:651
 #: ../content/teacher.py:42
 msgid "Aboriginals Language"
 msgstr "教授族語"
@@ -80,6 +80,11 @@ msgstr "課程大綱"
 msgid "Course Time"
 msgstr "授課時間"
 
+#: ../browser/template/prepare_lessons.pt:94
+#: ../browser/template/prepare_uni_lessons.pt:43
+msgid "Delete File"
+msgstr "刪除檔案"
+
 #: ../profiles/default/types/Course.xml
 #: ../profiles/default/types/LiveClass.xml
 #: ../profiles/default/types/Prepare.xml
@@ -87,7 +92,7 @@ msgid "Edit"
 msgstr "編輯"
 
 #: ../browser/template/teacher_info.pt:81
-#: ../browser/views.py:593
+#: ../browser/views.py:654
 #: ../content/teacher.py:67
 msgid "Education"
 msgstr "學歷"
@@ -97,7 +102,7 @@ msgstr "學歷"
 msgid "Email"
 msgstr ""
 
-#: ../browser/views.py:963
+#: ../browser/views.py:1026
 msgid "Email already update"
 msgstr "Email 已更新"
 
@@ -107,7 +112,7 @@ msgid "Embeded Code"
 msgstr "嵌入碼"
 
 #: ../browser/template/teacher_info.pt:69
-#: ../browser/views.py:591
+#: ../browser/views.py:652
 #: ../content/teacher.py:47
 msgid "Ethnic language certification"
 msgstr "族語認證"
@@ -123,7 +128,7 @@ msgstr "性別"
 
 #: ../content/course.py:44
 msgid "Hire School"
-msgstr "聘用學校"
+msgstr "主辦學校"
 
 #: ../browser/template/prepare_lessons_not_effective.pt:15
 msgid "If you have any question"
@@ -133,7 +138,7 @@ msgstr "如果您有任何問題"
 msgid "Installs the apc.content add-on."
 msgstr ""
 
-#: ../browser/views.py:466
+#: ../browser/views.py:527
 msgid "It is success mail to "
 msgstr "已成功寄給 "
 
@@ -158,13 +163,21 @@ msgid "LiveClass"
 msgstr "直播"
 
 #: ../behaviors/optional.py:19
-#: ../browser/views.py:591
+#: ../browser/views.py:652
 #: ../content/course.py:23
 msgid "Local Language"
 msgstr "族語教學"
 
+#: ../content/prepare.py:85
+msgid "Make Up Day"
+msgstr ""
+
+#: ../content/prepare.py:80
+msgid "Make up a missed lesson"
+msgstr ""
+
 #: ../browser/template/teacher_info.pt:63
-#: ../browser/views.py:590
+#: ../browser/views.py:651
 #: ../content/teacher.py:37
 msgid "Name Spell"
 msgstr "族名"
@@ -211,13 +224,13 @@ msgid "Related"
 msgstr "關聯的"
 
 #: ../browser/template/teacher_info.pt:90
-#: ../browser/views.py:595
+#: ../browser/views.py:656
 #: ../content/teacher.py:82
 msgid "Remarks"
 msgstr "備註"
 
 #: ../browser/template/teacher_info.pt:72
-#: ../browser/views.py:592
+#: ../browser/views.py:653
 #: ../content/teacher.py:52
 msgid "Revitalization study"
 msgstr "振興人員研習"
@@ -309,13 +322,13 @@ msgid "Teacher Username"
 msgstr "族語教師帳號"
 
 #: ../browser/template/teacher_info.pt:78
-#: ../browser/views.py:593
+#: ../browser/views.py:654
 #: ../content/teacher.py:62
 msgid "Teaching class (Ethnic teacher)"
 msgstr "教學類（族語教師）"
 
 #: ../browser/template/teacher_info.pt:75
-#: ../browser/views.py:592
+#: ../browser/views.py:653
 #: ../content/teacher.py:57
 msgid "Teaching class (Qualified teacher)"
 msgstr "教學類（合格師資）"
@@ -325,7 +338,7 @@ msgid "Teaching material"
 msgstr "教材"
 
 #: ../browser/template/teacher_info.pt:87
-#: ../browser/views.py:594
+#: ../browser/views.py:655
 #: ../content/teacher.py:77
 msgid "Teaching years"
 msgstr "教學年資"
@@ -334,7 +347,7 @@ msgstr "教學年資"
 msgid "Telephone"
 msgstr "電話"
 
-#: ../browser/views.py:566
+#: ../browser/views.py:627
 msgid "The Teacher info is success update"
 msgstr "族語教師資料已更新"
 
@@ -342,15 +355,15 @@ msgstr "族語教師資料已更新"
 msgid "This Link is not Effective"
 msgstr "此連結已經失效"
 
-#: ../browser/views.py:862
+#: ../browser/views.py:925
 msgid "This School ID is already be used"
 msgstr "這個學校帳號已被使用"
 
-#: ../browser/views.py:494
+#: ../browser/views.py:555
 msgid "This Teacher ID is already be used"
 msgstr "這個族語教師帳號已被使用"
 
-#: ../browser/views.py:468
+#: ../browser/views.py:529
 msgid "This teacher has not email: "
 msgstr "這位老師沒有信箱"
 
@@ -366,7 +379,8 @@ msgstr ""
 msgid "Uninstalls the apc.content add-on."
 msgstr ""
 
-#: ../browser/template/prepare_lessons.pt:112
+#: ../browser/template/prepare_lessons.pt:138
+#: ../browser/template/prepare_uni_lessons.pt:84
 msgid "Vacation"
 msgstr "放假"
 
@@ -380,20 +394,19 @@ msgstr ""
 msgid "Virtual Meeting Room"
 msgstr "虛擬教室"
 
-#: ../browser/views.py:527
+#: ../browser/views.py:588
 msgid "Your Username or Password is not vaild"
 msgstr "您輸入的帳號或密碼無效"
 
-#: ../browser/views.py:656
+#: ../browser/views.py:719
 msgid "Your current password is not vaild"
 msgstr "您的目前密碼輸入錯誤"
 
-#: ../browser/views.py:675
+#: ../browser/views.py:738
 msgid "Your password is already change please login again"
 msgstr "您的密碼已變更，請重新登入"
 
-#: ../browser/template/prepare_lessons.pt:148
-#: ../browser/template/prepare_uni_lessons.pt:57
+#: ../browser/template/prepare_lessons.pt:187
 msgid "all send"
 msgstr "全部送出"
 
@@ -438,8 +451,8 @@ msgstr "男"
 msgid "password"
 msgstr "密碼"
 
-#: ../browser/template/prepare_lessons.pt:95
-#: ../browser/template/prepare_uni_lessons.pt:43
+#: ../browser/template/prepare_lessons.pt:108
+#: ../browser/template/prepare_uni_lessons.pt:131
 msgid "send"
 msgstr "送出"
 
@@ -479,7 +492,7 @@ msgid "woman"
 msgstr "女"
 
 #: ../browser/template/teacher_info.pt:84
-#: ../browser/views.py:594
+#: ../browser/views.py:655
 #: ../content/teacher.py:72
 msgid "work experience"
 msgstr "工作經驗"

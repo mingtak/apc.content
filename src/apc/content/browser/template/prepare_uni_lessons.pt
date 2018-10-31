@@ -32,7 +32,20 @@
             <p style="color:blue">${item/Title}</p>
           </td>
           <td>
-            <input type="file" name="file">
+            <table>
+              <tr>
+                <td>
+                  <input type="file" name="file">
+                </td>
+                <td>
+                  <input type="checkbox" class="form-check-input" id="del-file" 
+                         name="del_file" value="file">
+                  <label class="form-check-label" for="del-file" i18n:translate="">
+                    Delete File
+                  </label>
+                </td>
+              </tr>
+            </table>
           </td>
           <td>
             <a tal:condition="python: item.getObject().file" 
@@ -43,7 +56,20 @@
       </tr>
       <tr>
           <td>
-            <input type="file" name="file2">
+            <table>
+              <tr>
+                <td>
+                  <input type="file" name="file2">
+                </td>
+                <td>
+                  <input type="checkbox" class="form-check-input" id="del-file2" 
+                         name="del_file2" value="file2">
+                  <label class="form-check-label" for="del-file2" i18n:translate="">
+                    Delete File
+                  </label>
+                </td>
+              </tr>
+            </table>
           </td>
           <td>
             <a tal:condition="python: item.getObject().file2" 
@@ -61,7 +87,20 @@
             </script>
           </td>
           <td>
-            <input type="file" name="file3">
+            <table>
+              <tr>
+                <td>
+                  <input type="file" name="file3">
+                </td>
+                <td>
+                  <input type="checkbox" class="form-check-input" id="del-file3" 
+                         name="del_file3" value="file3">
+                  <label class="form-check-label" for="del-file3" i18n:translate="">
+                    Delete File
+                  </label>
+                </td>
+              </tr>
+            </table>
           </td>
           <td>
             <a tal:condition="python: item.getObject().file3" 
