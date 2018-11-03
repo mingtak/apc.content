@@ -6,8 +6,7 @@
 
   <!-- Basic properties -->
   <property
-      i18n:translate=""
-      name="title">LiveClass</property>
+      name="title">課程直播</property>
   <property
       i18n:translate=""
       name="description">Live Class Video</property>

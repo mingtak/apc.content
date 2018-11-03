@@ -6,8 +6,7 @@
 
   <!-- Basic properties -->
   <property
-      i18n:translate=""
-      name="title">Teacher</property>
+      name="title">族語教師</property>
   <property
       i18n:translate=""
       name="description">Teacher</property>

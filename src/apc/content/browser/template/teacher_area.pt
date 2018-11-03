@@ -85,7 +85,7 @@ portal = api.portal.get()
                       <span class="title">${parent_title}</span>
                     </div>
                     <div class="col-xs-12 col-sm-4">
-                      <a href="${item_url}" class="title">${item_title}</a> (<a href="${view/context/portal_url}/teacher-area/uni-lessons/@@prepare_uni_lessons?id=${obj/UID}">前往備課</a>)
+                      <a target="_blank" href="${item_url}" class="title">${item_title}</a> (<a target="_blank" href="${view/context/portal_url}/teacher-area/uni-lessons/@@prepare_uni_lessons?id=${obj/UID}">前往備課</a>)
                     </div>
                   </div>
                   <div class="border-solid" />
@@ -123,11 +123,11 @@ portal = api.portal.get()
                           <span class="bold-title">${parent_place}</span>
                         </div>
                         <div class="col-sm-12 col-md-3">
-                          <a href="${parent_url}" class="title">${parent_title}</a>
+                          <a target="_blank" href="${parent_url}" class="title">${parent_title}</a>
                         </div>
                         <div class="col-sm-12 col-md-4">
-                          <a href="${item_url}" class="title">${item_title}</a>
-                           (<a href="${view/context/portal_url}/teacher-area/uni-lessons/@@prepare_uni_lessons?id=${obj/UID}">前往備課</a>)
+                          <a target="_blank" href="${item_url}" class="title">${item_title}</a>
+                           (<a target="_blank" href="${view/context/portal_url}/teacher-area/uni-lessons/@@prepare_uni_lessons?id=${obj/UID}">前往備課</a>)
                         </div>
                       </div>
                       <div class="border-solid" />

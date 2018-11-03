@@ -2,18 +2,18 @@
 <object xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     name="Course"
     meta_type="Dexterity FTI"
-    i18n:domain="apc.content">
+    i18n:domain="apc.content"
+    i18n:attributes="name">
 
   <!-- Basic properties -->
   <property
-      i18n:translate=""
-      name="title">Course</property>
+      name="title">課程</property>
   <property
       i18n:translate=""
       name="description"></property>
 
   <property name="allow_discussion">False</property>
-  <property name="factory">Course</property>
+  <property name="factory" i18n:translate="">Course</property>
   <property name="icon_expr"></property>
   <property name="link_target"></property>
 

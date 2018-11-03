@@ -8,6 +8,13 @@
 <body>
 
 
+<metal:content-core fill-slot="content-title">
+                <h1 class="documentFirstHeading"
+                    tal:define="title python:context.getParentNode().title"
+                    tal:condition="title"
+                    tal:content="python:'%s (%s)' % (title[6:], title[:6])">Title or id</h1>
+</metal:content-core>    
+
 <metal:content-core fill-slot="content-core">
 <metal:content-core define-macro="content-core"
                     tal:define="toc context/table_of_contents|nothing;">
@@ -18,8 +25,8 @@
 
 <p style="color:red" tal:condition="python:view.canRollcall and not context.getParentNode().studentList">學校尚未匯入上課學生名單</p>
 
-
-    <h3><b>課堂名稱:</b>${context/title}</h3>
+<br>
+    <b>上課日期:</b> ${context/title}<br>
 
 
     <b>課堂教材:</b><br>

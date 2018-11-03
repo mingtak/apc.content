@@ -27,9 +27,12 @@
         </td>
     </tr>
     <tal:define tal:define="item view/prepare">
+<h3>${python:item.getObject().getParentNode().title}</h3>
       <tr>
           <td rowspan=2>
-            <p style="color:blue">${item/Title}</p>
+            <p style="color:blue">${item/Title}<br>
+               (<a href="${item/getURL}/@@pdf_embeded" target="_blank">檢視上課畫面</a>)
+            </p>
           </td>
           <td>
             <table>

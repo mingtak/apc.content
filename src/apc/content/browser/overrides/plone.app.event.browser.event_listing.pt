@@ -8,10 +8,12 @@
 <body>
 
 <metal:custom_title fill-slot="content-title" tal:define="header view/header_string">
+
+
   <h1 class="documentFirstHeading" tal:define="mode request/mode|string:future;">
 <!--    <span tal:replace="header/main" tal:condition="header/main"/>--> 課程行事曆
     <nav tal:define="show_filter view/show_filter">
-      <ul class="mode_selector">
+      <ul class="mode_selector course-related">
         <tal:cond condition="show_filter">
 
         <li class="">
@@ -26,6 +28,7 @@
         </tal:cond>
       </ul>
     </nav>
+
 
   </h1>
   <h2 tal:content="header/sub" tal:condition="header/sub" />
@@ -90,6 +93,9 @@ from Products.CMFPlone.utils import safe_unicode
           </h2>
           <div class="documentByLine">
 <!--            <tal:date tal:replace="structure python:view.formatted_date(data)"/> -->
+
+<span>主辦學校:</span><br>
+<span>${python:data.context.hire_school}</span>
 
 <span>共學學校:</span>
 <tal:school repeat="item python:data.context.school">

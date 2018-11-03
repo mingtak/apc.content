@@ -77,10 +77,13 @@
               <td></td>
           </tr>
         <tal:repeat tal:repeat="item view/getPrepare">
+          <h3 tal:condition="repeat/item/start">${python:item.getObject().getParentNode().title}</h3>
           <tr>
               <td rowspan=2>
                 <input type="hidden" value="${item/UID}" name="prepare.uid:records">
-                <p style="color:blue">第${repeat/item/number}周 ${item/Title}</p>
+                <p style="color:blue">第${repeat/item/number}周 ${item/Title}<br>
+                    (<a href="${item/getURL}/@@pdf_embeded" target="_blank">檢視上課畫面</a>)
+                </p>
               </td>
               <td>
                 <table>
