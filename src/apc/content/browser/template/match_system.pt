@@ -11,6 +11,7 @@
 <metal:content-core define-macro="content-core"
                     tal:define="toc context/table_of_contents|nothing;">
 
+
 <form action="${context/absolute_url}/@@match_result" method="get">
 請輸入最小學校數(預設值2)：<input type="number" name="min_sc" value=2>
 請輸入最大學校數(預設值5)：<input type="number" name="max_sc" value=5>

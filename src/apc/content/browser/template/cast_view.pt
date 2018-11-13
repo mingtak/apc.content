@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+
+
+<metal:content-core fill-slot="content-title">
+                <h1 class="documentFirstHeading"
+                    tal:define="title python:context.getParentNode().title"
+                    tal:condition="title"
+                    tal:content="python:'%s (%s)' % (title[6:], title[:6])">Title or id</h1>
+</metal:content-core>    
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+
+
+
+<br>
+    <b>上課日期:</b> ${context/title}<br>
+
+
+    <b>教材下載:</b><br>
+
+<ul tal:define="files python:['file', 'file2', 'file3']">
+  <tal:li tal:repeat="item files">
+    <li tal:condition="python:getattr(context, item)">
+      <a href="${context/absolute_url}/@@download/${item}/${python:getattr(context, item).filename}">${python:getattr(context, item).filename}</a>
+    </li>
+  </tal:li>
+</ul>
+
+<br><b>直播影片:</b><br>
+
+<div tal:content="structure context/embeded"></div>
+
+
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+

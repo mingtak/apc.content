@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+
+<?python
+from plone import api
+from datetime import datetime
+portal = api.portal.get()
+?>
+
+
+<table class="schedule">
+  <tr class="tr-title">
+    <th></th>
+    <th>星期一</th>
+    <th>星期二</th>
+    <th>星期三</th>
+    <th>星期四</th>
+    <th>星期五</th>
+  </tr>
+
+  <tal:course repeat="course view/brain">
+    <tr class="tr-body">
+      <td class="course"><a target="_blank" href="${course/getURL}">${course/Title}</a></td>
+      <td tal:repeat="weekday python:[1,2,3,4,5]" class="school"> 
+        <tal:cond condition="python:view.getWeekDay(course.getObject().getFirstChild().id) == str(weekday)"
+                  repeat="item python:course.getObject().school">
+          <a target="_blank" href="${course/getURL}">${item/to_object/title}</a>
+          <span tal:condition="not:repeat/item/end"><br></span>
+        </tal:cond>
+      </td>
+    </tr>
+  </tal:course>
+
+</table>
+
+
+
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+

@@ -45,7 +45,7 @@ class MakeUpListing(BrowserView):
         context = self.context
         request = self.request
         portal = api.portal.get()
-        self.brain = api.content.find(Type='Prepare', leaveALesson=True)
+        self.brain = api.content.find(portal_type='Prepare', leaveALesson=True)
 
         uid = request.form.get('uid')
         makeUpDay = request.form.get('make-up-day')
@@ -67,7 +67,7 @@ class SchoolIdPwdList(BrowserView):
         request = self.request
         self.portal = api.portal.get()
 
-        brain = api.content.find(Type='Course')
+        brain = api.content.find(portal_type='Course')
         schoolList = []
         self.result = []
         for item in brain:
@@ -93,7 +93,7 @@ class TeacherIdPwdList(BrowserView):
         request = self.request
         self.portal = api.portal.get()
 
-        brain = api.content.find(Type='Teacher')
+        brain = api.content.find(portal_type='Teacher')
         teacherList = []
         self.result = []
         for item in brain:
@@ -114,19 +114,27 @@ class AllSchoolList(BrowserView):
         request = self.request
         self.portal = api.portal.get()
 
-        self.brain = api.content.find(Type='School', sort_on='id')
+        self.brain = api.content.find(portal_type='School', sort_on='id')
         return self.template()
 
 
 class AllCourseList(BrowserView):
 
     template = ViewPageTemplateFile("template/all_course_list.pt")
+
+    def getWeekDay(self, id):
+        year = int(id.split('_')[-3])
+        month = int(id.split('_')[-2])
+        day = int(id.split('_')[-1])
+        return _(datetime.datetime(year, month, day).strftime('%A'))
+
+
     def __call__(self):
         context = self.context
         request = self.request
         self.portal = api.portal.get()
 
-        self.brain = api.content.find(Type='Course', sort_on='id')
+        self.brain = api.content.find(portal_type='Course', sort_on='id')
         return self.template()
 
 
@@ -139,7 +147,7 @@ class SetSchoolPwd(BrowserView):
         request = self.request
         self.portal = api.portal.get()
 
-        brain = api.content.find(Type='School')
+        brain = api.content.find(portal_type='School')
         for item in brain:
             obj = item.getObject()
             id = 's%s' % item.id
@@ -265,7 +273,7 @@ class MatchResult(BrowserView):
         self.vocaClassTime = factory1(context)
 
         teachers = portal['teacher'].getChildNodes()
-        schools = api.content.find(context=portal['school'], Type='School')
+        schools = api.content.find(context=portal['school'], portal_type='School')
 
         # 確認可開班狀況
         self.courseTable = {}
@@ -876,6 +884,14 @@ class PdfEmbeded(BrowserView):
         return self.template()
 
 
+class CastView(BrowserView):
+    template = ViewPageTemplateFile("template/cast_view.pt")
+
+    def __call__(self):
+
+        return self.template()
+
+
 class Rollcall(BrowserView):
     def __call__(self):
         request = self.request
@@ -903,7 +919,7 @@ class SearchFromId(BrowserView):
         id = request.form.get('id')
         self.brain = None
         if id:
-            self.brain = api.content.find(context=portal['language_study']['latest'], Type='Course', id=id)
+            self.brain = api.content.find(context=portal['language_study']['latest'], portal_type='Course', id=id)
         return self.template()
 
 
@@ -1096,6 +1112,46 @@ class LiveListing(BrowserView):
         context = self.context
         request = self.request
         self.portal = api.portal.get()
-        self.brain = api.content.find(Type='LiveClass')
+        self.brain = api.content.find(portal_type='LiveClass')
+        return self.template()
+
+
+class CourseSchedule(BrowserView):
+
+    template = ViewPageTemplateFile("template/course_schedule.pt")
+
+    def getWeekDay(self, id):
+        year = int(id.split('_')[-3])
+        month = int(id.split('_')[-2])
+        day = int(id.split('_')[-1])
+        return datetime.datetime(year, month, day).strftime('%w')
+
+
+    def __call__(self):
+        context = self.context
+        request = self.request
+        self.portal = api.portal.get()
+
+        self.brain = api.content.find(portal_type='Course', sort_on='id')
+        return self.template()
+
+
+class AdminCourseSchedule(BrowserView):
+
+    template = ViewPageTemplateFile("template/admin_course_schedule.pt")
+
+    def getWeekDay(self, id):
+        year = int(id.split('_')[-3])
+        month = int(id.split('_')[-2])
+        day = int(id.split('_')[-1])
+        return datetime.datetime(year, month, day).strftime('%w')
+
+
+    def __call__(self):
+        context = self.context
+        request = self.request
+        self.portal = api.portal.get()
+
+        self.brain = api.content.find(portal_type='Course', sort_on='id')
         return self.template()
 

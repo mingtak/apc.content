@@ -15,7 +15,14 @@ from apc.content import _
 
 
 class ICourse(model.Schema):
+    """
     id = schema.TextLine(
+        title=_(u'CoStudy Course Id'),
+        required=True,
+    )
+    """
+
+    title = schema.TextLine(
         title=_(u'CoStudy Course Id'),
         required=True,
     )

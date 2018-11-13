@@ -45,7 +45,7 @@
 
   <h3>各堂課程</h3>
   <div tal:repeat="item context/getChildNodes">
-    <span class="vacation-${item/vacation}">第 ${repeat/item/number} 周 ${python:item.start.strftime('%Y年%m月%d日')}</span>
+    <span class="vacation-${item/vacation}">第 ${repeat/item/number} 周 / ${python:item.title}</span>
     <span tal:condition="item/vacation" class="vacation-${item/vacation}">(本周放假)</span><br>
     <p tal:condition="item/description" tal:content="structure python:item.description.replace('\n', '<br>')"></p>
     <p><b>課堂教材：</b>
@@ -53,7 +53,14 @@
            tal:attributes="href string:${item/absolute_url}/@@pdf_embeded">${item/file/filename}</a>
     </p>
     <h4>直播視訊</h4>
-    <p tal:condition="item/embeded" tal:content="structure item/embeded"></p>
+    
+    <p tal:condition="item/embeded">
+        <a href="${item/absolute_url}" target="_blank">觀看課程影片</a>
+    </p>
+    <p tal:condition="not:item/embeded">
+        <span href="${item/absolute_url}/@@pdf_embeded">尚無影片</span>
+    </p>
+
     <hr>
   </div>
 

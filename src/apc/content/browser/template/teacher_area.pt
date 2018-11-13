@@ -19,13 +19,14 @@ portal = api.portal.get()
       <button class="btn context" style="float:right;" onclick="logout()">登出</button>
   </div>
 
+
   <div class="pat-autotoc autotabs" data-pat-autotoc="section:fieldset;levels:legend;">
     <tal:course tal:define="prepares view/getTwoWeekCourse;
                             notPrepares view/notPrepare;
                             todayPrepares view/todayPrepare;
                             courses  view/courseList;">
       <fieldset>
-        <legend >公告總覽</legend>
+        <legend>族語教師教學系統</legend>
         <div class="announcement">
           <tal:todayCourse tal:switch="python: len(todayPrepares)!=0">
 
@@ -148,7 +149,7 @@ portal = api.portal.get()
 
 
       <fieldset>
-        <legend>備課上傳教材</legend>
+        <legend>教學檔案上傳系統</legend>
         <tal:latest tal:switch="python: len(prepares) != 0">
           <tal:case tal:case="True">
             <div class="announcement">
@@ -188,7 +189,6 @@ portal = api.portal.get()
           </tal:case>
         </tal:latest>
       </fieldset>
-
 
       <fieldset>
         <legend>教師基本資料</legend>

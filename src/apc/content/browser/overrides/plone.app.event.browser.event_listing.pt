@@ -25,6 +25,9 @@
         <li class="" tal:condition="python:mode=='future'">
           <a class="mode_past" tal:attributes="href view/mode_past_url">前期課程</a>
         </li>
+        <li class="">
+          <a class="schedule" target="_blank" href="${portal_url}/schedule/@@course_schedule">課程總表</a>
+        </li>
         </tal:cond>
       </ul>
     </nav>
@@ -88,7 +91,7 @@ from Products.CMFPlone.utils import safe_unicode
                     tal:define="courseTitle python:data.context.getParentNode().title;
                                 courseSN python:courseTitle[0:6];
                                 courseName python:courseTitle[6:]"
-                    tal:content="structure python:u'共學組編號:%s<br>課程:%s' % (courseSN, courseName)">Title</span>
+                    tal:content="structure python:u'共學組編號: %s<br>課程: %s' % (courseSN, courseName)">Title</span>
             </a>
           </h2>
           <div class="documentByLine">
@@ -113,6 +116,20 @@ from Products.CMFPlone.utils import safe_unicode
 
 <span>課堂內容:</span>
           <p itemprop="description" class="description" tal:condition="data/description" tal:content="data/description" />
+<br>
+<span>教學影片: </span>
+<span tal:condition="python:data.context.embeded">
+  <a target="_blank" href="${data/url}">觀看教學影片</a>
+</span>
+<span tal:condition="not:data/context/embeded">尚無影片</span>
+<br>
+<span>教學檔案: </span>
+<span tal:condition="python:data.context.file or data.context.file2 or data.context.file3">
+  <a target="_blank" href="${data/url}">已上傳教學檔</a>
+</span>
+<span tal:condition="python:not (data.context.file or data.context.file2 or data.context.file3)">未上傳</span>
+<br>
+
 
           <ul class="horizontal metadata">
 

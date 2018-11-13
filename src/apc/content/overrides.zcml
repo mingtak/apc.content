@@ -1,0 +1,16 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:page
+      name="link_redirect_view"
+      for="plone.app.contenttypes.interfaces.ILink"
+      class=".link_redirect_view.LinkRedirectView"
+      layer="plone.app.contenttypes.interfaces.IPloneAppContenttypesLayer"
+      permission="zope2.View"
+      menu="plone_displayviews"
+      title="View Link"
+      />
+
+        
+</configure>

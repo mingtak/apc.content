@@ -242,3 +242,24 @@ body {
 .frontend #content h1.documentFirstHeading {
     padding-bottom: 25px;
 }
+
+.schedule tr.tr-title {
+    background: #6bd;
+}
+
+.schedule tr.tr-title th {
+    text-align: center;
+    padding: 10px;
+}
+
+.schedule tr.tr-body td.course {
+    padding: 10px 10px 10px 30px;
+}
+
+.schedule tr.tr-body td.school {
+    padding: 10px;
+}
+
+.schedule td, .schedule th {
+    border: solid 1px;
+}
