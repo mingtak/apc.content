@@ -1,0 +1,14 @@
+<div id="portal-header">
+    <div tal:replace="structure provider:plone.portalheader" />
+<!--
+<form style="float:right; margin-top:10px;">
+    <input type="submit" name="submit" value="登入" tabindex='13' style="float:right; margin: 0 5px">
+    <input type="password" name="password" placeholder="密碼" style="width:150px; float:right; margin: 0 5px" tabindex='12'>
+    <input name='id' placeholder="帳號" style="width:150px; float:right; margin: 0 5px" tabindex='11'>
+    <select name="role" class="role" style="float:right;margin: 0 5px" tabindex='10'>
+        <option value="teacher">族語教師</option>
+        <option value="school">共學學校</option>
+    </select>
+</form>
+-->
+</div>

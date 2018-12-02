@@ -14,6 +14,8 @@
 from plone import api
 from datetime import datetime
 portal = api.portal.get()
+times = {'8':'早自習', '9':'第一節', '10':'第二節', '11':'第三節', '12':'第四節', '13':'午休', '14':'第五節',
+         '15':'第六節', '16':'第七節', '17':'第八節', '18':'課後'}
 ?>
 
 
@@ -29,11 +31,14 @@ portal = api.portal.get()
 
   <tal:course repeat="course view/brain">
     <tr class="tr-body">
-      <td class="course"><a target="_blank" href="${course/getURL}">${course/Title}</a></td>
+      <td class="course">
+        <a target="_blank" href="${course/getURL}" style="white-space:nowrap;">${course/Title}</a><br>
+        <span>${python:times.get(str(course.getObject().getLastChild().start.hour))}</span>
+      </td>
       <td tal:repeat="weekday python:[1,2,3,4,5]" class="school"> 
         <tal:cond condition="python:view.getWeekDay(course.getObject().getFirstChild().id) == str(weekday)"
                   repeat="item python:course.getObject().school">
-          <a target="_blank" href="${course/getURL}">${item/to_object/title}</a>
+          <a target="_blank" href="${course/getURL}">${python:item.to_object.getParentNode().title}${item/to_object/title}</a>
           <span tal:condition="not:repeat/item/end"><br></span>
         </tal:cond>
       </td>

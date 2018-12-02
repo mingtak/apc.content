@@ -19,7 +19,7 @@ portal = api.portal.get()
 <h3>媒合結果</h3>
 <table class="schedule">
   <tr class="tr-title">
-    <th></th>
+    <th>共學群組</th>
     <th>星期一</th>
     <th>星期二</th>
     <th>星期三</th>
@@ -33,7 +33,7 @@ portal = api.portal.get()
       <td tal:repeat="weekday python:[1,2,3,4,5]" class="school"> 
         <tal:cond condition="python:view.getWeekDay(course.getObject().getFirstChild().id) == str(weekday)"
                   repeat="item python:course.getObject().school">
-          <a target="_blank" href="${item/to_object/absolute_url}/edit">${item/to_object/title}</a>
+          <a target="_blank" href="${item/to_object/absolute_url}/edit">${python:item.to_object.getParentNode().title}${item/to_object/title}</a>
           <span tal:condition="not:repeat/item/end"><br></span>
         </tal:cond>
       </td>
