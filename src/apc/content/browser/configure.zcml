@@ -290,6 +290,13 @@
       permission="cmf.ManagePortal"
   />
 
+  <browser:page
+      name="teacher_survy"
+      for="*"
+      class=".views.TeacherSurvy"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
 
 <!-- 批次設定學校老師帳密
   <browser:page

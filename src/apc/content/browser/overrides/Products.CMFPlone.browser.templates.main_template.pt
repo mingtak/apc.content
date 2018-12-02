@@ -24,6 +24,7 @@
 
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="${portal_url}/++plone++apc.content/vue.js" type="text/javascript"></script>
 
     <div tal:replace="structure provider:plone.htmlhead" />
 
@@ -39,7 +40,6 @@
 
     <link tal:replace="structure provider:plone.htmlhead.links" />
     <meta name="generator" content="Plone - http://plone.com" />
-
   </head>
 
   <body tal:define="isRTL portal_state/is_rtl;

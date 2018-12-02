@@ -1,0 +1,129 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    xmlns:v-bind="http://www.vue.org/v-bind"
+    xmlns:v-on="http://www.vue.org/v-bind"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+<?python
+lang = {'A01': '阿美語'}
+?>
+
+
+
+<h3>族語教師調查表</h3>
+<form method="post">
+<h4>基本資料</h4>
+  姓名(漢名):<input name="name_han" required><br>
+  姓名(族名):<input name="name_zu" required><br>
+  電話:<input name="phone" required><br>
+  手機:<input name="cell" required><br>
+  地址:
+
+       <select name="city" tal:define="cityList view/getCityList" v-model="city" required>
+         <option value="">請選擇縣市</option>
+         <option tal:repeat="item python:cityList.split(',')"
+                 value="${item}">${item}</option>
+       </select>
+       <select name="zip" tal:define="distList view/getDistList" v-model="zip" required>
+         <option value="" selected>鄉鎮市區</option>
+         <option v-for="item in getZIP('city')"
+                 v-bind:value="item.split(',')[1]">{{item.split(',')[0]}}
+         </option>
+       </select>
+<!--       <input name='zip_code' type='number' style='' min='0' placeholder='郵遞區號' required/> -->
+       <input name="address" type="text" v-model="address" placeholder="聯絡地址" required/>
+
+<h4>可教授語別調查</h4>
+
+<div tal:repeat="index python:range(20)"
+     tal:attributes="class string:langlist langlist-${index}"
+     style="display:none">
+可教授語別:
+<select name="lang-${index}">
+  <option tal:repeat="item lang" tal:attributes="value item" tal:content="python:lang[item]">
+</select>
+<br>
+可教授級別:
+低年級<input type="checkbox" name="lang-${index}" value="primary">
+中年級<input type="checkbox" name="lang-${index}" value="intermediate">
+高年級<input type="checkbox" name="lang-${index}" value="advanced">
+<hr>
+</div>
+
+
+<br>
+<input type="button" name="addline" value="增加一項可教授語別" id="addline">
+<input name="submit" type="submit" value="完成問卷提交">
+</form>
+<script>
+$(document).ready(function(){
+    $('.langlist-0').show()
+
+    // 加一行
+    $('#addline').click(function(){
+        for(i=0; i<20; i++){
+            if( $('.langlist-' + i).css('display') == 'none'  ){
+                $('.langlist-' + i).slideDown()
+                break
+            }
+        }
+    })
+
+})
+</script>
+
+
+
+
+<script>
+var app = new Vue({
+    el: '#content-core',
+    data: {
+      message: 'Hello Vue!',
+      city: '',
+      zip: '',
+      address: '',
+
+      distList: "${python:view.getDistList().replace('\n', '\t')}".split('\t')
+    },
+    methods: {
+      getZIP: function(cityStr){
+          city = this.city
+          for(i=0; i<this.distList.length; i++){
+              if(this.distList[i].startsWith(city)){
+                  distList = this.distList[i].split(':')[1].split('|')
+                  zips = []
+                  for(j=0; j<distList.length; j++){
+                      zips.push(distList[j])
+                  }
+                  return zips
+              }
+          }
+      },
+    }
+})
+
+
+</script>
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+
+
+
+
+
+
+

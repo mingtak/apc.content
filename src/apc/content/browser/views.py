@@ -21,8 +21,117 @@ import requests
 import datetime
 import hashlib
 from DateTime import DateTime
+import json
+import csv
+from StringIO import StringIO
 
 logger = logging.getLogger("apc.content")
+
+
+class TeacherSurvy(BrowserView):
+    """ Teaher Survy View """
+    template = ViewPageTemplateFile("template/teacher_survy.pt")
+
+    def getCityList(self):
+        """ 取得縣市列表 """
+        return api.portal.get_registry_record('mingtak.ECBase.browser.configlet.ICustom.citySorted')
+
+
+    def getDistList(self):
+        """ 取得鄉鎮市區列表及區碼 """
+        return api.portal.get_registry_record('mingtak.ECBase.browser.configlet.ICustom.distList')
+
+
+    def download(self):
+
+        if api.user.get_current().id != 'admin':
+            return
+        context = self.context
+        request = self.request
+        portal = api.portal.get()
+        resultObj = portal['teacher_survy']
+
+        result = json.loads(resultObj.description)
+
+        output = StringIO()
+        spamwriter = csv.writer(output)
+#        import pdb; pdb.set_trace()
+        spamwriter.writerow(['name_han', 'han_zu', 'phone', 'cell', 'city', 'zip', 'address',
+            'lang1', 'level1',
+            'lang2', 'level2',
+            'lang3', 'level3',
+            'lang4', 'level4',
+            'lang5', 'level5',
+            'lang6', 'level6',
+            'lang7', 'level7',
+            'lang8', 'level8',
+            'lang9', 'level9',
+            'lang10', 'level10',
+            'lang11', 'level11',
+            'lang12', 'level12',
+            'lang13', 'level13',
+            'lang14', 'level14',
+            'lang15', 'level15',
+            'lang16', 'level16',
+            'lang17', 'level17',
+            'lang18', 'level18',
+            'lang19', 'level19',
+            'lang20', 'level20',
+        ])
+
+        for item in result:
+            row = [item.get('name_han').encode('utf-8'), item.get('name_zu').encode('utf-8'),
+                   item.get('phone'), item.get('cell'),
+                   item.get('city').encode('utf-8'), item.get('zip'), item.get('address').encode('utf-8')]
+            for index in range(20):
+                if type(item['lang'][index]) == type([]):
+                    row.append(item['lang'][index][0])
+                    row.append('/'.join(item['lang'][index][1:]))
+
+#            import pdb; pdb.set_trace()
+            spamwriter.writerow(row)
+        request.response.setHeader('Content-Type', 'application/csv')
+        request.response.setHeader('Content-Disposition', 'attachment; filename="techer_survy.csv"')
+
+        return output.getvalue()
+
+
+    def __call__(self):
+        context = self.context
+        request = self.request
+        portal = api.portal.get()
+        resultObj = portal['teacher_survy']
+        result = {}
+
+        if request.has_key('download'):
+            return self.download()
+
+        if not request.has_key('_authenticator') or not request.has_key('name_han'):
+            return self.template()
+
+        result['name_han'] = request.get('name_han')
+        result['name_zu'] = request.get('name_zu')
+        result['phone'] = request.get('phone')
+        result['cell'] = request.get('cell')
+        result['city'] = request.get('city')
+        result['zip'] = request.get('zip')
+        result['address'] = request.get('address')
+
+        lang = []
+        for index in range(20):
+            lang.append(request.get('lang-%s' % index))
+
+        result['lang'] = lang
+
+        try:
+            jsonData = json.loads(resultObj.description)
+        except:
+            jsonData = []
+
+        jsonData.append(result)
+        resultObj.description = json.dumps(jsonData)
+        api.portal.show_message(message=_('Survy Finish, Thanks!'), request=request)
+        return self.template()
 
 
 class MakeUpListing(BrowserView):
