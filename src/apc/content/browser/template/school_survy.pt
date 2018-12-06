@@ -16,6 +16,13 @@
 <?python
 from plone import api
 lang = {'A01': '阿美語', 'B02': '魯凱語'}
+time = {'1': '周一早自習',
+        '2': '周二早自習',
+        '3': '周三早自習',
+        '4': '周四早自習',
+        '5': '周五早自習',
+        '6': '早自習均可',
+        '7': '其它',}
 ?>
 
 <a tal:condition="python:api.user.get_current().id == 'admin'"
@@ -23,15 +30,9 @@ lang = {'A01': '阿美語', 'B02': '魯凱語'}
    下載調查表
 </a>
 
-<h3>族語教師調查表</h3>
+<h3>共學學校需求調查表</h3>
 <form method="post">
 <h4>基本資料</h4>
-  姓名(漢名):<input name="name_han" required><br>
-  姓名(族名):<input name="name_zu" required><br>
-  電話:<input name="phone" required><br>
-  手機:<input name="cell" required><br>
-  地址:
-
        <select name="city" tal:define="cityList view/getCityList" v-model="city" required>
          <option value="">請選擇縣市</option>
          <option tal:repeat="item python:cityList.split(',')"
@@ -43,29 +44,40 @@ lang = {'A01': '阿美語', 'B02': '魯凱語'}
                  v-bind:value="item.split(',')[1]">{{item.split(',')[0]}}
          </option>
        </select>
-<!--       <input name='zip_code' type='number' style='' min='0' placeholder='郵遞區號' required/> -->
-       <input name="address" type="text" v-model="address" placeholder="聯絡地址" required/>
+       <input name="school_name" type="text" placeholder="學校名稱" required/>
 
-<h4>可教授語別調查</h4>
+  聯絡人:<input name="contact" required><br>
+  電話:<input name="phone" required><br>
+  手機:<input name="cell" required><br>
+  email:<input type="email" name="email" required><br>
+
+<h4>族語教師需求調查</h4>
 
 <div tal:repeat="index python:range(20)"
      tal:attributes="class string:langlist langlist-${index}"
      style="display:none">
-可教授語別:
+需求族語別:
 <select name="lang-${index}">
   <option tal:repeat="item lang" tal:attributes="value item" tal:content="python:lang[item]">
 </select>
 <br>
-可教授級別:
-低年級<input type="checkbox" name="lang-${index}" value="primary">
-中年級<input type="checkbox" name="lang-${index}" value="intermediate">
-高年級<input type="checkbox" name="lang-${index}" value="advanced">
+需求人數:
+低年級<input type="number" name="lang-${index}" value="0">
+中年級<input type="number" name="lang-${index}" value="0">
+高年級<input type="number" name="lang-${index}" value="0">
+<br>
+
+可配合時段:
+<select name="lang-${index}">
+  <option tal:repeat="item time" tal:attributes="value item" tal:content="python:time[item]">
+</select>
+<input name="lang-${index}" placeholder="若選其它，請於本欄填寫可配合時段">
 <hr>
 </div>
 
 
 <br>
-<input type="button" name="addline" value="增加一項可教授語別" id="addline">
+<input type="button" name="addline" value="增加一項族語需求" id="addline">
 <input name="submit" type="submit" value="完成問卷提交">
 </form>
 <script>

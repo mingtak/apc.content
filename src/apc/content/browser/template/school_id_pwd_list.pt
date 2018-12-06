@@ -15,9 +15,33 @@ from plone import api
 portal = api.portal.get()
 ?>
 
-<p tal:repeat="item view/result">
-${item}
-</p>
+
+<h4>密碼表</h4>
+
+<table>
+<tr class="head">
+  <td>名稱</td>
+  <td>帳號</td>
+  <td>密碼</td>
+</tr>
+<tr tal:repeat="item view/result">
+  <td tal:content="python:''.join(item.split()[:-2])">名稱</td>
+  <td tal:content="python:item.split()[-2]">帳號</td>
+  <td tal:content="python:item.split()[-1]">密碼</td>
+</tr>
+</table>
+
+<style>
+table {width: 70%}
+.head {
+  background:#333;
+  color:#fff;
+}
+.head td {
+  padding:10px;
+  width: 20%
+}
+</style>
 
 </metal:content-core>
 </metal:content-core>

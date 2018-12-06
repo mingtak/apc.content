@@ -97,8 +97,8 @@ from Products.CMFPlone.utils import safe_unicode
           <div class="documentByLine">
 <!--            <tal:date tal:replace="structure python:view.formatted_date(data)"/> -->
 
-<span>主辦學校:</span><br>
-<span>${python:data.context.hire_school}</span>
+<span>主辦學校:</span>
+<span tal:condition="python:data.context.hire_school">${python:data.context.hire_school.to_object.title}</span><br>
 
 <span>共學學校:</span>
 <tal:school repeat="item python:data.context.school">

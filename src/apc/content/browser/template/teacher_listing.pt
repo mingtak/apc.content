@@ -33,8 +33,10 @@ portal = api.portal.get()
                   <img tal:condition="obj/image"
                        class="teacher-img" src="${item_url}/@@images/image"
                        style="border: 1px solid transparent; border-radius: 20px;">
-                  <img tal:condition="not:obj/image"
-                       class="teacher-img" src="${portal/absolute_url}/resource/images/user/@@images/image/preview"
+                  <img tal:define="item_gender obj/gender"
+                       tal:condition="not:obj/image"
+                       class="teacher-img"
+                       src="${view/context/portal_url}/resource/images/default-${item_gender}/@@images/image/preview"
                        style="border: 1px solid transparent; border-radius: 20px;">
                   <!-- locallang icon -->
                   <!--<img src="${item_url}/@@images/image" style="border: 1px solid transparent; border-radius: 50%; width: auto; max-height: 60px; position: absolute; left: 0;">-->

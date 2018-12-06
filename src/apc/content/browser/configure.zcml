@@ -298,6 +298,14 @@
       permission="zope2.View"
   />
 
+  <browser:page
+      name="school_survy"
+      for="*"
+      class=".views.SchoolSurvy"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
 <!-- 批次設定學校老師帳密
   <browser:page
       name="set_school_pwd"
