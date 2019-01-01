@@ -82,7 +82,8 @@ class SchoolSurvy(BrowserView):
 
         result['city'] = request.get('city')
         result['zip'] = request.get('zip')
-        result['school_name'] = request.get('school_name')
+        result['school_id'] = request.get('school_name')
+        result['school_name'] = api.content.find(portal_type='School', id=result['school_id'])[0].Title
         result['contact'] = request.get('contact')
         result['phone'] = request.get('phone')
         result['cell'] = request.get('cell')
@@ -127,7 +128,7 @@ class SchoolSurvy(BrowserView):
         output = StringIO()
         spamwriter = csv.writer(output)
 #        import pdb; pdb.set_trace()
-        spamwriter.writerow(['city', 'zip', 'school_name', 'contact', 'phone', 'cell', 'email',
+        spamwriter.writerow(['city', 'zip', 'school_id', 'school_name', 'contact', 'phone', 'cell', 'email',
             'lang1', 'level1', 'time1', 'memo1',
             'lang2', 'level2', 'time2', 'memo2',
             'lang3', 'level3', 'time3', 'memo3',
@@ -152,7 +153,7 @@ class SchoolSurvy(BrowserView):
 
         for item in result:
 #            import pdb; pdb.set_trace()
-            row = [item.get('city', ' ').encode('utf-8'), item.get('zip', ' ').encode('utf-8'),
+            row = [item.get('city', ' ').encode('utf-8'), item.get('zip', ' ').encode('utf-8'), item.get('school_id', ' ').encode('utf-8'),
                    item.get('school_name', ' ').encode('utf-8'), item.get('contact', ' ').encode('utf-8'),
                    item.get('phone', ' ').encode('utf-8'), item.get('cell', ' ').encode('utf-8'), item.get('email', ' ').encode('utf-8')]
             for index in range(20):

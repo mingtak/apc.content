@@ -33,18 +33,101 @@ time = {'1': '周一早自習',
 <h3>共學學校需求調查表</h3>
 <form method="post">
 <h4>基本資料</h4>
-       <select name="city" tal:define="cityList view/getCityList" v-model="city" required>
+
+  <table border="0" cellpadding="0" cellspacing="0" class="ta1">
+   <colgroup>
+    <col width="99"/>
+    <col width="99"/>
+    <col width="99"/>
+    <col width="99"/>
+    <col width="99"/>
+    <col width="99"/>
+   </colgroup>
+   <tr class="ro1">
+    <td class="ce1" style="text-align:left;width:22.58mm; ">
+     <p>
+      學校名稱
+     </p>
+    </td>
+    <td class="ce2" colspan="5" style="text-align:left;width:22.58mm; ">
+       <select id="city-selector" name="city" tal:define="cityList view/getCityList" v-model="city" required>
          <option value="">請選擇縣市</option>
          <option tal:repeat="item python:cityList.split(',')"
                  value="${item}">${item}</option>
        </select>
-       <select name="zip" tal:define="distList view/getDistList" v-model="zip" required>
+       <select id="zip-selector" name="zip" tal:define="distList view/getDistList" v-model="zip" required>
          <option value="" selected>鄉鎮市區</option>
          <option v-for="item in getZIP('city')"
                  v-bind:value="item.split(',')[1]">{{item.split(',')[0]}}
          </option>
        </select>
-       <input name="school_name" type="text" placeholder="學校名稱" required/>
+       <select id="school_name" name="school_name" v-model="school_name" required>
+         <option value="" selected>選擇學校</option>
+         <option v-for="item in schools"
+                 v-bind:value="item[0]">{{item[1]}}
+         </option>
+       </select>
+
+    </td>
+   </tr>
+   <tr class="ro1">
+    <td class="ce1" style="text-align:left;width:22.58mm; ">
+     <p>
+      聯絡人
+     </p>
+    </td>
+    <td class="ce1" style="text-align:left;width:22.58mm; ">
+    </td>
+    <td class="ce1" style="text-align:left;width:22.58mm; ">
+     <p>
+      電話
+     </p>
+    </td>
+    <td class="ce1" style="text-align:left;width:22.58mm; ">
+    </td>
+    <td class="ce1" style="text-align:left;width:22.58mm; ">
+     <p>
+      手機
+     </p>
+    </td>
+    <td class="ce1" style="text-align:left;width:22.58mm; ">
+    </td>
+   </tr>
+   <tr class="ro1">
+    <td class="ce1" style="text-align:left;width:22.58mm; ">
+     <p>
+      eamil
+     </p>
+    </td>
+    <td class="ce2" colspan="5" style="text-align:left;width:22.58mm; ">
+    </td>
+   </tr>
+  </table>
+
+
+
+
+
+
+       <select id="city-selector" name="city" tal:define="cityList view/getCityList" v-model="city" required>
+         <option value="">請選擇縣市</option>
+         <option tal:repeat="item python:cityList.split(',')"
+                 value="${item}">${item}</option>
+       </select>
+       <select id="zip-selector" name="zip" tal:define="distList view/getDistList" v-model="zip" required>
+         <option value="" selected>鄉鎮市區</option>
+         <option v-for="item in getZIP('city')"
+                 v-bind:value="item.split(',')[1]">{{item.split(',')[0]}}
+         </option>
+       </select>
+       <select id="school_name" name="school_name" v-model="school_name" required>
+         <option value="" selected>選擇學校</option>
+         <option v-for="item in schools"
+                 v-bind:value="item[0]">{{item[1]}}
+         </option>
+       </select>
+
+<br>
 
   聯絡人:<input name="contact" required><br>
   電話:<input name="phone" required><br>
@@ -101,15 +184,35 @@ $(document).ready(function(){
 
 
 <script>
+$(document).ready(function(){
+  $('#city-selector').change(function(){
+      app['zip'] = ''
+      app['school_name'] = ''
+  })
+
+  $('#zip-selector').change(function(){
+    zip = $(this).val()
+    $.get('${portal_url}/@@zip_get_schools?zip=' + zip, function(){
+    }).done(function(data){
+           app['schools'] = $.parseJSON(data)
+           app['school_name'] = ''
+       }).fail(function(){
+           alert('Fail')
+       });
+  })
+})
+
+
 var app = new Vue({
     el: '#content-core',
     data: {
       message: 'Hello Vue!',
       city: '',
       zip: '',
+      school_name: '',
       address: '',
-
-      distList: "${python:view.getDistList().replace('\n', '\t')}".split('\t')
+      distList: "${python:view.getDistList().replace('\n', '\t')}".split('\t'),
+      schools:[]
     },
     methods: {
       getZIP: function(cityStr){
@@ -131,15 +234,32 @@ var app = new Vue({
 
 </script>
 
+
+<style>
+    @page {  }
+    table { border-collapse:collapse; border-spacing:0; empty-cells:show }
+    td, th { vertical-align:top; font-size:10pt;}
+    h1, h2, h3, h4, h5, h6 { clear:both;}
+    ol, ul { margin:0; padding:0;}
+    li { list-style: none; margin:0; padding:0;}
+    /* "li span.odfLiEnd" - IE 7 issue*/
+    li span. { clear: both; line-height:0; width:0; height:0; margin:0; padding:0; }
+    span.footnodeNumber { padding-right:1em; }
+    span.annotation_style_by_filter { font-size:95%; font-family:Arial; background-color:#fff000;  margin:0; border:0; padding:0;  }
+    span.heading_numbering { margin-right: 0.8rem; }* { margin:0;}
+    .ta1 { writing-mode:lr-tb; }
+    .ce1 { font-family:Liberation Sans; border-width:0.0133cm; border-style:solid; border-color:#000000; vertical-align:middle; text-align:center ! important; }
+    .ce2 { font-family:Liberation Sans; border-width:0.0133cm; border-style:solid; border-color:#000000; }
+    .co1 { width:22.58mm; }
+    .ro1 { height:4.52mm; }
+    /* ODF styles with no properties representable as CSS */
+     { }
+</style>
+
+
+
 </metal:content-core>
 </metal:content-core>
 
 </body>
 </html>
-
-
-
-
-
-
-
