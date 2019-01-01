@@ -1,3 +1,21 @@
+.template-teacher_survy td, .template-school_survy td {border: 1px solid}
+
+.template-teacher_survy td select { float:left; }
+.template-teacher_survy td.title {background: #aad6ea; white-space:nowrap; padding-right:5px}
+.template-teacher_survy td.title p { padding: 5px 0 0 15px}
+.template-teacher_survy td input, .template-teacher_survy td select { margin: 5px}
+.template-teacher_survy td input.email { width: 50%}
+.template-teacher_survy td input.address { width: 50%}
+
+.template-teacher_survy .langlist input {width: 100px}
+.template-teacher_survy .langlist input.other {width: 300px}
+.template-teacher_survy .langlist .rank {float:left; margin:8px 5px 5px 5px}
+.template-teacher_survy .langlist input.checkbox {width: 20px; margin-right: 30px}
+
+
+
+
+
 .template-school_survy td.title {background: #aad6ea; white-space:nowrap; padding-right:5px}
 .template-school_survy td.title p { padding: 5px 0 0 15px}
 .template-school_survy td input, .template-school_survy td select { margin: 5px}

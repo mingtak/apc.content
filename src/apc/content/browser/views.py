@@ -164,7 +164,6 @@ class SchoolSurvy(BrowserView):
                     row.append(item['lang'][index][0]) # 語別
                     row.append('/'.join(item['lang'][index][1:4])) # 所需級別
 
-#            import pdb; pdb.set_trace()
             spamwriter.writerow(row)
         request.response.setHeader('Content-Type', 'application/csv')
         request.response.setHeader('Content-Disposition', 'attachment; filename="school_survy.csv"')
@@ -201,6 +200,7 @@ class TeacherSurvy(BrowserView):
         spamwriter = csv.writer(output)
 #        import pdb; pdb.set_trace()
         spamwriter.writerow(['name_han', 'han_zu', 'phone', 'cell', 'city', 'zip', 'address',
+                             'lang-class-time', 'lang-class-time-other',
             'lang1', 'level1',
             'lang2', 'level2',
             'lang3', 'level3',
@@ -226,7 +226,8 @@ class TeacherSurvy(BrowserView):
         for item in result:
             row = [item.get('name_han').encode('utf-8'), item.get('name_zu').encode('utf-8'),
                    item.get('phone'), item.get('cell'),
-                   item.get('city').encode('utf-8'), item.get('zip'), item.get('address').encode('utf-8')]
+                   item.get('city').encode('utf-8'), item.get('zip'), item.get('address').encode('utf-8'),
+                   item.get('lang-class-time', ' ').encode('utf-8'), item.get('lang-class-time-other', ' ').encode('utf-8')]
             for index in range(20):
                 if type(item['lang'][index]) == type([]):
                     row.append(item['lang'][index][0])
@@ -260,6 +261,8 @@ class TeacherSurvy(BrowserView):
         result['city'] = request.get('city')
         result['zip'] = request.get('zip')
         result['address'] = request.get('address')
+        result['lang-class-time'] = request.get('lang-class-time')
+        result['lang-class-time-other'] = request.get('lang-class-time-other')
 
         lang = []
         for index in range(20):

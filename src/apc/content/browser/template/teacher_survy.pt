@@ -67,35 +67,113 @@ lang = [
 ['P43', '撒奇萊雅語'],
 ['Q00', '囒哈巫語'],
 ]
+time = {'1': '周一早自習',
+        '2': '周二早自習',
+        '3': '周三早自習',
+        '4': '周四早自習',
+        '5': '周五早自習',
+        '6': '早自習均可',
+        '7': '其它',}
 ?>
 
 <a tal:condition="python:api.user.get_current().id == 'admin'"
-   href="${context/absolute_url}/@@school_survy?download" style="float:right">
+   href="${context/absolute_url}/@@teacher_survy?download" style="float:right">
    下載調查表
 </a>
 
 <h3>族語教師調查表</h3>
 <form method="post">
 <h4>基本資料</h4>
-  姓名(漢名):<input name="name_han" required><br>
-  姓名(族名):<input name="name_zu" required><br>
-  電話:<input name="phone" required><br>
-  手機:<input name="cell" required><br>
-  地址:
 
+ <table border="0" cellpadding="0" cellspacing="0" class="ta1">
+  <colgroup>
+   <col width="99"/>
+   <col width="99"/>
+   <col width="99"/>
+   <col width="99"/>
+  </colgroup>
+  <tr class="ro1">
+   <td class="ce1 title" style="text-align:left;width:22.58mm; ">
+    <p>
+     姓名(漢名)：
+    </p>
+   </td>
+   <td class="ce1" style="text-align:left;width:22.58mm; ">
+<input name="name_han" required>
+   </td>
+   <td class="ce1 title" style="text-align:left;width:22.58mm; ">
+    <p>
+     姓名(族名)：
+    </p>
+   </td>
+   <td class="ce1" style="text-align:left;width:22.58mm; ">
+<input name="name_zu" required>
+   </td>
+  </tr>
+  <tr class="ro2">
+   <td class="ce1 title" style="text-align:left;width:22.58mm; ">
+    <p>
+     電話：
+    </p>
+   </td>
+   <td class="ce1" style="text-align:left;width:22.58mm; ">
+<input name="phone" required>
+   </td>
+   <td class="ce1 title" style="text-align:left;width:22.58mm; ">
+    <p>
+     手機：
+    </p>
+   </td>
+   <td class="ce1" style="text-align:left;width:22.58mm; ">
+<input name="cell" required>
+   </td>
+  </tr>
+  <tr class="ro2">
+   <td class="ce1 title" style="text-align:left;width:22.58mm; ">
+    <p>
+     地址：
+    </p>
+   </td>
+   <td class="ce2" colspan="3" style="text-align:left;width:22.58mm; ">
        <select name="city" tal:define="cityList view/getCityList" v-model="city" required>
          <option value="">請選擇縣市</option>
          <option tal:repeat="item python:cityList.split(',')"
                  value="${item}">${item}</option>
        </select>
+
        <select name="zip" tal:define="distList view/getDistList" v-model="zip" required>
          <option value="" selected>鄉鎮市區</option>
          <option v-for="item in getZIP('city')"
                  v-bind:value="item.split(',')[1]">{{item.split(',')[0]}}
          </option>
        </select>
-<!--       <input name='zip_code' type='number' style='' min='0' placeholder='郵遞區號' required/> -->
-       <input name="address" type="text" v-model="address" placeholder="聯絡地址" required/>
+
+       <input class="address" name="address" type="text" v-model="address" placeholder="聯絡地址" required/>
+
+   </td>
+  </tr>
+ </table>
+
+
+
+
+
+
+
+
+
+
+
+<h4>可配合上課時段調查</h4>
+<div class="class-time">
+<select name="lang-class-time">
+  <option tal:repeat="item python:range(7)"
+          tal:attributes="value python:item+1" tal:content="python:time[str(item+1)]">
+</select>
+<input class="other" name="lang-class-time-other" placeholder="若選其它，請於本欄填寫可配合時段" style="width: 500px">
+</div>
+<br>
+
 
 <h4>可教授語別調查</h4>
 
@@ -108,9 +186,9 @@ lang = [
 </select>
 <br>
 可教授級別:
-低年級<input type="checkbox" name="lang-${index}" value="primary">
-中年級<input type="checkbox" name="lang-${index}" value="intermediate">
-高年級<input type="checkbox" name="lang-${index}" value="advanced">
+低年級<input class="checkbox" type="checkbox" name="lang-${index}" value="primary">
+中年級<input class="checkbox" type="checkbox" name="lang-${index}" value="intermediate">
+高年級<input class="checkbox" type="checkbox" name="lang-${index}" value="advanced">
 <hr>
 </div>
 
