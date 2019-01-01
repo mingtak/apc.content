@@ -26,13 +26,13 @@ catalog = portal.portal_catalog
   <td>密碼</td>
 </tr>
 <tr tal:repeat="item view/result">
-  <td tal:define="school python:catalog({'id':item.split()[0], 'portal_type':['Teacher', 'School']})[0]">
-    ${python:''.join(item.split()[:-2])}
-    (<a target="_blank" href="${python:'%s/edit#autotoc-item-autotoc-2' % school.getURL()}">改密碼</a>)
+  <td tal:define="school python:catalog({'id':item.split()[-1], 'portal_type':'Teacher'})[0]">
+    ${python:item.split()[0]}
+    (<a target="_blank" href="${python:'%s/edit#autotoc-item-autotoc-3' % school.getURL()}">改密碼</a>)
   </td>
 
-  <td tal:content="python:item.split()[-2]">帳號</td>
-  <td tal:content="python:item.split()[-1]">密碼</td>
+  <td tal:content="python:item.split()[-3]">帳號</td>
+  <td tal:content="python:item.split()[-2]">密碼</td>
 </tr>
 </table>
 

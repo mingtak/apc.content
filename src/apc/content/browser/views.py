@@ -28,6 +28,16 @@ from StringIO import StringIO
 logger = logging.getLogger("apc.content")
 
 
+class TestPage(BrowserView):
+
+    def __call__(self):
+        alsoProvides(self.request, IDisableCSRFProtection)
+        portal = api.portal.get()
+        context = self.context
+        request = self.request
+        import pdb; pdb.set_trace()
+
+
 class SchoolSurvy(BrowserView):
     """ School Survy View """
     template = ViewPageTemplateFile("template/school_survy.pt")
@@ -312,7 +322,7 @@ class SchoolIdPwdList(BrowserView):
 
 class TeacherIdPwdList(BrowserView):
 
-    template = ViewPageTemplateFile("template/school_id_pwd_list.pt")
+    template = ViewPageTemplateFile("template/teacher_id_pwd_list.pt")
     def __call__(self):
         alsoProvides(self.request, IDisableCSRFProtection)
         context = self.context
@@ -327,7 +337,7 @@ class TeacherIdPwdList(BrowserView):
             if obj.teacher_id:
                 schObj = obj
                 teacherList.append(obj.id)
-                self.result.append('%s\t%s\t%s\n' % (schObj.title, schObj.teacher_id, schObj.teacher_pw))
+                self.result.append('%s\t%s\t%s\t%s\n' % (schObj.title, schObj.teacher_id, schObj.teacher_pw, schObj.id))
                 logger.info('append ok, %s' % schObj.title)
         return self.template()
 

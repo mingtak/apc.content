@@ -2,7 +2,7 @@
 from plone import api
 from Products.CMFPlone.utils import safe_unicode
 portal = api.portal.get()
-leaveBrain = api.content.find(leaveALesson=True, sort_on='modified', sort_order='reverse', sort_limit=2)
+leaveBrain = api.content.find(leaveALesson=True, sort_on='modified', sort_order='reverse', sort_limit=10)
 ?>
 
 <div class="container" id="announcement_viewlet">
@@ -13,7 +13,7 @@ leaveBrain = api.content.find(leaveALesson=True, sort_on='modified', sort_order=
       <ul>
         <table>
           <tbody>
-           <tal:repeat repeat="item python:list(portal['news']['news02'].getChildNodes())[:6]">
+           <tal:repeat repeat="item python:list(portal['news']['news02'].getChildNodes())[:10]">
             <tr class="tr-list">
               <td width="100"><li class="publish-date">${python:item.created().strftime('%Y-%m-%d')}</li></td>
               <td>
@@ -59,7 +59,8 @@ leaveBrain = api.content.find(leaveALesson=True, sort_on='modified', sort_order=
     <div class="col-xs-12" style="margin-bottom:20px;" />
     <div class="col-xs-12 announcement">
       <div class="row">
-        <tal:repeat tal:repeat="item python:api.content.find(context=portal['live_video'], Type='LiveClass', sort_on='start', sort_order='reverse')">
+        <tal:repeat tal:repeat="item python:api.content.find(context=portal['live_video'],
+                                                portal_type='LiveClass', sort_on='start', sort_order='reverse')">
          <tal:obj define="obj item/getObject" condition="obj/embeded">
           <div class="col-xs-6 col-md-3" style="text-align:center;">
             <a href="${item/getURL}" class="title">${item/Title}</a>

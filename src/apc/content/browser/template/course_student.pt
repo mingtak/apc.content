@@ -9,13 +9,17 @@
 <metal:content-core fill-slot="content-core">
 <metal:content-core define-macro="content-core"
                     tal:define="toc context/table_of_contents|nothing;">
+
+<h3>學生名單</h3>
+<hr>
+
 <div class="row" tal:repeat="item view/getStudents">
   <tal:define tal:define="obj item/getObject;
                           title obj/title;
                           student obj/studentList">
     <tal:condition tal:condition="student">
       <div class="col-xs-12 col-sm-4 ">
-        <p>${title}</p>
+        <p>${title}(<a href="${python:obj.absolute_url()}/edit" target="_blank">編輯</a>)</p>
       </div>
 
       <div class="col-xs-12 col-sm-6">

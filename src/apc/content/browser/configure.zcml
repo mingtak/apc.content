@@ -315,4 +315,15 @@
       permission="cmf.ManagePortal"
   />
 -->
+
+
+  <browser:page
+      name="testpage"
+      for="*"
+      class=".views.TestPage"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="cmf.ManagePortal"
+  />
+
+
 </configure>
