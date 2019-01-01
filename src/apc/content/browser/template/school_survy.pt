@@ -44,7 +44,7 @@ time = {'1': '周一早自習',
     <col width="99"/>
    </colgroup>
    <tr class="ro1">
-    <td class="ce1" style="text-align:left;width:22.58mm; ">
+    <td class="ce1 title" style="text-align:left;width:22.58mm; ">
      <p>
       學校名稱
      </p>
@@ -71,68 +71,43 @@ time = {'1': '周一早自習',
     </td>
    </tr>
    <tr class="ro1">
-    <td class="ce1" style="text-align:left;width:22.58mm; ">
+    <td class="ce1 title" style="text-align:left;width:22.58mm; ">
      <p>
       聯絡人
      </p>
     </td>
     <td class="ce1" style="text-align:left;width:22.58mm; ">
+<input name="contact" required>
     </td>
-    <td class="ce1" style="text-align:left;width:22.58mm; ">
+    <td class="ce1 title" style="text-align:left;width:22.58mm; ">
      <p>
       電話
      </p>
     </td>
     <td class="ce1" style="text-align:left;width:22.58mm; ">
+<input name="phone" required>
     </td>
-    <td class="ce1" style="text-align:left;width:22.58mm; ">
+    <td class="ce1 title" style="text-align:left;width:22.58mm; ">
      <p>
       手機
      </p>
     </td>
     <td class="ce1" style="text-align:left;width:22.58mm; ">
+<input name="cell" required>
     </td>
    </tr>
    <tr class="ro1">
-    <td class="ce1" style="text-align:left;width:22.58mm; ">
+    <td class="ce1 title" style="text-align:left;width:22.58mm; ">
      <p>
       eamil
      </p>
     </td>
     <td class="ce2" colspan="5" style="text-align:left;width:22.58mm; ">
+<input type="email" name="email" class="email" required>
     </td>
    </tr>
   </table>
 
-
-
-
-
-
-       <select id="city-selector" name="city" tal:define="cityList view/getCityList" v-model="city" required>
-         <option value="">請選擇縣市</option>
-         <option tal:repeat="item python:cityList.split(',')"
-                 value="${item}">${item}</option>
-       </select>
-       <select id="zip-selector" name="zip" tal:define="distList view/getDistList" v-model="zip" required>
-         <option value="" selected>鄉鎮市區</option>
-         <option v-for="item in getZIP('city')"
-                 v-bind:value="item.split(',')[1]">{{item.split(',')[0]}}
-         </option>
-       </select>
-       <select id="school_name" name="school_name" v-model="school_name" required>
-         <option value="" selected>選擇學校</option>
-         <option v-for="item in schools"
-                 v-bind:value="item[0]">{{item[1]}}
-         </option>
-       </select>
-
-<br>
-
-  聯絡人:<input name="contact" required><br>
-  電話:<input name="phone" required><br>
-  手機:<input name="cell" required><br>
-  email:<input type="email" name="email" required><br>
 
 <h4>族語教師需求調查</h4>
 
@@ -235,7 +210,7 @@ var app = new Vue({
 </script>
 
 
-<style>
+<style type="text/css">
     @page {  }
     table { border-collapse:collapse; border-spacing:0; empty-cells:show }
     td, th { vertical-align:top; font-size:10pt;}
@@ -252,7 +227,6 @@ var app = new Vue({
     .ce2 { font-family:Liberation Sans; border-width:0.0133cm; border-style:solid; border-color:#000000; }
     .co1 { width:22.58mm; }
     .ro1 { height:4.52mm; }
-    /* ODF styles with no properties representable as CSS */
      { }
 </style>
 
