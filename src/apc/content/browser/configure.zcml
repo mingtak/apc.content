@@ -306,6 +306,14 @@
       permission="zope2.View"
   />
 
+  <browser:page
+      name="zip_get_schools"
+      for="*"
+      class=".views.ZipGetSchools"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
 <!-- 批次設定學校老師帳密
   <browser:page
       name="set_school_pwd"

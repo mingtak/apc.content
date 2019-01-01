@@ -54,3 +54,7 @@ def hashSHA256_school(obj):
 def schoolID(obj):
     school_id = obj.school_id
     return school_id
+
+@indexer(ISchool)
+def zip(obj):
+    return obj.zip

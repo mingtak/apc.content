@@ -38,6 +38,21 @@ class TestPage(BrowserView):
         import pdb; pdb.set_trace()
 
 
+class ZipGetSchools(BrowserView):
+
+    def __call__(self):
+        request = self.request
+
+        zip = request.form.get('zip')
+
+        brain = api.content.find(zip=zip)
+        result = []
+        for item in brain:
+            result.append([item.id, item.Title])
+
+        return json.dumps(result)
+
+
 class SchoolSurvy(BrowserView):
     """ School Survy View """
     template = ViewPageTemplateFile("template/school_survy.pt")

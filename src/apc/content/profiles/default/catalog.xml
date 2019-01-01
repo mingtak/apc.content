@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <object name="portal_catalog">
 
+  <index name="zip" meta_type="FieldIndex">
+    <indexed_attr value="zip" />
+  </index>
+  <column value="zip"/>
+
   <index name="leaveALesson" meta_type="BooleanIndex">
     <indexed_attr value="leaveALesson" />
   </index>

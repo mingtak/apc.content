@@ -13,4 +13,5 @@
     <adapter name="school_id" factory=".indexers.schoolID" />
     <adapter name="vMeetingRoom" factory=".indexers.vMeetingRoom" />
     <adapter name="leaveALesson" factory=".indexers.leaveALesson" />
+    <adapter name="zip" factory=".indexers.zip" />
 </configure>

@@ -21,6 +21,11 @@ class ISchool(model.Schema):
         required=False
     )
 
+    zip = schema.TextLine(
+        title=_(u'ZIP Code'),
+        required=False,
+    )
+
     fieldset(_('School Cotact'), fields=['name', 'telephone', 'phone', 'email'])
     name = schema.TextLine(
         title=_(u'Contact Name'),
