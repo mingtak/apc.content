@@ -88,6 +88,8 @@ class SchoolSurvy(BrowserView):
         result['phone'] = request.get('phone')
         result['cell'] = request.get('cell')
         result['email'] = request.get('email')
+        result['lang-class-time'] = request.get('lang-class-time')
+        result['lang-class-time-other'] = request.get('lang-class-time-other')
 
         lang = []
         for index in range(20):
@@ -129,39 +131,38 @@ class SchoolSurvy(BrowserView):
         spamwriter = csv.writer(output)
 #        import pdb; pdb.set_trace()
         spamwriter.writerow(['city', 'zip', 'school_id', 'school_name', 'contact', 'phone', 'cell', 'email',
-            'lang1', 'level1', 'time1', 'memo1',
-            'lang2', 'level2', 'time2', 'memo2',
-            'lang3', 'level3', 'time3', 'memo3',
-            'lang4', 'level4', 'time4', 'memo4',
-            'lang5', 'level5', 'time5', 'memo5',
-            'lang6', 'level6', 'time6', 'memo6',
-            'lang7', 'level7', 'time7', 'memo7',
-            'lang8', 'level8', 'time8', 'memo8',
-            'lang9', 'level9', 'time9', 'memo9',
-            'lang10', 'level10', 'time10', 'memo10',
-            'lang11', 'level11', 'time11', 'memo11',
-            'lang12', 'level12', 'time12', 'memo12',
-            'lang13', 'level13', 'time13', 'memo13',
-            'lang14', 'level14', 'time14', 'memo14',
-            'lang15', 'level15', 'time15', 'memo15',
-            'lang16', 'level16', 'time16', 'memo16',
-            'lang17', 'level17', 'time17', 'memo17',
-            'lang18', 'level18', 'time18', 'memo18',
-            'lang19', 'level19', 'time19', 'memo19',
-            'lang20', 'level20', 'time20', 'memo20',
+                             'lang-class-time', 'lang-class-time-other',
+            'lang1', 'level1',
+            'lang2', 'level2',
+            'lang3', 'level3',
+            'lang4', 'level4',
+            'lang5', 'level5',
+            'lang6', 'level6',
+            'lang7', 'level7',
+            'lang8', 'level8',
+            'lang9', 'level9',
+            'lang10', 'level10',
+            'lang11', 'level11',
+            'lang12', 'level12',
+            'lang13', 'level13',
+            'lang14', 'level14',
+            'lang15', 'level15',
+            'lang16', 'level16',
+            'lang17', 'level17',
+            'lang18', 'level18',
+            'lang19', 'level19',
+            'lang20', 'level20',
         ])
 
         for item in result:
-#            import pdb; pdb.set_trace()
             row = [item.get('city', ' ').encode('utf-8'), item.get('zip', ' ').encode('utf-8'), item.get('school_id', ' ').encode('utf-8'),
                    item.get('school_name', ' ').encode('utf-8'), item.get('contact', ' ').encode('utf-8'),
-                   item.get('phone', ' ').encode('utf-8'), item.get('cell', ' ').encode('utf-8'), item.get('email', ' ').encode('utf-8')]
+                   item.get('phone', ' ').encode('utf-8'), item.get('cell', ' ').encode('utf-8'), item.get('email', ' ').encode('utf-8'),
+                   item.get('lang-class-time', ' ').encode('utf-8'), item.get('lang-class-time-other', ' ').encode('utf-8')]
             for index in range(20):
                 if item['lang'][index][1:4] != ["0", "0", "0"]:
                     row.append(item['lang'][index][0]) # 語別
                     row.append('/'.join(item['lang'][index][1:4])) # 所需級別
-                    row.append(time[item['lang'][index][4]]) # 時段
-                    row.append(item['lang'][index][5].encode('utf-8')) # 其它
 
 #            import pdb; pdb.set_trace()
             spamwriter.writerow(row)
