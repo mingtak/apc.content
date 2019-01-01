@@ -15,7 +15,58 @@
                     tal:define="toc context/table_of_contents|nothing;">
 <?python
 from plone import api
-lang = {'A01': '阿美語', 'B02': '魯凱語'}
+lang = [
+['A00', '阿美族語(不分方言別)'],
+['A01', '南勢阿美語'],
+['A02', '秀姑巒阿美語'],
+['A03', '海岸阿美語'],
+['A04', '馬蘭阿美語'],
+['A05', '恆春阿美語'],
+['B00', '泰雅族語(不分方言別)'],
+['B06', '賽考利克泰雅語'],
+['B07', '澤敖利泰雅語'],
+['B08', '汶水泰雅語'],
+['B09', '萬大泰雅語'],
+['B10', '四季泰雅語'],
+['B11', '宜蘭澤敖利泰雅語'],
+['C13', '賽夏語'],
+['D14', '邵語'],
+['E00', '賽德克族語(不分方言別)'],
+['E15', '都達語'],
+['E16', '德固達雅語'],
+['E17', '德路固語'],
+['F00', '布農族語(不分方言別)'],
+['F18', '卓群布農語'],
+['F19', '卡群布農語'],
+['F20', '丹群布農語'],
+['F21', '巒群布農語'],
+['F22', '郡群布農語'],
+['G00', '排灣族語(不分方言別)'],
+['G23', '東排灣語'],
+['G24', '北排灣語'],
+['G25', '中排灣語'],
+['G26', '南排灣語'],
+['H00', '魯凱族語(不分方言別)'],
+['H27', '東魯凱語'],
+['H28', '霧台魯凱語'],
+['H29', '大武魯凱語'],
+['H30', '多納魯凱語'],
+['H31', '茂林魯凱語'],
+['H32', '萬山魯凱語'],
+['I33', '太魯閣語'],
+['J34', '噶瑪蘭語'],
+['K35', '鄒語'],
+['L36', '卡那卡那富語'],
+['M37', '拉阿魯哇語'],
+['N00', '卑南族語(不分方言別)'],
+['N38', '南王卑南語'],
+['N39', '知本卑南語'],
+['N40', '初鹿卑南語'],
+['N41', '建和卑南語'],
+['O42', '雅美語'],
+['P43', '撒奇萊雅語'],
+['Q00', '囒哈巫語'],
+]
 time = {'1': '周一早自習',
         '2': '周二早自習',
         '3': '周三早自習',
@@ -114,23 +165,84 @@ time = {'1': '周一早自習',
 <div tal:repeat="index python:range(20)"
      tal:attributes="class string:langlist langlist-${index}"
      style="display:none">
-需求族語別:
+
+  <table border="0" cellpadding="0" cellspacing="0" class="ta1">
+   <colgroup>
+    <col width="99"/>
+    <col width="99"/>
+    <col width="99"/>
+    <col width="99"/>
+    <col width="99"/>
+    <col width="99"/>
+    <col width="99"/>
+   </colgroup>
+   <tr class="ro1">
+    <td class="ce1 title" style="text-align:left;width:22.58mm; ">
+     <p>
+      需求族語別:
+     </p>
+    </td>
+    <td class="ce2" colspan="6" style="text-align:left;width:22.58mm; ">
 <select name="lang-${index}">
-  <option tal:repeat="item lang" tal:attributes="value item" tal:content="python:lang[item]">
+  <option tal:repeat="item lang" tal:attributes="value python:item[0]" tal:content="python:item[1]">
 </select>
-<br>
-需求人數:
-低年級<input type="number" name="lang-${index}" value="0">
-中年級<input type="number" name="lang-${index}" value="0">
-高年級<input type="number" name="lang-${index}" value="0">
+
+    </td>
+   </tr>
+   <tr class="ro1">
+    <td class="ce2 title" style="text-align:left;width:22.58mm; ">
+     <p>
+      需求人數:
+     </p>
+    </td>
+    <td class="ce4" colspan="2" style="text-align:left;width:22.58mm; ">
+<span class="rank">低年級</span>
+<input type="number" name="lang-${index}" value="0">
+    </td>
+    <td class="ce4" colspan="2" style="text-align:left;width:22.58mm; ">
+<span class="rank">中年級</span>
+      <input type="number" name="lang-${index}" value="0">
+    </td>
+    <td class="ce4" colspan="2" style="text-align:left;width:22.58mm; ">
+<span class="rank">高年級</span>
+      <input type="number" name="lang-${index}" value="0">
+    </td>
+   </tr>
+   <tr class="ro1">
+    <td class="ce3 title" style="text-align:left;width:22.58mm; ">
+     <p>
+      可配合時段:
+     </p>
+    </td>
+    <td class="ce2" colspan="2" style="text-align:left;width:22.58mm; ">
+
+<select name="lang-${index}">
+  <option tal:repeat="item python:range(7)"
+          tal:attributes="value python:item+1" tal:content="python:time[str(item+1)]">
+</select>
+    </td>
+    <td class="ce2" colspan="4" style="text-align:left;width:22.58mm; ">
+<input class="other" name="lang-${index}" placeholder="若選其它，請於本欄填寫可配合時段">
+    </td>
+   </tr>
+  </table>
+
+
+
 <br>
 
-可配合時段:
-<select name="lang-${index}">
-  <option tal:repeat="item time" tal:attributes="value item" tal:content="python:time[item]">
-</select>
-<input name="lang-${index}" placeholder="若選其它，請於本欄填寫可配合時段">
-<hr>
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
 
 
