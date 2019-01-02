@@ -519,6 +519,18 @@ class MatchResult(BrowserView):
         if isAnon:
             return request.response.redirect(portal.absolute_url())
 
+        # 讀取學校及教師調查表csv檔
+        teacher_survy = request.get('teacher_survy', '')
+        school_survy = request.get('school_survy', '')
+
+        tFile = StringIO(teacher_survy.read())
+        tReader = csv.DictReader(tFile, delimiter=',')
+
+        sFile = StringIO(school_survy.read())
+        sReader = csv.DictReader(sFile, delimiter=',')
+
+#        import pdb; pdb.set_trace()
+
         # min costudy schools(min_sc)
         self.min_sc=int(request.form.get('min_sc', 3))
         # max costudy schools(max_sc) and students(max_st) limit
@@ -694,7 +706,6 @@ class PrepareUniLessons(BrowserView):
         upload_text = request.form.get('description', '')
 
         data = {"description": upload_text, "upload_topic": upload_topic}
-
         data.update({"vacation": False})
         if request.get('vacation', '') == 'true':
             data.update({"vacation": True})
