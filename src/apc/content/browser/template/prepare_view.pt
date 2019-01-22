@@ -24,10 +24,18 @@
 
 
     <li><b>課程直播:</b>
-        <div tal:condition="context/embeded" tal:content="structure context/embeded"></div>
+        <div tal:condition="context/embeded" tal:content="structure context/embeded" class="embedCode"></div>
         <div tal:condition="not:context/embeded">尚未上傳</div>
     </li>
   </ul>
+
+<style>
+.embedCode {overflow: hidden}
+.embedCode iframe { max-width: 100%;}
+</style>
+
+
+
 </metal:content-core>
 </metal:content-core>
 

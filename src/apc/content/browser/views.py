@@ -77,7 +77,8 @@ class SchoolSurvy(BrowserView):
         if request.has_key('download'):
             return self.download()
 
-        if not request.has_key('_authenticator') or not request.has_key('contact'):
+#        if not request.has_key('_authenticator') or not request.has_key('contact'):
+        if not request.has_key('contact'):
             return self.template()
 
         result['city'] = request.get('city')
@@ -89,6 +90,8 @@ class SchoolSurvy(BrowserView):
         result['cell'] = request.get('cell')
         result['email'] = request.get('email')
         result['lang-class-time'] = request.get('lang-class-time')
+        if result['lang-class-time'] == '6':
+            result['lang-class-time'] = '12345'
         result['lang-class-time-other'] = request.get('lang-class-time-other')
 
         lang = []
@@ -231,7 +234,12 @@ class TeacherSurvy(BrowserView):
             for index in range(20):
                 if type(item['lang'][index]) == type([]):
                     row.append(item['lang'][index][0])
-                    row.append('/'.join(item['lang'][index][1:]))
+
+                    primary = '1' if 'primary' in item['lang'][index] else '0'
+                    intermediate = '1' if 'intermediate' in item['lang'][index] else '0'
+                    advanced = '1' if 'advanced' in item['lang'][index] else '0'
+
+                    row.append('/'.join([primary, intermediate, advanced]))
 
 #            import pdb; pdb.set_trace()
             spamwriter.writerow(row)
@@ -251,7 +259,9 @@ class TeacherSurvy(BrowserView):
         if request.has_key('download'):
             return self.download()
 
-        if not request.has_key('_authenticator') or not request.has_key('name_han'):
+#        import pdb;pdb.set_trace()
+#        if not request.has_key('_authenticator') or not request.has_key('name_han'):
+        if not request.has_key('name_han'):
             return self.template()
 
         result['name_han'] = request.get('name_han')
@@ -262,6 +272,8 @@ class TeacherSurvy(BrowserView):
         result['zip'] = request.get('zip')
         result['address'] = request.get('address')
         result['lang-class-time'] = request.get('lang-class-time')
+        if result['lang-class-time'] == '6':
+            result['lang-class-time'] = '12345'
         result['lang-class-time-other'] = request.get('lang-class-time-other')
 
         lang = []
@@ -278,6 +290,7 @@ class TeacherSurvy(BrowserView):
         jsonData.append(result)
         resultObj.description = json.dumps(jsonData)
         api.portal.show_message(message=_('Survy Finish, Thanks!'), request=request)
+#        import pdb;pdb.set_trace()
         return self.template()
 
 
@@ -525,10 +538,15 @@ class MatchResult(BrowserView):
 
         tFile = StringIO(teacher_survy.read())
         tReader = csv.DictReader(tFile, delimiter=',')
+        teachers = []
+        for item in tReader:
+            teachers.append(item)
 
         sFile = StringIO(school_survy.read())
         sReader = csv.DictReader(sFile, delimiter=',')
-
+        schools = []
+        for item in sReader:
+            schools.append(item)
 #        import pdb; pdb.set_trace()
 
         # min costudy schools(min_sc)
@@ -537,47 +555,48 @@ class MatchResult(BrowserView):
         self.max_sc=int(request.form.get('max_sc', 6))
         self.max_st=int(request.form.get('max_st', 10))
 
-        factory1 = getUtility(IVocabularyFactory, 'apc.content.ClassTime')
-        self.vocaClassTime = factory1(context)
+#        factory1 = getUtility(IVocabularyFactory, 'apc.content.ClassTime')
+#        self.vocaClassTime = factory1(context)
 
-        teachers = portal['teacher'].getChildNodes()
-        schools = api.content.find(context=portal['school'], portal_type='School')
+#        teachers = portal['teacher'].getChildNodes()
+#        schools = api.content.find(context=portal['school'], portal_type='School')
 
-        # 確認可開班狀況
+        # 確認可開班狀況, 大課表
         self.courseTable = {}
         for teacher in teachers:
-            for item in teacher.classTime:
+#            import pdb; pdb.set_trace()
+            for item in teacher['lang-class-time']:
                 # [學生數, 開課級別]
-                self.courseTable['%s_%s' % (teacher.title, item)] = [0, '', '']
+                self.courseTable['%s_%s' % (teacher['name_han'], item)] = [0, '', '']
 
         for teacher in teachers:
             # 老師能教
             canTeach = {}
-            for item in teacher.localLang.split('/'):
-                language = item.split(',')[1]
-                canTeach[language] = item
 
-            for school_item in schools:
-                school = school_item.getObject()
-                if school.classTime is None:
-                    continue
+            for i in range(1, 21):
+                if teacher['lang%s' % i]:
+                    canTeach[teacher['lang%s' % i]] = teacher['level%s' % i]
+
+            import pdb; pdb.set_trace()
+
+            for school in schools:
 
                 # 學校需要
                 reqLang = []
-                if school.localLang is None:
-                    continue
-
-                for item in school.localLang.split('/'):
+                for i in range(1, 21):
                     # 逐個語言比對
-                    language = item.split(',')[1]
+#                    language = item.split(',')[1]
 
-                    if language in canTeach.keys():
-                        req_lv_1, req_lv_2, req_lv_3 = item.split(',')[2:]
-                        can_lv_1, can_lv_2, can_lv_3 = canTeach[language].split(',')[2:]
+                    if school['lang%s' % i] is None:
+#language in canTeach.keys():
+                        continue
+#未完
+#                    req_lv_1, req_lv_2, req_lv_3 = school['level%s' % i].split('/')[]
+#                    can_lv_1, can_lv_2, can_lv_3 = canTeach[language].split(',')[2:]
 
-                        self.courseMatch(language, 'primary', can_lv_1, req_lv_1, school, teacher)
-                        self.courseMatch(language, 'intermediate', can_lv_2, req_lv_2, school, teacher)
-                        self.courseMatch(language, 'advanced', can_lv_3, req_lv_3, school, teacher)
+                    self.courseMatch(language, 'primary', can_lv_1, req_lv_1, school, teacher)
+                    self.courseMatch(language, 'intermediate', can_lv_2, req_lv_2, school, teacher)
+                    self.courseMatch(language, 'advanced', can_lv_3, req_lv_3, school, teacher)
 
         # 統計
 #        self.result = {''}

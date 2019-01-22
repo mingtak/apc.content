@@ -15,9 +15,18 @@
     <li><b>課程編號:</b>${python:context.title[:4]}</li>
     <li><b>課程名稱:</b>${context/title}</li>
     <li><b>課程直播:</b>
-        <div tal:content="structure context/embeded"></div>
+        <div id="embedCode" class="col-xs-12col-md-12" tal:content="structure context/embeded">
+        </div>
     </li>
   </ul>
+
+
+<style>
+#embedCode {overflow: hidden}
+#embedCode iframe { max-width: 100%;}
+</style>
+
+
 </metal:content-core>
 </metal:content-core>
 

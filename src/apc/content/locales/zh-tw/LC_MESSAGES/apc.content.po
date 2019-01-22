@@ -14,6 +14,9 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
+msgid "Survy Finish, Thanks!"
+msgstr "已完成填寫，感謝您。"
+
 #: ./browser/views.py:1049
 msgid " student list already update"
 msgstr "學生名單已更新"
