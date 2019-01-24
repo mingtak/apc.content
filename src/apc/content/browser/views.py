@@ -494,7 +494,11 @@ class MatchResult(BrowserView):
 
     def courseMatch(self, language, level, can_lv, req_lv, school, teacher):
         """ 比對等級/人數 """
-        if int(can_lv) and int(req_lv):
+
+#        import pdb; pdb.set_trace()
+        if int(can_lv) and int(req_lv): # 開課程度吻合
+            import pdb; pdb.set_trace()
+            if set(school['lang-class-time']) & set(school['lang-class-time']): # 開課時間吻合
             for cTime in school.classTime:
                 try:
                     #print '%s_%s' % (school.title, cTime)
@@ -577,7 +581,7 @@ class MatchResult(BrowserView):
                 if teacher['lang%s' % i]:
                     canTeach[teacher['lang%s' % i]] = teacher['level%s' % i]
 
-            import pdb; pdb.set_trace()
+#            import pdb; pdb.set_trace()
 
             for school in schools:
 
@@ -587,12 +591,17 @@ class MatchResult(BrowserView):
                     # 逐個語言比對
 #                    language = item.split(',')[1]
 
-                    if school['lang%s' % i] is None:
+#                    import pdb; pdb.set_trace()
+                    if not school['lang%s' % i]:
 #language in canTeach.keys():
                         continue
-#未完
-#                    req_lv_1, req_lv_2, req_lv_3 = school['level%s' % i].split('/')[]
-#                    can_lv_1, can_lv_2, can_lv_3 = canTeach[language].split(',')[2:]
+
+                    if school['lang%s' % i] in canTeach:
+                        language = school['lang%s' % i]
+                        req_lv_1, req_lv_2, req_lv_3 = school['level%s' % i].split('/')
+                        can_lv_1, can_lv_2, can_lv_3 = canTeach[language].split('/')
+                    else:
+                        continue
 
                     self.courseMatch(language, 'primary', can_lv_1, req_lv_1, school, teacher)
                     self.courseMatch(language, 'intermediate', can_lv_2, req_lv_2, school, teacher)
