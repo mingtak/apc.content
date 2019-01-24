@@ -495,36 +495,43 @@ class MatchResult(BrowserView):
     def courseMatch(self, language, level, can_lv, req_lv, school, teacher):
         """ 比對等級/人數 """
 
-#        import pdb; pdb.set_trace()
-        if int(can_lv) and int(req_lv): # 開課程度吻合
+        try:
+            int(can_lv) and int(req_lv)
+        except:
             import pdb; pdb.set_trace()
-            if set(school['lang-class-time']) & set(school['lang-class-time']): # 開課時間吻合
-            for cTime in school.classTime:
+
+        if int(can_lv) and int(req_lv): # 開課程度吻合
+#            import pdb; pdb.set_trace()
+#            if not set(school['lang-class-time']) & set(school['lang-class-time']): # 開課時間吻合
+#                return
+
+
+            for cTime in school['lang-class-time']:
                 try:
                     #print '%s_%s' % (school.title, cTime)
                     # 開課時間吻合，開課語系吻合，開課程度吻合，共學校數未滿，最大學生數未滿，則成立
-                    if self.courseTable.has_key('%s_%s' % (school.title, cTime)) and \
-                       self.courseTable['%s_%s' % (school.title, cTime)][2] in ['', language] and \
-                       self.courseTable['%s_%s' % (school.title, cTime)][1] in ['', level] and \
-                       len(self.courseTable['%s_%s' % (school.title, cTime)]) < self.max_sc+2 and \
-                       self.courseTable['%s_%s' % (school.title, cTime)][0] < self.max_st:
+                    if self.courseTable.has_key('%s_%s' % (school['school_name'], cTime)) and \
+                       self.courseTable['%s_%s' % (school['school_name'], cTime)][2] in ['', language] and \
+                       self.courseTable['%s_%s' % (school['school_name'], cTime)][1] in ['', level] and \
+                       len(self.courseTable['%s_%s' % (school['school_name'], cTime)]) < self.max_sc+2 and \
+                       self.courseTable['%s_%s' % (school['school_name'], cTime)][0] < self.max_st:
 
                         # 檢查是否已在其它時段開課
                         already = False
                         for item in self.courseTable:
-                            if [school.title, language, level, int(req_lv)] in self.courseTable[item]:
+                            if [school['school_name'], language, level, int(req_lv)] in self.courseTable[item]:
                                 #print '已開'
                                 already = True
                                 break
                         if not already:
                             # 加入共學，加計人數，確認語言，確認程度
-                            self.courseTable['%s_%s' % (school.title, cTime)].append([school.title, language, level, int(req_lv)])
-                            self.courseTable['%s_%s' % (school.title, cTime)][0] += int(req_lv)
-                            self.courseTable['%s_%s' % (school.title, cTime)][1] = level
-                            self.courseTable['%s_%s' % (school.title, cTime)][2] = language
-                except:pass
-                    #print '有錯'
-#                    import pdb; pdb.set_trace()
+                            self.courseTable['%s_%s' % (school['school_name'], cTime)].append([school['school_name'], language, level, int(req_lv)])
+                            self.courseTable['%s_%s' % (school['school_name'], cTime)][0] += int(req_lv)
+                            self.courseTable['%s_%s' % (school['school_name'], cTime)][1] = level
+                            self.courseTable['%s_%s' % (school['school_name'], cTime)][2] = language
+                except:
+                    print '有錯'
+                    import pdb; pdb.set_trace()
 
 
     def __call__(self):
@@ -568,10 +575,20 @@ class MatchResult(BrowserView):
         # 確認可開班狀況, 大課表
         self.courseTable = {}
         for teacher in teachers:
-#            import pdb; pdb.set_trace()
             for item in teacher['lang-class-time']:
                 # [學生數, 開課級別]
                 self.courseTable['%s_%s' % (teacher['name_han'], item)] = [0, '', '']
+
+
+
+        # 確認可開班狀況, 大課表
+        self.courseTable = {}
+        for school in schools:
+            for item in school['lang-class-time']:
+                # [學生數, 開課級別]
+                self.courseTable['%s_%s' % (school['school_name'], item)] = [0, '', '']
+
+
 
         for teacher in teachers:
             # 老師能教
@@ -610,7 +627,7 @@ class MatchResult(BrowserView):
         # 統計
 #        self.result = {''}
 #        for item in self.courseMatch:
-
+#        import pdb; pdb.set_trace()
         return self.template()
 
 

@@ -24,9 +24,10 @@ level = {'primary': '低年級', 'intermediate': '中年級', 'advanced': '高�
 <!-- <a href="#match-detail">媒合成功細目</a> | <a href="#match-table">族語共學媒合表</a> -->
 <br><br>
 <tal:p repeat="item view/courseTable">
-    <div tal:condition="python:len(view.courseTable[item][3:]) >= view.min_sc">
+
+    <div talcondition="python:len(view.courseTable[item][3:]) >= view.min_sc">
         <b>老師姓名:</b> ${python:item.split('_')[0]}<br>
-        <b>上課時段:</b> ${python:view.vocaClassTime.getTerm(item.split('_')[1]).title}:<br>
+        <b>上課時段:</b> {python:view.vocaClassTime.getTerm(item.split('_')[1]).title}:<br>
         <b>開課學校:</b> ${python:view.classroomIn(item)}<br>
         <b>語言/程度:</b> ${python:view.courseTable[item][2]} / ${python:level[view.courseTable[item][1]]}<br>
         <b>總學生數:</b> ${python:view.courseTable[item][0]}<br>
