@@ -18,25 +18,28 @@ portal = api.portal.get()
 teachers = portal['teacher'].getChildNodes()
 schools = api.content.find(context=portal['school'], Type='School')
 level = {'primary': '低年級', 'intermediate': '中年級', 'advanced': '高年級'}
+classTime = {'1':'周一早自習', '2':'周二早自習', '3':'周三早自習', '4':'周四早自習', '5':'周五早自習', }
 ?>
 
 <h3 id="match-detail">共學排課系統-媒合結果</h3>
 <!-- <a href="#match-detail">媒合成功細目</a> | <a href="#match-table">族語共學媒合表</a> -->
 <br><br>
-<tal:p repeat="item view/courseTable">
+<tal:course repeat="course view/courseTable">
+<tal:cond condition="python:len(view.courseTable[course]) > 3">
+${python:course.split('_')[0]} :
 
-    <div talcondition="python:len(view.courseTable[item][3:]) >= view.min_sc">
-        <b>老師姓名:</b> ${python:item.split('_')[0]}<br>
-        <b>上課時段:</b> {python:view.vocaClassTime.getTerm(item.split('_')[1]).title}:<br>
-        <b>開課學校:</b> ${python:view.classroomIn(item)}<br>
-        <b>語言/程度:</b> ${python:view.courseTable[item][2]} / ${python:level[view.courseTable[item][1]]}<br>
-        <b>總學生數:</b> ${python:view.courseTable[item][0]}<br>
-        <b>共學組成學校:</b><br>
-            <tal:co repeat="coSchool python:view.courseTable[item][3:]">
-                ${python:coSchool[0]} / ${python:coSchool[1]} / 級別:${python:level[coSchool[2]]} / 人數:${python:coSchool[3]}<br>
-            </tal:co><hr>
-</div>
-</tal:p>
+<p>上課時段:${python:classTime[course.split('_')[1]]} </p>
+
+<p>學生數：${python:view.courseTable[course][0]}</p>
+<p>年級：${python:view.courseTable[course][1]}</p>
+<p>教學族語：${python:view.courseTable[course][2]}</p>
+<p>組成學校：
+  <span tal:repeat="item python:view.courseTable[course][3:]">${python:item[0]}, </span>
+</p>
+<hr>
+</tal:cond>
+
+</tal:course>
 
 
 
