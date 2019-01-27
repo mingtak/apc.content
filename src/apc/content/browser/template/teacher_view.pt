@@ -35,7 +35,7 @@ brain = api.content.find(course_teacher=context.UID())
       </div>
       <div class="col-xs-12 col-md-8">
         <h3 style="color: #fa9901; font-weight: bold; ">${item_title}</h3>
-        <div style="width:100%; border: 1px solid #e0dede; margin: 5px 0 10px 0;" />
+        <div style="width:100%; border: 1px solid #a10d0d; margin: 5px 0 10px 0;" />
         <table style="border: 0;">
           <tal:repeat tal:repeat="field python: view.getTeacherField(item).iteritems()">
             <tr>

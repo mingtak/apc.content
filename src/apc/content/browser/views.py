@@ -1110,7 +1110,7 @@ class TeacherListingView(FolderView):
 
     def getTeacherField(self, item):
         fields = ['localLang'     , 'certification', 'study'     , 'qualified_teacher', \
-                  'ethnic_teacher', 'education'    , 'experience', 'teaching_years'   , 'remarks'] 
+                  'ethnic_teacher', 'education'    , 'experience', 'teaching_years'   , 'remarks']
         fieldsName = {'localLang' : _(u'Local Language')         , 'certification'    : _(u'Ethnic language certification'), 
                       'study'     : _(u'Revitalization study')   , 'qualified_teacher': _(u'Teaching class (Qualified teacher)'), 
                       'ethnic_teacher': _(u'Teaching class (Ethnic teacher)'), 'education'      : _(u'Education'),
