@@ -13,7 +13,7 @@
                     tal:define="toc context/table_of_contents|nothing;">
 <h3 tal:condition="context/vacation" style="color:red">本周放假</h3>
   <ul>
-    <li><b>課堂名稱:</b>${context/title}</li>
+    <li><b>課堂日期:</b>${context/title}</li>
     <li><b>課堂概要:</b><br>
         <p tal:condition="context/description" tal:content="structure python:context.description.replace('\n', '<br>')"></p>
     </li>
@@ -34,6 +34,11 @@
 .embedCode iframe { max-width: 100%;}
 </style>
 
+<script>
+$(document).ready(function(){
+  $('h1.documentFirstHeading').text('${python:context.getParentNode().title}')
+})
+</script>
 
 
 </metal:content-core>
