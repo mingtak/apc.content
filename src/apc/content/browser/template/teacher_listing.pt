@@ -51,6 +51,25 @@ portal = api.portal.get()
                         <td style="border: 0; width: 70%; padding: 8px 5px" tal:content="structure python:field[1].replace('\n', '<br>')"></td>
                       </tr>
                     </tal:repeat>
+
+
+<?python
+from plone import api
+brain = api.content.find(course_teacher=item.UID())
+?>
+
+            <tr>
+              <td style="border: 0; width: 30%; padding: 8px 5px; color:#333">教授共學課程:</td>
+              <td style="border: 0; width: 70%; padding: 8px 5px">
+                  <tal:item tal:repeat="item brain">
+                      <a href="${item/getURL}">${item/Title}</a> <span tal:condition="not:repeat/item/end">/</span>
+                  </tal:item>
+              </td>
+            </tr>
+
+
+
+
                   </table>
                 </div>
                 <div class="col-xs-12">
