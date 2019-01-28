@@ -241,8 +241,10 @@ class TeacherSurvy(BrowserView):
 
                     row.append('/'.join([primary, intermediate, advanced]))
 
-#            import pdb; pdb.set_trace()
-            spamwriter.writerow(row)
+            try:
+                spamwriter.writerow(row)
+            except:
+                import pdb; pdb.set_trace()
         request.response.setHeader('Content-Type', 'application/csv')
         request.response.setHeader('Content-Disposition', 'attachment; filename="techer_survy.csv"')
 
@@ -582,11 +584,11 @@ class MatchResult(BrowserView):
 
 
         # 確認可開班狀況, 大課表
-        self.courseTable = {}
-        for school in schools:
-            for item in school['lang-class-time']:
+#        self.courseTable = {}
+#        for school in schools:
+#            for item in school['lang-class-time']:
                 # [學生數, 開課級別]
-                self.courseTable['%s_%s' % (school['school_name'], item)] = [0, '', '']
+#                self.courseTable['%s_%s' % (school['school_name'], item)] = [0, '', '']
 
 
 
@@ -620,6 +622,7 @@ class MatchResult(BrowserView):
                     else:
                         continue
 
+#                    import pdb; pdb.set_trace()
                     self.courseMatch(language, 'primary', can_lv_1, req_lv_1, school, teacher)
                     self.courseMatch(language, 'intermediate', can_lv_2, req_lv_2, school, teacher)
                     self.courseMatch(language, 'advanced', can_lv_3, req_lv_3, school, teacher)
@@ -627,7 +630,7 @@ class MatchResult(BrowserView):
         # 統計
 #        self.result = {''}
 #        for item in self.courseMatch:
-#        import pdb; pdb.set_trace()
+        import pdb; pdb.set_trace()
         return self.template()
 
 

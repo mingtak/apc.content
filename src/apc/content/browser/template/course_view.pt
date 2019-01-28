@@ -21,7 +21,7 @@
                         item_hireSchool obj/hire_school;
                         item_place obj/place;
                         item_courseDate obj/course_date;
-                        item_courseTime obj/course_time;
+                        item_courseTime obj/timeSection;
                         item_courseOutline obj/course_outline;">
 <div class="row">
   <div class="col-md-12">
@@ -81,15 +81,7 @@
 </div>
 <div class="row">
   <div class="col-md-2">
-    授課日期:
-  </div>
-  <div class="col-md-10">
-    ${item_courseDate}
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-2">
-    授課時間:
+    授課時段:
   </div>
   <div class="col-md-10">
     ${item_courseTime}
