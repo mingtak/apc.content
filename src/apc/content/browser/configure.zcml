@@ -176,7 +176,6 @@
   <browser:page
       name="course_view"
       for="apc.content.content.course.ICourse"
-      template="template/course_view.pt"
       class=".views.CourseView"
       layer="apc.content.interfaces.IApcContentLayer"
       permission="zope2.View"

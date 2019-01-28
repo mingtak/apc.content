@@ -289,3 +289,21 @@ body {
 .schedule td, .schedule th {
     border: solid 1px;
 }
+
+.template-course_view .course-item {
+  border-bottom: solid 1px #bbb;
+  padding: 15px 10px;
+}
+
+.template-course_view .video-item {
+  padding: 30px 0;
+}
+
+.template-course_view .bottom-line {
+  margin-bottom: 15px;
+}
+
+.template-course_view .bottom-line span{
+  border-bottom: solid 2px #a10d0d;
+}
+

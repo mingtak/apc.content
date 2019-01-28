@@ -1064,7 +1064,24 @@ class PloneRootView(BrowserView):
 
 
 class CourseView(BrowserView):
-    pass
+
+    template = ViewPageTemplateFile("template/course_view.pt")
+
+    def __call__(self):
+
+        courses = self.context.getChildNodes()
+        self.items = []
+        for item in courses:
+            if item.embeded and not self.items:
+                self.items.append(item)
+            elif self.items:
+                self.items.append(item)
+        for item in courses:
+            if not item.embeded:
+                self.items.append(item)
+            else:
+                break
+        return self.template()
 
 
 class CourseStudent(BrowserView):

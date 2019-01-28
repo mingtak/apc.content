@@ -44,25 +44,61 @@
   </div>
 
   <h3>各堂課程</h3>
-  <div tal:repeat="item context/getChildNodes">
-    <span class="vacation-${item/vacation}">第 ${repeat/item/number} 周 / ${python:item.title}</span>
-    <span tal:condition="item/vacation" class="vacation-${item/vacation}">(本周放假)</span><br>
+
+<div class="container">
+
+
+  <div tal:repeat="item view/items" class="row course-item">
+
+<div class="col-md-6">
+
+    <p class="bottom-line vacation-${item/vacation}"><span><!--第 ${repeat/item/number} 周 / --> ${python:item.title}</span></p>
+    <p tal:condition="item/vacation" class="bottom-line vacation-${item/vacation}"><span>(本周放假)</span></p>
+
     <p tal:condition="item/description" tal:content="structure python:item.description.replace('\n', '<br>')"></p>
     <p><b>課堂教材：</b>
         <a tal:condition="item/file"
            tal:attributes="href string:${item/absolute_url}/@@pdf_embeded">${item/file/filename}</a>
     </p>
+<!--
     <h4>直播視訊</h4>
-    
+
     <p tal:condition="item/embeded">
-        <a href="${item/absolute_url}" target="_blank">觀看課程影片</a>
+        <a href="${item/absolute_url}" target="_blank">前往上課</a>
     </p>
     <p tal:condition="not:item/embeded">
         <span href="${item/absolute_url}/@@pdf_embeded">尚無影片</span>
     </p>
+-->
+</div>
+<div class="col-md-6 video-item" id="video-${item/UID}" style="max-width:100%; overflow:hidden; text-align:center">
+ <a tal:condition="item/embeded"
+    href="javascript:void(0)"><img src="${portal_url}/resource/images/film.png/@@images/image/preview" style="width:50%"></a>
+
+    <p tal:condition="not:item/embeded">
+        <span href="${item/absolute_url}/@@pdf_embeded">尚無影片</span>
+    </p>
+
+
+</div>
+
+<script>
+$(document).ready(function(){
+  $('#video-${item/UID} a').click(function(){
+    $('#video-${item/UID}').html("<tal:code replace="structure item/embeded"></tal:code>")
+    width = $('#video-${item/UID}').width()
+    height = width / 1.78
+    $('#video-${item/UID} iframe').css('width', width).css('height', height)
+  })
+})
+</script>
+
+
 
     <hr>
   </div>
+</div>
+
 
 
 </tal:define>
