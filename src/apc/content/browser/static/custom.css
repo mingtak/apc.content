@@ -327,3 +327,13 @@ margin:20px -15px;
 .template-course_view .course-info li {
   list-style: none;
 }
+
+.template-course_schedule th.course {
+  width: 20%
+}
+.template-course_schedule th.weekday {
+  width: 16%
+}
+.template-course_schedule td {
+  vertical-align:middle;
+}

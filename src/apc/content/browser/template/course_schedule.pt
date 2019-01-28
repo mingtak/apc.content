@@ -21,19 +21,19 @@ times = {'8':'早自習', '9':'第一節', '10':'第二節', '11':'第三節', '
 
 <table class="schedule">
   <tr class="tr-title">
-    <th></th>
-    <th>星期一</th>
-    <th>星期二</th>
-    <th>星期三</th>
-    <th>星期四</th>
-    <th>星期五</th>
+    <th class="course"></th>
+    <th class="weekday">星期一</th>
+    <th class="weekday">星期二</th>
+    <th class="weekday">星期三</th>
+    <th class="weekday">星期四</th>
+    <th class="weekday">星期五</th>
   </tr>
 
   <tal:course repeat="course view/brain">
     <tr class="tr-body">
       <td class="course">
         <a target="_blank" href="${course/getURL}" style="white-space:nowrap;">${course/Title}</a><br>
-        <span>${python:times.get(str(course.getObject().getLastChild().start.hour))}</span>
+        <span>${python:course.getObject().timeSection}</span>
       </td>
       <td tal:repeat="weekday python:[1,2,3,4,5]" class="school"> 
         <tal:cond condition="python:view.getWeekDay(course.getObject().getFirstChild().id) == str(weekday)"

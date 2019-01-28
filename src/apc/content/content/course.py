@@ -32,6 +32,11 @@ class ICourse(model.Schema):
         required=False,
     )
 
+    timeSection = schema.TextLine(
+        title=_(u'Class Time Section'),
+        required=False,
+    )
+
     vMeetingRoom = schema.TextLine(
         title=_(u'Virtual Meeting Room'),
         required=False,
