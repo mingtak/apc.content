@@ -26,14 +26,14 @@ classTime = {'1':'周一早自習', '2':'周二早自習', '3':'周三早自習'
 <br><br>
 <tal:course repeat="course view/courseTable">
 <tal:cond condition="python:len(view.courseTable[course]) > 3">
-${python:course.split('_')[0]} :
+族語教師: ${python:course.split('_')[0]}
 
-<p>上課時段:${python:classTime[course.split('_')[1]]} </p>
+<p>上課時段: ${python:classTime[course.split('_')[1]]} </p>
 
-<p>學生數：${python:view.courseTable[course][0]}</p>
-<p>年級：${python:view.courseTable[course][1]}</p>
-<p>教學族語：${python:view.courseTable[course][2]}</p>
-<p>組成學校：
+<p>學生數: ${python:view.courseTable[course][0]}</p>
+<p>年級: ${python:level[view.courseTable[course][1]]}</p>
+<p>教學族語: ${python:view.courseTable[course][2]}</p>
+<p>組成學校: 
   <span tal:repeat="item python:view.courseTable[course][3:]">${python:item[0]}, </span>
 </p>
 <hr>
