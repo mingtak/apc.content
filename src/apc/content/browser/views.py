@@ -1055,7 +1055,24 @@ class PloneRootView(BrowserView):
 
 
 class CourseView(BrowserView):
-    pass
+
+    template = ViewPageTemplateFile("template/course_view.pt")
+
+    def __call__(self):
+
+        courses = self.context.getChildNodes()
+        self.items = []
+        for item in courses:
+            if item.embeded and not self.items:
+                self.items.append(item)
+            elif self.items:
+                self.items.append(item)
+        for item in courses:
+            if not item.embeded:
+                self.items.append(item)
+            else:
+                break
+        return self.template()
 
 
 class CourseStudent(BrowserView):
@@ -1101,7 +1118,7 @@ class TeacherListingView(FolderView):
 
     def getTeacherField(self, item):
         fields = ['localLang'     , 'certification', 'study'     , 'qualified_teacher', \
-                  'ethnic_teacher', 'education'    , 'experience', 'teaching_years'   , 'remarks'] 
+                  'ethnic_teacher', 'education'    , 'experience', 'teaching_years'   , 'remarks']
         fieldsName = {'localLang' : _(u'Local Language')         , 'certification'    : _(u'Ethnic language certification'), 
                       'study'     : _(u'Revitalization study')   , 'qualified_teacher': _(u'Teaching class (Qualified teacher)'), 
                       'ethnic_teacher': _(u'Teaching class (Ethnic teacher)'), 'education'      : _(u'Education'),

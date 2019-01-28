@@ -41,18 +41,39 @@ portal = api.portal.get()
                 </div>
                 <div class="col-xs-12 col-md-8">
                   <h3 style="color: #fa9901; font-weight: bold; ">${item_title}</h3>
-                  <div style="width:100%; border: 1px solid #e0dede; margin: 5px 0 10px 0;" />
+                  <div style="width:100%; border: 1px solid #a10d0d; margin: 5px 0 10px 0;" />
                   <table style="border: 0;">
                     <tal:repeat tal:repeat="field python: view.getTeacherField(item).iteritems()">
-                      <tr>
-                        <td style="border: 0; width: 30%;">${python: field[0]}</td>
-                        <td style="border: 0; width: 70%;">${python: field[1]}</td>
+                      <tr tal:attributes="style python:'border-bottom: solid 1px #aaa' if not repeat['field'].end else ''">
+                        <td style="border: 0; width: 30%; color:#333; padding: 8px 5px">
+                          ${python: field[0]}
+                        </td>
+                        <td style="border: 0; width: 70%; padding: 8px 5px" tal:content="structure python:field[1].replace('\n', '<br>')"></td>
                       </tr>
                     </tal:repeat>
+
+
+<?python
+from plone import api
+brain = api.content.find(course_teacher=item.UID())
+?>
+
+            <tr>
+              <td style="border: 0; width: 30%; padding: 8px 5px; color:#333">教授共學課程:</td>
+              <td style="border: 0; width: 70%; padding: 8px 5px">
+                  <tal:item tal:repeat="item brain">
+                      <a href="${item/getURL}">${item/Title}</a> <span tal:condition="not:repeat/item/end">/</span>
+                  </tal:item>
+              </td>
+            </tr>
+
+
+
+
                   </table>
                 </div>
                 <div class="col-xs-12">
-                  <div style="width:100%; border: 1px solid #e0dede; margin: 15px 0 40px 0;" />
+                  <div style="width:100%; border: 1px solid #eee; margin: 15px 0 40px 0;" />
                 </div>
               </div>
             </tal:define>
