@@ -293,6 +293,12 @@ body {
 .template-course_view .course-item {
   border-bottom: solid 1px #bbb;
   padding: 15px 10px;
+
+
+    background-color:#eee;
+    box-shadow:3px 3px 9px #333;
+margin:20px -15px;
+
 }
 
 .template-course_view .video-item {
@@ -307,3 +313,17 @@ body {
   border-bottom: solid 2px #a10d0d;
 }
 
+.template-course_view .course-info {
+  padding: 20px;
+    background-color:#205880;
+    color: #fff;
+    box-shadow:3px 3px 9px #333;
+}
+
+.template-course_view .course-info a {
+  color: yellow;
+}
+
+.template-course_view .course-info li {
+  list-style: none;
+}

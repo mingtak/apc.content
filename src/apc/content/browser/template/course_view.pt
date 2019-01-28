@@ -23,20 +23,78 @@
                         item_courseDate obj/course_date;
                         item_courseTime obj/course_time;
                         item_courseOutline obj/course_outline;">
-  <div>
-    <p><span style="font-size: 14pt;"><strong>${item_title}</strong></span></p>
-    <p><strong>虛擬教室編號: </strong>${item_id}</p>
-    <p><strong>族語別: </strong>${item_lang}</p>
-    <div style="white-space: pre-line;" tal:condition="item_schools">
-        <strong>聯盟學校: </strong>
-        <ul><li tal:repeat="item python:[school.to_object.title for school in item_schools]">${item/title}</li>
+<div class="row">
+  <div class="col-md-12">
+    <h3>課程資訊</h3>
+<!--    <p><span style="font-size: 14pt;"><strong>${item_title}</strong></span></p> -->
+  </div>
+</div>
+
+  <div class="course-info">
+<!--
+<div class="row">
+  <div class="col-md-2">
+    虛擬教室編號
+  </div>
+  <div class="col-md-10">
+    ${item_id}
+  </div>
+</div>
+-->
+<div class="row">
+  <div class="col-md-2">
+    族語別:
+  </div>
+  <div class="col-md-10">${item_lang}</div>
+</div>
+
+<div class="row" tal:condition="item_hireSchool">
+  <div class="col-md-2">主辦學校: </div>
+  <div class="col-md-10">${python: item_hireSchool.to_object.title}</div>
+</div>
+
+<div class="row">
+    <tal:cond tal:condition="item_schools">
+<div class="col-md-2">共學學校:</div>
+<div class="col-md-10">
+        <ul><li class="co-school" tal:repeat="item python:[school.to_object.title for school in item_schools]">${item/title}</li>
         </ul>
-    </div>
-    <p tal:condition="item_hireSchool"><strong>主辦學校: </strong>${python: item_hireSchool.to_object.title}</p>
-    <p tal:condition="item_teacher"><strong>族語師資: </strong><strong><a href="${python: item_teacher.to_object.absolute_url()}">${python: item_teacher.to_object.title}</a></strong></p>
-    <p><strong>授課地點: </strong>${item_place}</p>
-    <p><strong>授課日期: </strong>${item_courseDate}</p>
-    <p><strong>授課時間: </strong>${item_courseTime}</p>
+</div>
+    </tal:cond>
+</div>
+
+<div class="row" tal:condition="item_teacher">
+  <div class="col-md-2">
+    族語師資: 
+  </div>
+  <div class="col-md-10">
+    <a href="${python: item_teacher.to_object.absolute_url()}">${python: item_teacher.to_object.title}</a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    授課地點
+  </div>
+  <div class="col-md-10">
+    ${item_place}
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    授課日期:
+  </div>
+  <div class="col-md-10">
+    ${item_courseDate}
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    授課時間:
+  </div>
+  <div class="col-md-10">
+    ${item_courseTime}
+  </div>
+</div>
   </div>
 
   <div tal:condition="item_courseOutline">
