@@ -566,18 +566,27 @@ class MatchResult(BrowserView):
         self.max_sc=int(request.form.get('max_sc', 6))
         self.max_st=int(request.form.get('max_st', 10))
 
+#        factory1 = getUtility(IVocabularyFactory, 'apc.content.ClassTime')
+#        self.vocaClassTime = factory1(context)
+
+#        teachers = portal['teacher'].getChildNodes()
+#        schools = api.content.find(context=portal['school'], portal_type='School')
+
         # 確認可開班狀況, 大課表
         self.courseTable = {}
         for teacher in teachers:
-            for i in range(1, 21):
-                if teacher['lang%s' % i]:
-                    for item in teacher['lang-class-time']:
-                        # [學生數, 開課級別]
-                        self.courseTable['%s_%s_%s' % (teacher['name_han'], teacher['lang%s' % i], item)] = [0, '', '']
-
-#            import pdb; pdb.set_trace()
+            for item in teacher['lang-class-time']:
+                # [學生數, 開課級別]
+                self.courseTable['%s_%s' % (teacher['name_han'], item)] = [0, '', '']
 
 
+
+        # 確認可開班狀況, 大課表
+        self.courseTable = {}
+        for school in schools:
+            for item in school['lang-class-time']:
+                # [學生數, 開課級別]
+                self.courseTable['%s_%s' % (school['school_name'], item)] = [0, '', '']
 
 
 
