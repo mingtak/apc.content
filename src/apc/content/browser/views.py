@@ -542,7 +542,11 @@ class MatchResult(BrowserView):
                                         break
                                 if not already:
                                     # 加入共學，加計人數，確認語言，確認程度
-                                    self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], cTime, lang_code, level_code)].append([school['school_name'], language, level, int(req_lv)])
+                                    self.courseTable['%s_%s_%s_%s' %
+                                        (teacher['name_han'], cTime, lang_code, level_code)].append(
+                                            ['%s%s' % (school['city'], school['school_name']),
+                                            language, level, int(req_lv)]
+                                        )
                                     self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], cTime, lang_code, level_code)][0] += int(req_lv)
                                     self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], cTime, lang_code, level_code)][1] = level
                                     self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], cTime, lang_code, level_code)][2] = language
