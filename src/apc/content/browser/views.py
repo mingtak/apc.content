@@ -515,6 +515,7 @@ class MatchResult(BrowserView):
                     if self.courseTable.has_key('%s_%s' % (teacher['name_han'], cTime)) and \
                        self.courseTable['%s_%s' % (teacher['name_han'], cTime)][2] in ['', language] and \
                        self.courseTable['%s_%s' % (teacher['name_han'], cTime)][1] in ['', level] and \
+                       cTime in school['lang-class-time'] and \
                        len(self.courseTable['%s_%s' % (teacher['name_han'], cTime)]) < self.max_sc+2 and \
                        self.courseTable['%s_%s' % (teacher['name_han'], cTime)][0] < self.max_st:
 
