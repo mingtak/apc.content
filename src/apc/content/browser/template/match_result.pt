@@ -24,10 +24,24 @@ classTime = {'1':'周一早自習', '2':'周二早自習', '3':'周三早自習'
 <h3 id="match-detail">共學排課系統-媒合結果</h3>
 <!-- <a href="#match-detail">媒合成功細目</a> | <a href="#match-table">族語共學媒合表</a> -->
 <br><br>
-<tal:course repeat="course view/courseTable">
-<tal:cond condition="python:len(view.courseTable[course]) > 3">
-族語教師: ${python:course.split('_')[0]}
 
+
+<div class="container">
+  <div class="row">
+
+<tal:course repeat="course view/courseTable">
+
+<tal:cond condition="python:len(view.courseTable[course]) > 3">
+
+<div class="col-md-6 course-info" id="${course}">
+
+<div>
+
+  <botton class="reject destructive confirm" data-id="${course}">不核可</botton>
+  <botton class="accept context confirm" data-id="${course}">核可</botton>
+
+
+族語教師: ${python:course.split('_')[0]}
 <p>上課時段: ${python:classTime[course.split('_')[1]]} </p>
 
 <p>學生數: ${python:view.courseTable[course][0]}</p>
@@ -37,11 +51,25 @@ classTime = {'1':'周一早自習', '2':'周二早自習', '3':'周三早自習'
   <span tal:repeat="item python:view.courseTable[course][3:]">${python:item[0]}, </span>
 </p>
 <hr>
+
+</div>
+
+</div>
+
 </tal:cond>
 
 </tal:course>
 
+<div class="col-md-12">
 
+<form action="match_result_download">
+
+<input type="submit" value="確認">
+</form>
+
+</div>
+  </div>
+</div>
 
 
 <style>
@@ -49,6 +77,24 @@ table {border:1px solid black; border-collapse:collapse; width: 5000px}
 tbody, td, th {border:1px #000 solid; padding:5px}
 </style>
 
+
+
+
+<script>
+$(document).ready(function(){
+  $('.reject').click(function(){
+    id = $(this).data('id')
+    $('#' + id).slideUp()
+
+  })
+
+  $('.accept').click(function(){
+    id = $(this).data('id')
+    $(this).attr('disabled', 'disabled').css('opacity', 0.8)
+    $('#' + id + ' botton.reject').slideUp()
+  })
+})
+</script>
 
 
 </metal:content-core>

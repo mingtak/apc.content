@@ -337,3 +337,19 @@ margin:20px -15px;
 .template-course_schedule td {
   vertical-align:middle;
 }
+
+
+.template-match_result .course-info div{
+    margin: 15px;
+    padding: 15px;
+    background-color:#aaa;
+    color: #fff;
+    font-size: 18px;
+    box-shadow:3px 3px 9px #333;
+}
+
+.template-match_result .course-info .confirm{
+    float: right;
+    font-size: 18px;
+    margin: 0 8px;
+}

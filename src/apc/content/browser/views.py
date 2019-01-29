@@ -472,6 +472,13 @@ class MatchSystem(BrowserView):
         return self.template()
 
 
+
+class MatchResultDownload(BrowserView):
+    """ Match Result Download"""
+    def __call__(self):
+        return
+
+
 """ 範例:
 {'劉金花_5-4':[學生數, 開課級別, 開課語言, [校名, 語言, 等級, 人數], [校名, 語言, 等級, 人數],...],
 
