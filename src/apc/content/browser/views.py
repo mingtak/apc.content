@@ -476,7 +476,24 @@ class MatchSystem(BrowserView):
 class MatchResultDownload(BrowserView):
     """ Match Result Download"""
     def __call__(self):
-        return
+#        import pdb; pdb.set_trace()
+        request = self.request
+        result = json.loads(request.form.get('data'))
+
+
+        output = StringIO()
+        spamwriter = csv.writer(output)
+        spamwriter.writerow(['族語教師', '上課時段', '學生數', '年級', '教學族語', '組成學校'])
+
+        for item in result:
+            row = [item.get('teacher', ' ').encode('utf-8'), item.get('classtime', ' ').encode('utf-8'), item.get('studnum', ' '),
+                   item.get('level', ' ').encode('utf-8'), item.get('lang', ' ').encode('utf-8'), item.get('school', ' ').encode('utf-8')]
+            spamwriter.writerow(row)
+
+        request.response.setHeader('Content-Type', 'application/csv')
+        request.response.setHeader('Content-Disposition', 'attachment; filename="match_result.csv"')
+
+        return output.getvalue()
 
 
 """ 範例:

@@ -2,6 +2,7 @@
     xmlns:tal="http://xml.zope.org/namespaces/tal"
     xmlns:metal="http://xml.zope.org/namespaces/metal"
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    xmlns:v-bind="http://vue.org/v-bind"
     lang="en"
     metal:use-macro="context/main_template/macros/master"
     i18n:domain="apc.content">
@@ -19,6 +20,51 @@ teachers = portal['teacher'].getChildNodes()
 schools = api.content.find(context=portal['school'], Type='School')
 level = {'primary': '低年級', 'intermediate': '中年級', 'advanced': '高年級'}
 classTime = {'1':'周一早自習', '2':'周二早自習', '3':'周三早自習', '4':'周四早自習', '5':'周五早自習', }
+lang = {
+'A01': '南勢阿美語',
+'A02': '秀姑巒阿美語',
+'A03': '海岸阿美語',
+'A04': '馬蘭阿美語',
+'A05': '恆春阿美語',
+'B06': '賽考利克泰雅語',
+'B07': '澤敖利泰雅語',
+'B08': '汶水泰雅語',
+'B09': '萬大泰雅語',
+'B10': '四季泰雅語',
+'B11': '宜蘭澤敖利泰雅語',
+'C13': '賽夏語',
+'D14': '邵語',
+'E15': '都達語',
+'E16': '德固達雅語',
+'E17': '德路固語',
+'F18': '卓群布農語',
+'F19': '卡群布農語',
+'F20': '丹群布農語',
+'F21': '巒群布農語',
+'F22': '郡群布農語',
+'G23': '東排灣語',
+'G24': '北排灣語',
+'G25': '中排灣語',
+'G26': '南排灣語',
+'H27': '東魯凱語',
+'H28': '霧台魯凱語',
+'H29': '大武魯凱語',
+'H30': '多納魯凱語',
+'H31': '茂林魯凱語',
+'H32': '萬山魯凱語',
+'I33': '太魯閣語',
+'J34': '噶瑪蘭語',
+'K35': '鄒語',
+'L36': '卡那卡那富語',
+'M37': '拉阿魯哇語',
+'N38': '南王卑南語',
+'N39': '知本卑南語',
+'N40': '初鹿卑南語',
+'N41': '建和卑南語',
+'O42': '雅美語',
+'P43': '撒奇萊雅語',
+'Q00': '囒哈巫語',
+}
 ?>
 
 <h3 id="match-detail">共學排課系統-媒合結果</h3>
@@ -26,7 +72,7 @@ classTime = {'1':'周一早自習', '2':'周二早自習', '3':'周三早自習'
 <br><br>
 
 
-<div class="container">
+<div class="container" id="vue-main">
   <div class="row">
 
 <tal:course repeat="course view/courseTable">
@@ -35,8 +81,13 @@ classTime = {'1':'周一早自習', '2':'周二早自習', '3':'周三早自習'
 
 <div class="col-md-6 course-info" id="${course}">
 
-<div>
-
+<div id="course-${course}"
+     data-teacher="${python:course.split('_')[0]}"
+     data-classtime="${python:classTime[course.split('_')[1]]}"
+     data-studnum="${python:view.courseTable[course][0]}"
+     data-level="${python:level[view.courseTable[course][1]]}"
+     data-lang="${python:lang[view.courseTable[course][2]]}"
+>
   <botton class="reject destructive confirm" data-id="${course}">不核可</botton>
   <botton class="accept context confirm" data-id="${course}">核可</botton>
 
@@ -46,9 +97,11 @@ classTime = {'1':'周一早自習', '2':'周二早自習', '3':'周三早自習'
 
 <p>學生數: ${python:view.courseTable[course][0]}</p>
 <p>年級: ${python:level[view.courseTable[course][1]]}</p>
-<p>教學族語: ${python:view.courseTable[course][2]}</p>
+<p>教學族語: ${python:lang[view.courseTable[course][2]]}</p>
 <p>組成學校: 
-  <span tal:repeat="item python:view.courseTable[course][3:]">${python:item[0]}, </span>
+ <span id="school-list">
+  <tal:span tal:repeat="item python:view.courseTable[course][3:]">${python:item[0]}<tal:cond condition="not:repeat/item/end">,</tal:cond></tal:span>
+ </span>
 </p>
 <hr>
 
@@ -62,11 +115,10 @@ classTime = {'1':'周一早自習', '2':'周二早自習', '3':'周三早自習'
 
 <div class="col-md-12">
 
-<form action="match_result_download">
-
+<form action="match_result_download" method="POST">
+<textarea name="data" v-bind:value="data" hidden></textarea>
 <input type="submit" value="確認">
 </form>
-
 </div>
   </div>
 </div>
@@ -77,24 +129,48 @@ table {border:1px solid black; border-collapse:collapse; width: 5000px}
 tbody, td, th {border:1px #000 solid; padding:5px}
 </style>
 
-
-
-
 <script>
 $(document).ready(function(){
+
+  var app = new Vue({
+    el: '#vue-main',
+    data: {
+      message: 'Hello Vue!',
+      data: '[]'
+    },
+    methods: {
+      getData: function (id) {
+        teacher = $(id).data('teacher')
+        classtime = $(id).data('classtime')
+        studnum = $(id).data('studnum')
+        level = $(id).data('level')
+        lang = $(id).data('lang')
+        school = $(id + ' #school-list').text()
+        data = $.parseJSON(app['data'])
+        data.push({teacher:teacher, classtime:classtime, studnum:studnum, level:level, lang:lang, school:school})
+        app['data'] = JSON.stringify(data)
+      }
+    }
+
+  })
+
+// 不核可
   $('.reject').click(function(){
     id = $(this).data('id')
     $('#' + id).slideUp()
 
   })
 
+// 核可
   $('.accept').click(function(){
     id = $(this).data('id')
     $(this).attr('disabled', 'disabled').css('opacity', 0.8)
     $('#' + id + ' botton.reject').slideUp()
+    app['getData']('#course-' + id)
   })
 })
 </script>
+
 
 
 </metal:content-core>
