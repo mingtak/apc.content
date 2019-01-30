@@ -75,7 +75,7 @@ lang = {
 <div class="container" id="vue-main">
   <div class="row">
 
-<tal:course repeat="course view/courseTable">
+<tal:course repeat="course view/orderedCourseTable">
 
 <tal:cond condition="python:len(view.courseTable[course]) > 3">
 
