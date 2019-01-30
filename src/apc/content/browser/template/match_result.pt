@@ -73,10 +73,9 @@ lang = {
 
 
 <div class="container" id="vue-main">
-  <div class="row">
 
+<div class="row">
 <tal:course repeat="course view/orderedCourseTable">
-
 <tal:cond condition="python:len(view.courseTable[course]) > 3">
 
 <div class="col-md-6 course-info" id="${course}">
@@ -106,21 +105,19 @@ lang = {
 <hr>
 
 </div>
-
 </div>
 
 </tal:cond>
-
 </tal:course>
-
-<div class="col-md-12">
-
-<form action="match_result_download" method="POST">
-<textarea name="data" v-bind:value="data" hidden></textarea>
-<input type="submit" value="確認">
-</form>
 </div>
+<div class="row">
+  <div class="col-md-12">
+    <form action="match_result_download" method="POST">
+      <textarea name="data" v-bind:value="data" hidden></textarea>
+      <input type="submit" value="確認">
+    </form>
   </div>
+</div>
 </div>
 
 
