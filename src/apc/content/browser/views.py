@@ -541,6 +541,8 @@ class MatchResult(BrowserView):
 
 
                         for level_code in ['primary', 'intermediate', 'advanced']:
+                            if not level_code == level:
+                                continue
                             # 開課時間吻合，開課語系吻合，開課程度吻合，共學校數未滿，最大學生數未滿，則成立
                             if self.courseTable.has_key('%s_%s_%s_%s' % (teacher['name_han'], cTime, lang_code, level_code)) and \
                                self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], cTime, lang_code, level_code)][2] in ['', language] and \
@@ -570,6 +572,7 @@ class MatchResult(BrowserView):
                 except:
                     print '有錯'
                     import pdb; pdb.set_trace()
+                self.orderedCourseTable = OrderedDict(sorted(self.courseTable.items()))
 
 
     def __call__(self):
@@ -625,20 +628,6 @@ class MatchResult(BrowserView):
                             if teacher['level%s' % i].split('/')[2] == '1':
                                 self.courseTable['%s_%s_%s_advanced' % (teacher['name_han'], item, teacher['lang%s' % i])] = [0, '', '']
 
-# 舊排法，沒有語別沒有level
-#                self.courseTable['%s_%s' % (teacher['name_han'], item)] = [0, '', '']
-
-
-
-        # 確認可開班狀況, 大課表
-#        self.courseTable = {}
-#        for school in schools:
-#            for item in school['lang-class-time']:
-                # [學生數, 開課級別]
-#                self.courseTable['%s_%s' % (school['school_name'], item)] = [0, '', '']
-
-
-
         for teacher in teachers:
             # 老師能教
             canTeach = {}
@@ -648,7 +637,6 @@ class MatchResult(BrowserView):
                     canTeach[teacher['lang%s' % i]] = teacher['level%s' % i]
 
 #            import pdb; pdb.set_trace()
-
             for school in schools:
 
                 # 學校需要
@@ -669,7 +657,6 @@ class MatchResult(BrowserView):
                     else:
                         continue
 
-#                    import pdb; pdb.set_trace()
                     self.courseMatch(language, 'primary', can_lv_1, req_lv_1, school, teacher)
                     self.courseMatch(language, 'intermediate', can_lv_2, req_lv_2, school, teacher)
                     self.courseMatch(language, 'advanced', can_lv_3, req_lv_3, school, teacher)
