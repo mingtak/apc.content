@@ -114,7 +114,7 @@ lang = {
   <div class="col-md-12">
     <form action="match_result_download" method="POST">
       <textarea name="data" v-bind:value="data" hidden></textarea>
-      <input type="submit" value="確認">
+      <input type="submit" value="下載媒合結果">
     </form>
   </div>
 </div>
@@ -136,7 +136,25 @@ $(document).ready(function(){
       data: '[]'
     },
     methods: {
-      getData: function (id) {
+      removeData: function (id) {
+        teacher = $(id).data('teacher')
+        classtime = $(id).data('classtime')
+        studnum = $(id).data('studnum')
+        level = $(id).data('level')
+        lang = $(id).data('lang')
+        school = $(id + ' #school-list').text()
+        data = $.parseJSON(app['data'])
+
+        for(i=0; i<data.length; i++){
+          if( _.isEqual(data[i], {teacher:teacher, classtime:classtime, studnum:studnum, level:level, lang:lang, school:school}) ){
+            data.splice(i, 1)
+          }
+        }
+
+        app['data'] = JSON.stringify(data)
+      },
+
+      pushData: function (id) {
         teacher = $(id).data('teacher')
         classtime = $(id).data('classtime')
         studnum = $(id).data('studnum')
@@ -154,16 +172,17 @@ $(document).ready(function(){
 // 不核可
   $('.reject').click(function(){
     id = $(this).data('id')
-    $('#' + id).slideUp()
-
+    $('#' + id + ' botton.reject').attr('disabled', 'disabled').css('opacity', 0.3)
+    $('#' + id + ' botton.accept').removeAttr('disabled').css('opacity', 1)
+    app['removeData']('#course-' + id)
   })
 
 // 核可
   $('.accept').click(function(){
     id = $(this).data('id')
-    $(this).attr('disabled', 'disabled').css('opacity', 0.8)
-    $('#' + id + ' botton.reject').slideUp()
-    app['getData']('#course-' + id)
+    $('#' + id + ' botton.accept').attr('disabled', 'disabled').css('opacity', 0.2)
+    $('#' + id + ' botton.reject').removeAttr('disabled').css('opacity', 1)
+    app['pushData']('#course-' + id)
   })
 })
 </script>
