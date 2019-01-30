@@ -538,7 +538,8 @@ class MatchResult(BrowserView):
                         if not teacher['lang%s' % i]:
                             continue
                         lang_code = teacher['lang%s' % i]
-
+                        if not lang_code == language:
+                            continue
 
                         for level_code in ['primary', 'intermediate', 'advanced']:
                             if not level_code == level:
