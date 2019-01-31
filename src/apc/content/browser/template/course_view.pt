@@ -110,6 +110,10 @@
         <a tal:condition="item/file"
            tal:attributes="href string:${item/absolute_url}/@@pdf_embeded">${item/file/filename}</a>
     </p>
+    <p>
+        <a tal:condition="item/file"
+           tal:attributes="href string:${item/absolute_url}"><b>觀看上課影片</b></a>
+    </p>
 <!--
     <h4>直播視訊</h4>
 
@@ -124,6 +128,8 @@
 <div class="col-md-6 video-item" id="video-${item/UID}" style="max-width:100%; overflow:hidden; text-align:center">
  <a tal:condition="item/embeded"
     href="javascript:void(0)"><img src="${portal_url}/resource/images/film.png/@@images/image/preview" style="width:50%"></a>
+
+<p tal:condition="item/embeded">影片預覽</p>
 
     <p tal:condition="not:item/embeded">
         <span href="${item/absolute_url}/@@pdf_embeded">尚無影片</span>

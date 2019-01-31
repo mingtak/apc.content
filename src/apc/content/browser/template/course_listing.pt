@@ -37,21 +37,9 @@
                 <p tal:condition="item_hireSchool"><strong>主辦學校: </strong>${python: item_hireSchool.to_object.title}</p>
                 <p tal:condition="item_teacher"><strong>族語師資: </strong><strong><a href="${python: item_teacher.to_object.absolute_url()}">${python: item_teacher.to_object.title}</a></strong></p>
                 <p><strong>授課地點: </strong>${item_place}</p>
-                <p><strong>授課日期: </strong>${item_courseDate}</p>
-                <p><strong>授課時間: </strong>${item_courseTime}</p>
+                <p><strong>授課時段: </strong>${python:obj.timeSection}</p>
               </div>
 
-              <div>
-                <tal:repeat tal:repeat="prepare python: view.getPrepare(obj)">
-                  <div tal:condition="python: prepare.getObject().file" 
-                       style="height: 50px; width: 120px; background-image: linear-gradient(white 0%, white 49%, #a11712 50%);
-                              vertical-align: bottom; display: table-cell; text-align: center; border: 1px solid black;" >
-                    <p>${prepare/Title}</p>
-                    <a href="${prepare/getURL}/@@download/file" 
-                       style="border-bottom: none; color: white; font-size: 15px;">教材下載</a>
-                  </div>
-                </tal:repeat>
-              </div>
               <div style="width:100%; border: 1px solid #e0dede; margin: 15px 0 40px 0;" />
             </tal:define>
           </tal:repeat>

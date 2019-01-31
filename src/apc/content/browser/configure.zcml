@@ -331,7 +331,15 @@
   />
 -->
 
-
+  <!-- 將107第1學期的課，copy到107第2學期 -->
+<!--  <browser:page
+      name="copy_course"
+      for="*"
+      class=".views.CopyCourse"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="cmf.ManagePortal"
+  />
+-->
   <browser:page
       name="testpage"
       for="*"

@@ -38,6 +38,32 @@ class TestPage(BrowserView):
         import pdb; pdb.set_trace()
 
 
+class CopyCourse(BrowserView):
+    """ 將107第1學期的課，copy到107第2學期 """
+    def __call__(self):
+        alsoProvides(self.request, IDisableCSRFProtection)
+        portal = api.portal.get()
+        context = self.context
+        request = self.request
+        oldFolder = portal['language_study']['107_1']['class_intro']
+        newFolder = portal['language_study']['latest']['class_intro']
+
+        courses = oldFolder.getChildNodes()
+        for course in courses:
+            # copy item
+            newId = course.id.replace('1071', '1072')
+            newCourse = api.content.copy(source=course, target=newFolder, id=newId)
+            # delete prepares
+            items = newCourse.getChildNodes()
+            api.content.delete(objects=list(items))
+            # rename / reindex Title index
+            newCourse.title = newCourse.title.replace('1071', '1072')
+            newCourse.reindexObject(idxs=['Title'])
+            logger.info('Create new Course OK, %s' % newCourse.title)
+
+#        import pdb; pdb.set_trace()
+
+
 class ZipGetSchools(BrowserView):
 
     def __call__(self):
@@ -1035,7 +1061,7 @@ class TeacherArea(BrowserView):
 
     def getTwoWeekCourse(self):
         current_time = datetime.datetime.now().date()
-        date_list = [current_time + datetime.timedelta(days=x) for x in range(0, 14)]
+        date_list = [current_time + datetime.timedelta(days=x) for x in range(0, 21)]
         courses = self.getCourse()
         prepareList = []
         self.courseList = []
@@ -1043,6 +1069,7 @@ class TeacherArea(BrowserView):
         self.todayPrepare = []
         for course in courses:
             prepares = api.content.find(context=course.getObject(), portal_type='Prepare', start_date=date_list, sort_on='getObjPositionInParent')
+#            import pdb; pdb.set_trace()
             if len(prepares) != 0:
                 self.courseList.append(course)
                 for prepare in prepares: 
