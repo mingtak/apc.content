@@ -18,12 +18,6 @@ portal = api.portal.get()
 <p tal:repeat="item view/brain">
 <b>${repeat/item/number}. </b>
 
-   <tal:school tal:repeat="school python:item.getObject().school">
-     <a href="${school/to_object/absolute_url}/edit" tal:content="school/to_object/title" target="_blank"/>
-     <span tal:condition="not:repeat/school/end"> | </span>
-   </tal:school>
-|| 
-
 
 <a href="${item/getURL}/edit" target="_blank">${item/Title}</a>
 <span tal:condition="python:item.getObject().getFirstChild()"
@@ -32,6 +26,14 @@ portal = api.portal.get()
    ${python:item.getObject().teacher.to_object.title if item.getObject().teacher else ''}, ||
 
 ${python:item.getObject().vMeetingRoom}, ||
+
+
+
+   <tal:school tal:repeat="school python:item.getObject().school">
+     <a href="${school/to_object/absolute_url}/edit" tal:content="school/to_object/title" target="_blank"/>
+     <span tal:condition="not:repeat/school/end"> | </span>
+   </tal:school>
+
 
 </p>
 

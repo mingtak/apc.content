@@ -254,7 +254,7 @@ class TeacherSurvy(BrowserView):
 
         for item in result:
             row = [item.get('name_han').encode('utf-8'), item.get('name_zu').encode('utf-8'),
-                   item.get('phone'), item.get('cell'),
+                   item.get('phone').encode('utf-8'), item.get('cell').encode('utf-8'),
                    item.get('city').encode('utf-8'), item.get('zip'), item.get('address').encode('utf-8'),
                    item.get('lang-class-time', ' ').encode('utf-8'), item.get('lang-class-time-other', ' ').encode('utf-8')]
             for index in range(20):
@@ -431,7 +431,10 @@ class AllCourseList(BrowserView):
         request = self.request
         self.portal = api.portal.get()
 
-        self.brain = api.content.find(portal_type='Course', sort_on='id')
+        self.brain = api.content.find(portal_type='Course',
+            context=self.portal['language_study']['latest']['class_intro'],
+            sort_on='id'
+        )
         return self.template()
 
 
@@ -1526,7 +1529,7 @@ class CourseSchedule(BrowserView):
         request = self.request
         self.portal = api.portal.get()
 
-        self.brain = api.content.find(portal_type='Course', sort_on='id')
+        self.brain = api.content.find(context=self.portal['language_study']['latest'], portal_type='Course', sort_on='id')
         return self.template()
 
 
@@ -1549,3 +1552,7 @@ class AdminCourseSchedule(BrowserView):
         self.brain = api.content.find(portal_type='Course', sort_on='id')
         return self.template()
 
+
+class MatchResult2(MatchResult):
+    """ Match Result2 """
+    template = ViewPageTemplateFile("template/match_result2.pt")

@@ -18,7 +18,7 @@ from plone import api
 portal = api.portal.get()
 teachers = portal['teacher'].getChildNodes()
 schools = api.content.find(context=portal['school'], Type='School')
-level = {'primary': '低年級', 'intermediate': '中年級', 'advanced': '高年級'}
+level = {'primary': '一二三年級', 'intermediate': '四五六年級', 'advanced': '高年級'}
 classTime = {'1':'周一早自習', '2':'周二早自習', '3':'周三早自習', '4':'周四早自習', '5':'周五早自習',
              'a':'周一午休', 'b':'周二午休', 'c':'周三午休', 'd':'周四午休', 'e':'周五午休',
              'f':'周一第一節', 'g':'週三第三節', 'h':'週四課後', 'i':'週二第五節', 'j':'週二第六節', 'k':'週三第五節', 'l':'週四第三節'

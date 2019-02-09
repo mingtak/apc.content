@@ -44,6 +44,14 @@
   />
 
   <browser:page
+      name="match_result2"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      class=".views.MatchResult2"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
+  <browser:page
       name="match_result_download"
       for="plone.app.contenttypes.interfaces.IFolder"
       class=".views.MatchResultDownload"
