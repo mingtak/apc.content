@@ -47,11 +47,17 @@
           <th scope="col" i18n:translate="" tal:content="weekday">Su</th>
         </tal:data></tr>
       </thead>
+<?python
+from datetime import datetime
+url_date = view.request.form.get('date', datetime.now().strftime('%Y-%m-%d'))
+url_year, url_month, url_day = url_date.split('-')
+url_date = '%s-%s-%s' % (int(url_year), int(url_month), int(url_day))
+?>
       <tbody>
         <tr tal:repeat="week view/cal_data">
           <tal:block repeat="day week">
           <td class="event"
-              tal:define="today day/today;
+              tal:define="today python:day['date_string'] == url_date;
                           next_month day/next_month;
                           prev_month day/prev_month;
                           events day/events;
