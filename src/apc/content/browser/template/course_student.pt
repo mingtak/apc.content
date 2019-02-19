@@ -13,22 +13,26 @@
 <h3>學生名單</h3>
 <hr>
 
-<div class="row" tal:repeat="item view/getStudents">
+<table>
+<tr class="row" tal:repeat="item view/getStudents">
   <tal:define tal:define="obj item/getObject;
                           title obj/title;
-                          student obj/studentList">
+                          student python:obj.studentList.replace('\n', '<br>') if obj.studentList else ''">
     <tal:condition tal:condition="student">
-      <div class="col-xs-12 col-sm-4 ">
+      <td class="col-xs-12 col-sm-4 ">
         <p>${title}(<a href="${python:obj.absolute_url()}/edit" target="_blank">編輯</a>)</p>
-      </div>
+      </td>
 
-      <div class="col-xs-12 col-sm-6">
-        <p style="white-space: pre-line;">${student}</p>
-      </div>
-      <div class="col-xs-12" style="border-bottom: 2px solid #E0DEDE;"></div>
+      <td class="col-xs-12 col-sm-6">
+        <p style="white-space: pre-line;" tal:content="structure student"></p>
+      </td>
+<!--      <div class="col-xs-12" style="border-bottom: 2px solid #E0DEDE;"></div> -->
     </tal:condition>
   </tal:define>
-</div>
+
+</tr>
+</table>
+
 </metal:content-core>
 </metal:content-core>
 

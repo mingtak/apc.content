@@ -1154,9 +1154,12 @@ class CourseView(BrowserView):
 
 class CourseStudent(BrowserView):
     def getStudents(self):
-        courses = api.content.find(portal_type="Course")
-        return courses
+        portal = api.portal.get()
+        request = self.request
 
+        folder = request.form.get('folder', 'latest')
+        courses = api.content.find(portal_type="Course", context=portal['language_study'][folder]['class_intro'])
+        return courses
 
 class TeacherView(BrowserView):
     def getTeacherField(self, item):
