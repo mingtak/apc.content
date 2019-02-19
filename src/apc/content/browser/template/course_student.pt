@@ -12,18 +12,24 @@
 
 <h3>學生名單</h3>
 <hr>
-
-<table>
-<tr class="row" tal:repeat="item view/getStudents">
+<a href="${context/absolute_url}/course_student?folder=107_1">107學年度上學期</a> / 
+<a href="${context/absolute_url}/course_student?folder=latest">107學年度下學期</a>
+<br><br>
+<table id="student-list">
+<tr>
+  <th>共學組</th>
+  <th>學生名單</th>
+</tr>
+<tr tal:repeat="item view/getStudents">
   <tal:define tal:define="obj item/getObject;
                           title obj/title;
                           student python:obj.studentList.replace('\n', '<br>') if obj.studentList else ''">
     <tal:condition tal:condition="student">
-      <td class="col-xs-12 col-sm-4 ">
-        <p>${title}(<a href="${python:obj.absolute_url()}/edit" target="_blank">編輯</a>)</p>
+      <td>
+        <p>${title}(<a href="${python:obj.absolute_url()}/edit#formfield-form-widgets-studentList" target="_blank">編輯</a>)</p>
       </td>
 
-      <td class="col-xs-12 col-sm-6">
+      <td>
         <p style="white-space: pre-line;" tal:content="structure student"></p>
       </td>
 <!--      <div class="col-xs-12" style="border-bottom: 2px solid #E0DEDE;"></div> -->
@@ -32,6 +38,12 @@
 
 </tr>
 </table>
+
+<style>
+table#student-list th {background: yellow}
+table#student-list td, table#student-list th {padding: 5px 15px}
+table#student-list th, table#student-list td {border:solid 1px #555}
+</style>
 
 </metal:content-core>
 </metal:content-core>
