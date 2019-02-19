@@ -35,7 +35,7 @@ portal = api.portal.get()
                     course python:obj.getParentNode()"
         class="make-up-${obj/makeUp}">
       <td>${course/title}</td>
-      <td>${course/teacher/to_object/title}</td>
+      <td>${python:course.teacher.to_object.title if course.teacher else ''}</td>
       <td>
           <span tal:repeat="school course/school">
             ${school/to_object/title} <tal:cond condition="not:repeat/school/end"> <br> </tal:cond>
