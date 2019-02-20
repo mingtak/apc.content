@@ -79,13 +79,15 @@ lang = {
   <tal:course repeat="course view/brain">
     <tr class="tr-body">
       <td class="course">
-        <a target="_blank" href="${course/getURL}" style="white-space:nowrap;">${course/Title}(${python:lang.get(course.Title[6:])})</a><br>
+        <a href="${course/getURL}" style="white-space:nowrap;">${course/Title}(${python:lang.get(course.Title[6:])})</a><br>
         <span>${python:course.getObject().timeSection}</span>
       </td>
       <td tal:repeat="weekday python:[1,2,3,4,5]" class="school"> 
         <tal:cond condition="python:view.getWeekDay(course.getObject().getFirstChild().id) == str(weekday)"
                   repeat="item python:course.getObject().school">
-          <a target="_blank" href="${course/getURL}">${python:item.to_object.getParentNode().title}${item/to_object/title}</a>
+          <span tal:condition="python:api.user.is_anonymous()">${python:item.to_object.getParentNode().title}${item/to_object/title}</span>
+          <a tal:condition="python:not api.user.is_anonymous()"
+             href="${portal_url}/school/@@school_area?uid=${item/to_object/UID}">${python:item.to_object.getParentNode().title}${item/to_object/title}</a>
           <span tal:condition="not:repeat/item/end"><br></span>
         </tal:cond>
       </td>

@@ -971,10 +971,10 @@ class TeacherInit(BrowserView):
                 self.request.response.setCookie("teacher_login", teacher[0].UID, path=cookie_path)
 
                 return self.request.response.redirect('{}/teacher-area/teacher-area'.format(self.context.portal_url()))
- 
+
         self.context.plone_utils.addPortalMessage(_(u'Your Username or Password is not vaild'), 'error')
 
-    
+
 class TeacherInfo(BrowserView):
     template = ViewPageTemplateFile("template/teacher_info.pt")
     def __call__(self):
@@ -1016,11 +1016,21 @@ class TeacherInfo(BrowserView):
         return self.template()
 
 
+class TeacherAreaSelector(BrowserView):
+    template = ViewPageTemplateFile("template/teacher_area_selector.pt")
+    def __call__(self):
+        self.brain = api.content.find(portal_type="Teacher")
+        return self.template()
+
+
 class TeacherArea(BrowserView):
     template = ViewPageTemplateFile("template/teacher_area.pt")
     def __call__(self):
         request = self.request
-        teacher_uid = self.request.cookies.get("teacher_login", "")
+        if api.user.is_anonymous():
+            teacher_uid = request.cookies.get("teacher_login", "")
+        else:
+            teacher_uid = request.form.get('uid', '')
         teacher = api.content.get(UID=teacher_uid)
         if not teacher:
             return self.request.response.redirect('{}/teacher-area/teacher-login'.format(self.context.portal_url()))
@@ -1380,11 +1390,22 @@ class SchoolInit(BrowserView):
         self.context.plone_utils.addPortalMessage(_(u'Your Username or Password is not vaild'), 'error')
 
 
+class SchoolAreaSelector(BrowserView):
+    template = ViewPageTemplateFile("template/school_area_selector.pt")
+    def __call__(self):
+        self.brain = api.content.find(portal_type="School")
+        return self.template()
+
+
 class SchoolArea(BrowserView):
     template = ViewPageTemplateFile("template/school_area.pt")
     def __call__(self):
         request = self.request
-        school_uid = self.request.cookies.get("school_login", "")
+
+        if api.user.is_anonymous():
+            school_uid = request.cookies.get("school_login", "")
+        else:
+            school_uid = request.form.get('uid', '')
         school = api.content.get(UID=school_uid)
         if not school:
             return self.request.response.redirect('{}/school-area/school-login'.format(self.context.portal_url()))

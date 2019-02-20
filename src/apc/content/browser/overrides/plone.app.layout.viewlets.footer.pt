@@ -2,9 +2,13 @@
 	<div class="col-xs-12">
 原住民族委員會版權所有 © ${view/year} 新北市新莊區中平路439號北棟14F/15F/16F<br>
 總機：02-89953456 89953457 89953458
-        <a href="./teacher-area">族語教師專區</a>
-        <a href="./school-area">共學學校專區</a>
-
-
+<?python
+from plone import api
+portal = api.portal.get()
+?>
+        <a tal:condition="python:api.user.is_anonymous()" href="./teacher-area">族語教師專區</a>
+        <a tal:condition="python:not api.user.is_anonymous()" href="${portal/absolute_url}/@@teacher_area_selector">族語教師專區</a>
+        <a tal:condition="python:api.user.is_anonymous()" href="./school-area">共學學校專區</a>
+        <a tal:condition="python:not api.user.is_anonymous()" href="${portal/absolute_url}/@@school_area_selector">共學學校專區</a>
 	</div>
 </div>

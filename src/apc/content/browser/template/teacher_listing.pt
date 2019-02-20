@@ -40,6 +40,12 @@ portal = api.portal.get()
                   </div>
                 </div>
                 <div class="col-xs-12 col-md-8">
+<?python
+from plone import api
+portal = api.portal.get()
+?>
+<a tal:condition="python:not api.user.is_anonymous()"
+   style="float:right" href="${portal_url}/teacher/@@teacher_area?uid=${item/UID}">教師專頁</a>
                   <h3 style="color: #fa9901; font-weight: bold; ">${item_title}</h3>
                   <div style="width:100%; border: 1px solid #a10d0d; margin: 5px 0 10px 0;" />
                   <table style="border: 0;">
