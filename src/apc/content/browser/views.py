@@ -1414,6 +1414,7 @@ class SchoolArea(BrowserView):
     template = ViewPageTemplateFile("template/school_area.pt")
     def __call__(self):
         request = self.request
+        portal = api.portal.get()
 
         if api.user.is_anonymous():
             school_uid = request.cookies.get("school_login", "")
@@ -1426,11 +1427,11 @@ class SchoolArea(BrowserView):
 
         if request.get("widget-form-btn", "") == "widget-email-form":
             self.updateEmail()
-            return request.response.redirect(self.request.URL)
+            return request.response.redirect('%s/school/@@school_area' % portal.absolute_url())
 
         if request.get("widget-form-btn", "") == "widget-namelist-form":
             self.updateNamelist()
-            return request.response.redirect(self.request.URL)
+            return request.response.redirect('%s/school/@@school_area' % portal.absolute_url())
 
         return self.template()
 
@@ -1440,7 +1441,8 @@ class SchoolArea(BrowserView):
 
     def getCourse(self):
         school_uid = self.school.UID()
-        course = api.content.find(portal_type='Course', course_schools=school_uid)
+        portal = api.portal.get()
+        course = api.content.find(portal_type='Course', course_schools=school_uid, context=portal['language_study']['latest']['class_intro'])
         return course
 
     def getNamelist(self, course):
@@ -1497,6 +1499,10 @@ class SchoolArea(BrowserView):
                     studentList.append(nameHeader+name)
             course.studentList = '\r\n'.join(studentList)
             self.context.plone_utils.addPortalMessage(course.title + _(u' student list already update'), 'info')
+
+
+class SchoolAreaEdit(SchoolArea):
+    template = ViewPageTemplateFile("template/school_area_edit.pt")
 
 
 class SchoolChangePW(BrowserView):

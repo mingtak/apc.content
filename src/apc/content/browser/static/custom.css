@@ -197,8 +197,9 @@ body {
 }
 
 .border-solid{
-  margin: 5px 0 5px 0;
-  border-bottom: 1px solid #cdcdcd;
+  margin: 5px 0 35px 0;
+/*  border-bottom: 1px solid #cdcdcd; */
+  border-bottom: 2px solid #a00;
 }
 
 .announcement {

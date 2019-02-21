@@ -30,7 +30,7 @@ portal = api.portal.get()
                 <p>學校聯絡人 姓名:</p>
               </div>
               <div class="col-sm-8">
-                ${python:view.school.name if view.school.name else '尚未填寫'}
+                <input type="text" name="name" value="${view/school/name}">
               </div>
             </div>
             <div class="tr-list row">
@@ -38,7 +38,7 @@ portal = api.portal.get()
                 <p>學校聯絡人 電話:</p>
               </div>
               <div class="col-sm-8">
-                ${python:view.school.telephone if view.school.telephone else '尚未填寫'}
+                <input type="text" name="telephone" value="${view/school/telephone}">
               </div>
             </div>
             <div class="tr-list row">
@@ -46,7 +46,7 @@ portal = api.portal.get()
                 <p>學校聯絡人 手機:</p>
               </div>
               <div class="col-sm-8">
-                ${python:view.school.phone if view.school.phone else '尚未填寫'}
+                <input type="text" name="phone" value="${view/school/phone}">
               </div>
             </div>
             <div class="tr-list row">
@@ -54,21 +54,27 @@ portal = api.portal.get()
                 <p>學校聯絡人Email:</p>
               </div>
               <div class="col-sm-8">
-                ${python:view.school.email if view.school.email else '尚未填寫'}
+                <input type="email" name="email" value="${view/school/email}" required>
               </div>
               <div class="col-sm-2">
-<a href="${view/request/URL}_edit">編輯</a>
+                <input type="hidden" name="widget-form-btn" value="widget-email-form">
+                <button type="submit" class="btn context" >送出</button>
               </div>
             </div>
             <div class="border-solid" />
           </form>
         </div>
-</fieldset>
 
-<fieldset>
+</fieldset>
+      <fieldset>
         <legend >本學期課程</legend>
 
-
+        <ul class="announcement">
+<br>
+<li>請依各共學組編號填入上課學生姓名做為上課點名使用</li>
+<!-- <li>為確保學生隱私，請將學生姓名部分隱去，如:<br>王Ｏ明<br>姑Ｏ．Ｏ絲</li> -->
+<li>直接填寫學生姓名即可，一行一位學生姓名</li>
+<br>
           <tal:repeat tal:repeat="item course">
             <tal:define tal:define="obj item/getObject;
                                     item_title item/Title;
@@ -86,22 +92,47 @@ portal = api.portal.get()
                     <a href="${item_url}" class="title">${python:item_title[6:]}</a>
                   </div>
                   <div class="col-sm-4 col-md-6">
+                     (<a href="javascript:;" onclick="showNamelist('${item_uid}')">編輯學生名單</a>)
+                  </div>
+                </div>
+                <div class="border-solid" />
+              </div>
+              <div class="prepare namelist-${item_uid} namelist">
+                <div class="tr-list row">
+                  <form method="POST">
                   <div class="col-xs-3">
-                    <h4>學生名單</h4>
-                    <div tal:content="structure python: view.getNamelist(obj)['nameList'].replace('\n', '<br>')"></div>
+                    <input type="hidden" name="uid" value="${item_uid}">
+                    <input type="hidden" name="otherList" value="${python: view.getNamelist(obj)['otherList']}">
+                    <textarea name="nameList" required>${python: view.getNamelist(obj)['nameList']}</textarea>
                   </div>
+                  <div class="col-xs-9">
+                    <input type="hidden" name="widget-form-btn" value="widget-namelist-form">
+                    <button type="submit" class="btn context" >送出</button>
                   </div>
+                  </form>
                 </div>
                 <div class="border-solid" />
               </div>
             </tal:define>
           </tal:repeat>
-<a href="${view/request/URL}_edit#autotoc-item-autotoc-1">編輯</a>
-
+        </ul>
       </fieldset>
     </tal:course>
   </div>
 
+
+  <script>
+      $(".namelist").hide();
+      function logout(){
+        document.cookie = 'school_login=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=${view/getPathname}';
+        document.location.reload();
+      };
+       
+      function showNamelist(uid){
+        $(".namelist").hide();
+        $(".namelist-"+uid).show();
+      }
+  </script>
 
 
 </metal:content-core>

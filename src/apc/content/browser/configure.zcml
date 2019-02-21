@@ -190,6 +190,14 @@
   />
 
   <browser:page
+      name="school_area_edit"
+      for="*"
+      class=".views.SchoolAreaEdit"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
+  <browser:page
       name="school_area"
       for="plone.app.contenttypes.interfaces.IFolder"
       class=".views.SchoolArea"

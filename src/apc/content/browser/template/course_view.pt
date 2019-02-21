@@ -89,11 +89,14 @@
    <a href="${context/absolute_url}/edit#formfield-form-widgets-hire_school" style="float:right">編輯學生名單</a>
  </tal:cond>
 
+<?python
+from Products.CMFPlone.utils import safe_unicode
+?>
  <tal:cond condition="view/school_uid">
    學生名單:
    <ul tal:condition="context/studentList">
      <tal:li repeat="item python:context.studentList.split('\n')">
-       <li tal:condition="python:view.schoolTitle in item">${item}</li>
+       <li tal:condition="python:safe_unicode(view.schoolTitle) in safe_unicode(item)">${item}</li>
      </tal:li>
    </ul>
    <a href="${portal_url}/school-area" style="float:right">前往學校專頁編輯學生名單</a>
