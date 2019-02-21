@@ -13,7 +13,7 @@
 <h4>學校專區列表</h4>
 <ul>
   <li tal:repeat="item view/brain">
-    <a href="${portal_url}/school/@@school_area?uid=${item/UID}">${item/Title}</a>
+    <a href="${portal_url}/school/@@school_area?uid=${item/UID}">${python:item.getObject().getParentNode().title} / ${item/Title}</a>
   </li>
 </ul>
 

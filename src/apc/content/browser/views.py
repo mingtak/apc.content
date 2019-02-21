@@ -1393,7 +1393,7 @@ class SchoolInit(BrowserView):
 class SchoolAreaSelector(BrowserView):
     template = ViewPageTemplateFile("template/school_area_selector.pt")
     def __call__(self):
-        self.brain = api.content.find(portal_type="School")
+        self.brain = api.content.find(portal_type="School", sort_on="id")
         return self.template()
 
 
