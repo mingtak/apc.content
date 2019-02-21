@@ -1146,8 +1146,21 @@ class CourseView(BrowserView):
     template = ViewPageTemplateFile("template/course_view.pt")
 
     def __call__(self):
+        context = self.context
+        request = self.request
 
-        courses = self.context.getChildNodes()
+        self.school_uid = False
+        self.schoolTitle = ''
+        self.loginUser = False
+        if api.user.is_anonymous():
+            self.school_uid = request.cookies.get("school_login", "")
+        else:
+            self.loginUser = True
+
+        if not self.loginUser and self.school_uid:
+            self.schoolTitle = api.content.get(UID=self.school_uid).title
+
+        courses = context.getChildNodes()
         self.items = []
         for item in courses:
             if item.embeded and not self.items:

@@ -30,62 +30,77 @@
   </div>
 </div>
 
-  <div class="course-info">
-<!--
+  <div class="course-info row">
+<div class="col-md-6">
+
 <div class="row">
-  <div class="col-md-2">
-    虛擬教室編號
-  </div>
-  <div class="col-md-10">
-    ${item_id}
-  </div>
-</div>
--->
-<div class="row">
-  <div class="col-md-2">
+  <div class="col-md-4">
     族語別:
   </div>
-  <div class="col-md-10">${item_lang}</div>
+  <div class="col-md-8">${item_lang}</div>
 </div>
 
 <div class="row" tal:condition="item_hireSchool">
-  <div class="col-md-2">主辦學校: </div>
-  <div class="col-md-10">${python: item_hireSchool.to_object.title}</div>
+  <div class="col-md-4">主辦學校: </div>
+  <div class="col-md-8">${python: item_hireSchool.to_object.title}</div>
 </div>
 
 <div class="row">
     <tal:cond tal:condition="item_schools">
-<div class="col-md-2">共學學校:</div>
-<div class="col-md-10">
-        <ul><li class="co-school" tal:repeat="item python:[school.to_object.title for school in item_schools]">${item/title}</li>
+<div class="col-md-4">共學學校:</div>
+<div class="col-md-8">
+        <ul class="school"><li class="co-school" tal:repeat="item python:[school.to_object.title for school in item_schools]">${item/title}</li>
         </ul>
 </div>
     </tal:cond>
 </div>
 
 <div class="row" tal:condition="item_teacher">
-  <div class="col-md-2">
+  <div class="col-md-4">
     族語師資: 
   </div>
-  <div class="col-md-10">
+  <div class="col-md-8">
     <a href="${python: item_teacher.to_object.absolute_url()}">${python: item_teacher.to_object.title}</a>
   </div>
 </div>
 <div class="row">
-  <div class="col-md-2">
+  <div class="col-md-4">
     授課地點
   </div>
-  <div class="col-md-10">
+  <div class="col-md-8">
     ${item_place}
   </div>
 </div>
 <div class="row">
-  <div class="col-md-2">
+  <div class="col-md-4">
     授課時段:
   </div>
-  <div class="col-md-10">
+  <div class="col-md-8">
     ${item_courseTime}
   </div>
+</div>
+</div>
+<div class="col-md-6">
+ <tal:cond condition="view/loginUser">
+   學生名單:
+   <ul tal:condition="context/studentList">
+     <li tal:repeat="item python:context.studentList.split('\n')">${item}</li>
+   </ul>
+   <a href="${context/absolute_url}/edit#formfield-form-widgets-hire_school" style="float:right">編輯學生名單</a>
+ </tal:cond>
+
+ <tal:cond condition="view/school_uid">
+   學生名單:
+   <ul tal:condition="context/studentList">
+     <tal:li repeat="item python:context.studentList.split('\n')">
+       <li tal:condition="python:view.schoolTitle in item">${item}</li>
+     </tal:li>
+   </ul>
+   <a href="${portal_url}/school-area" style="float:right">前往學校專頁編輯學生名單</a>
+ </tal:cond>
+
+
+
 </div>
   </div>
 
