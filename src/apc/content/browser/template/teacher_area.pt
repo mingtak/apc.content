@@ -256,6 +256,18 @@ portal = api.portal.get()
         <legend>請假單申請</legend>
         <div>
           <form method="POST">
+日期: <input name="date" class="pat-pickadate" data-pat-pickadate="time:false"/>
+事由: <textarea name="reason"></textarea>
+<br>
+是否已公佈於Line群組： 是 <input type="radio" name="alert-to-line" value="true"> / 否 <input type="radio" name="alert-to-line" value="false">
+<br>
+是否已通知主聘學校： 是 <input type="radio" name="alert-to-school" value="true"> / 否 <input type="radio" name="alert-to-school" value="false">
+<br>
+調課日期時段(若尚未確定補課時間，本欄請留空白): <input name="note">
+
+<br><br>
+<input type="submit" name="submit-leave-class">
+
           </form>
         </div>
 

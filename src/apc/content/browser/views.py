@@ -1025,16 +1025,45 @@ class TeacherAreaSelector(BrowserView):
 
 class TeacherArea(BrowserView):
     template = ViewPageTemplateFile("template/teacher_area.pt")
+    def submitLeaveClass(self, teacher):
+        request = self.request
+
+        teacherName = teacher.title
+        date = request.form.get('date')
+        reason = request.form.get('reason')
+        alertToLine = request.form.get('alert-to-line')
+        alertToSchool = request.form.get('alert-to-school')
+        alertToLine = '是' if alertToLine == 'true' else '否'
+        alertToSchool = '是' if alertToSchool == 'true' else '否'
+        note = request.form.get('note')
+
+        message = "請假日期:{}\n事由:{}\n是否已公佈於Line群組:{}\n是否已通知主聘學校:{}\n調課日期時段:{}".format(date,
+                   reason, alertToLine, alertToSchool, note)
+        api.portal.send_email(
+            recipient="andersen.smartedu@gmail.com",
+            sender="noreply@17study.com.tw",
+            subject="%s 請假單通知" % teacherName.encode('utf-8'),
+            body=message,
+        )
+        api.portal.show_message(message=u'已送出請假單!', request=request)
+
+
     def __call__(self):
         request = self.request
+
         if api.user.is_anonymous():
             teacher_uid = request.cookies.get("teacher_login", "")
         else:
             teacher_uid = request.form.get('uid', '')
+        self.teacher_uid = teacher_uid
         teacher = api.content.get(UID=teacher_uid)
+
         if not teacher:
             return self.request.response.redirect('{}/teacher-area/teacher-login'.format(self.context.portal_url()))
         self.teacher = teacher
+
+        if request.form.has_key('submit-leave-class'):
+            self.submitLeaveClass(teacher)
 
         return self.template()
 
