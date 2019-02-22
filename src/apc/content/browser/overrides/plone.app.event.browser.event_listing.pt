@@ -113,10 +113,14 @@ from Products.CMFPlone.utils import safe_unicode
                 tal:condition="data/location"
                 tal:content="data/location">location</div>
           </div>
-
-<span>課堂內容:</span>
-          <p itemprop="description" class="description" tal:condition="data/description" tal:content="data/description" />
-<br>
+<p>
+<span>課堂主題:</span>
+          <span itemprop="topic" class="topic" tal:condition="data/context/topic" tal:content="data/context/topic" />
+</p>
+<p>
+<span>課堂概要:</span>
+          <span itemprop="description" class="description" tal:condition="data/description" tal:content="data/description" />
+</p>
 <span>教學影片: </span>
 <span tal:condition="python:data.context.embeded">
   <a target="_blank" href="${data/url}">觀看教學影片</a>
@@ -196,3 +200,4 @@ from Products.CMFPlone.utils import safe_unicode
 
 </body>
 </html>
+

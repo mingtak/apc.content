@@ -1420,18 +1420,21 @@ class SchoolArea(BrowserView):
             school_uid = request.cookies.get("school_login", "")
         else:
             school_uid = request.form.get('uid', '')
+
+        self.school_uid = school_uid
         school = api.content.get(UID=school_uid)
+
         if not school:
             return self.request.response.redirect('{}/school-area/school-login'.format(self.context.portal_url()))
         self.school = school
 
         if request.get("widget-form-btn", "") == "widget-email-form":
             self.updateEmail()
-            return request.response.redirect('%s/school/@@school_area' % portal.absolute_url())
+            return request.response.redirect('%s/school/@@school_area?uid=%s' % (portal.absolute_url(), school_uid))
 
         if request.get("widget-form-btn", "") == "widget-namelist-form":
             self.updateNamelist()
-            return request.response.redirect('%s/school/@@school_area' % portal.absolute_url())
+            return request.response.redirect('%s/school/@@school_area?uid=%s' % (portal.absolute_url(), school_uid))
 
         return self.template()
 

@@ -17,7 +17,7 @@
     <input type="hidden" name="file-upload-widget">
     <tr>
         <td>
-          <p>上課日期</p>
+          <p>課堂日期</p>
         </td>
         <td>
           <p>上傳檔案</p>
@@ -31,7 +31,7 @@
       <tr>
           <td rowspan=2>
             <p style="color:blue">${item/Title}<br>
-               (<a href="${item/getURL}/@@pdf_embeded" target="_blank">檢視上課畫面</a>)
+               (<a href="${item/getURL}/@@pdf_embeded" target="_blank">檢視課堂畫面</a>)
             </p>
           </td>
           <td>

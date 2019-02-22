@@ -14,6 +14,10 @@
 <h3 tal:condition="context/vacation" style="color:red">本周放假</h3>
   <ul>
     <li><b>課堂日期:</b>${context/title}</li>
+
+    <li><b>課堂主題:</b><span tal:condition="context/topic" tal:content="context/topic"></span>
+    </li>
+
     <li><b>課堂概要:</b><br>
         <p tal:condition="context/description" tal:content="structure python:context.description.replace('\n', '<br>')"></p>
     </li>

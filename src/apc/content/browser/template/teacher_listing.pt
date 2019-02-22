@@ -20,10 +20,14 @@ portal = api.portal.get()
     <metal:listingmacro define-macro="listing">
       <tal:results define="nodes python:portal['teacher'].getChildNodes();">
           <tal:repeat tal:repeat="item nodes">
+<?python
+from plone import api
+?>
             <tal:define tal:define="item_title item/title;
                                     item_url python:item.absolute_url();
                                     item_description item/description;
-                                    item_created item/created;">
+                                    item_created item/created;"
+                        tal:condition="python:api.content.get_state(obj=item, default='nostate') == 'published'">
               <div class="row">
                 <div class="col-xs-12 col-md-4">
                   <div style="text-align: center; position: relative;">

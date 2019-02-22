@@ -26,6 +26,25 @@ portal = api.portal.get()
                             todayPrepares view/todayPrepare;
                             courses  view/courseList;">
       <fieldset>
+        <legend>授課列表</legend>
+        <div class="announcement" tal:define="course view/getCourse">
+          <h4 tal:condition="not:course">本學期無授課</h4>
+
+          <div class="tr-list row" tal:repeat="item course"
+               style="padding:8px 20px; margin:5px 20px; border-bottom:solid 2px red">
+            <div class="col-md-4">${item/Title}</div>
+            <div class="col-md-8">
+             學生名單:
+             <div tal:content="structure python:item.getObject().studentList.replace('\n', '<br>')">
+             </div>
+            </div>
+          </div>
+
+        </div>
+      </fieldset>
+
+
+      <fieldset>
         <legend>族語教師教學系統</legend>
         <div class="announcement">
           <tal:todayCourse tal:switch="python: len(todayPrepares)!=0">
@@ -232,6 +251,19 @@ portal = api.portal.get()
           </tal:info>
         </div>
       </fieldset>
+
+      <fieldset>
+        <legend>請假單申請</legend>
+        <div>
+          <form method="POST">
+          </form>
+        </div>
+
+
+
+      </fieldset>
+
+
     </tal:course>
   </div>
 

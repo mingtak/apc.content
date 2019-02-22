@@ -22,7 +22,7 @@
 
 
 <br>
-    <b>上課日期:</b> ${context/title}<br>
+    <b>課堂日期:</b> ${context/title}<br>
 
 
     <b>教材下載:</b><br>

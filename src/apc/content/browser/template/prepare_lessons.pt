@@ -66,7 +66,7 @@
         <input type="hidden" name="file-upload-widget">
           <tr>
               <td>
-                <p>上課日期</p>
+                <p>課堂日期</p>
               </td>
               <td>
                 <p>上傳檔案</p>
@@ -82,7 +82,7 @@
               <td rowspan=2>
                 <input type="hidden" value="${item/UID}" name="prepare.uid:records">
                 <p style="color:blue">第${repeat/item/number}周 ${item/Title}<br>
-                    (<a href="${item/getURL}/@@pdf_embeded" target="_blank">檢視上課畫面</a>)
+                    (<a href="${item/getURL}/@@pdf_embeded" target="_blank">檢視課堂畫面</a>)
                 </p>
               </td>
               <td>

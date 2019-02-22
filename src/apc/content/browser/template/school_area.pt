@@ -57,7 +57,7 @@ portal = api.portal.get()
                 ${python:view.school.email if view.school.email else '尚未填寫'}
               </div>
               <div class="col-sm-2">
-<a href="${view/request/URL}_edit">編輯</a>
+<a href="${view/request/URL}_edit?uid=${view/school_uid}">編輯</a>
               </div>
             </div>
             <div class="border-solid" />
@@ -96,7 +96,7 @@ portal = api.portal.get()
               </div>
             </tal:define>
           </tal:repeat>
-<a href="${view/request/URL}_edit#autotoc-item-autotoc-1">編輯</a>
+<a href="${view/request/URL}_edit?uid=${view/school_uid}#autotoc-item-autotoc-1">編輯</a>
 
       </fieldset>
     </tal:course>
