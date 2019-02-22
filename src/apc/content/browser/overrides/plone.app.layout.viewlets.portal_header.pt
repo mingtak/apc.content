@@ -1,15 +1,58 @@
 <div id="portal-header">
     <div tal:replace="structure provider:plone.portalheader" />
+<?python
+from plone import api
+portal = api.portal.get()
+teacher = None
+school = None
+teacher_uid = view.request.cookies.get("teacher_login", "")
+if teacher_uid:
+    teacher = api.content.find(UID=teacher_uid)[0]
+school_uid = view.request.cookies.get("school_login", "")
+if school_uid:
+    school = api.content.find(UID=school_uid)[0]
+?>
 
-<!--
-<form style="float:right; margin-top:10px;">
-    <input type="submit" name="submit" value="登入" tabindex='13' style="float:right; margin: 0 5px">
-    <input type="password" name="password" placeholder="密碼" style="width:150px; float:right; margin: 0 5px" tabindex='12'>
-    <input name='id' placeholder="帳號" style="width:150px; float:right; margin: 0 5px" tabindex='11'>
-    <select name="role" class="role" style="float:right;margin: 0 5px" tabindex='10'>
-        <option value="teacher">族語教師</option>
-        <option value="school">共學學校</option>
-    </select>
-</form>
--->
+<div tal:condition="teacher" class="login-info">
+  <span class="name">您好, ${teacher/Title}</span>
+  <span class="link">
+      (<a href="${portal/absolute_url}/teacher-area">教師專頁</a> / <a id="logout_from_header" href="javascript:void(0)">登出</a>)
+  </span>
+</div>
+
+<div tal:condition="school" class="login-info">
+  <span class="name">您好, ${school/Title}</span>
+  <span class="link">
+      (<a href="${portal/absolute_url}/school-area">學校專頁</a> / <a id="logout_from_header" href="javascript:void(0)">登出</a>)
+  </span>
+</div>
+
+
+<script>
+  $(document).ready(function(){
+    $('a#logout_from_header').click(function(){
+          document.cookie = 'teacher_login=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=${python:portal.absolute_url_path()}';
+          document.cookie = 'school_login=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=${python:portal.absolute_url_path()}';
+          document.location.reload();
+    })
+  })
+</script>
+
+
+<style>
+.login-info {
+    float: right;
+    margin-top: 25px;
+}
+.login-info .name {
+    color: #fff;
+    font-size: 16px;
+}
+.login-info .link a {
+    color: #8be;
+    font-size: 16px;
+}
+</style>
+
+
 </div>
