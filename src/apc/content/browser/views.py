@@ -38,6 +38,30 @@ class TestPage(BrowserView):
         import pdb; pdb.set_trace()
 
 
+class ContactView(BrowserView):
+
+    def __call__(self):
+        alsoProvides(self.request, IDisableCSRFProtection)
+        portal = api.portal.get()
+        context = self.context
+        request = self.request
+
+        name = request.form.get('name')
+        email = request.form.get('email')
+        content = request.form.get('content')
+
+        message = "姓名:{}\nEmail:{}\n聯絡事項:{}".format(name, email, content)
+        api.portal.send_email(
+            recipient="andy@mingtak.com.tw",
+            sender="noreply@17study.com.tw",
+            subject="經由 原住民族語直播共學平台 寄來的 聯絡我們 表單通知",
+            body=message,
+        )
+
+        api.portal.show_message(message=u'系統已收到您聯絡訊息，感謝您的寶貴意見', request=request)
+        request.response.redirect('%s/contact' % portal.absolute_url())
+
+
 class CopyCourse(BrowserView):
     """ 將107第1學期的課，copy到107第2學期 """
     def __call__(self):

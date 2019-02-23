@@ -353,6 +353,14 @@
       permission="zope2.View"
   />
 
+  <browser:page
+      name="contact_view"
+      for="*"
+      class=".views.ContactView"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
 <!-- 批次設定學校老師帳密
   <browser:page
       name="set_school_pwd"
