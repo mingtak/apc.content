@@ -1646,7 +1646,8 @@ class CourseSchedule(BrowserView):
         request = self.request
         self.portal = api.portal.get()
 
-        self.brain = api.content.find(context=self.portal['language_study']['latest'], portal_type='Course', sort_on='id')
+        range = request.form.get('range', 'latest')
+        self.brain = api.content.find(context=self.portal['language_study'][range], portal_type='Course', sort_on='id')
         return self.template()
 
 

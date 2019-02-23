@@ -41,9 +41,64 @@ siteName = 'site-%s' % portal.absolute_url().split('//')[1].split('.')[0]
                                      target tab/link_target|nothing;">
                     Tab Name
                   </a>
+<ul class="${python:'sub-menu' if tid in ['language_study', 'about', 'news'] else ''}"
+    tal:condition="python:tid in ['language_study', 'about', 'news']">
+  <tal:news condition="python:tid == 'about'">
+    <li><a href="${portal/absolute_url}/about">關於共學系統</a></li>
+    <li><a href="${portal/absolute_url}/about/1075e745ea665cf8a9e65cf8a9e65595b7876f464ad51715b7867b669cb.png/view">族語教學直播共學架構</a></li>
+    <li><a href="${portal/absolute_url}/about/51715b78806f76df.png/view">共學圈系統</a></li>
+  </tal:news>
+
+
+
+  <tal:news condition="python:tid == 'news'">
+    <li><a href="${portal/absolute_url}/news">消息公告</a></li>
+    <li><a href="${portal/absolute_url}/schedule/@@course_schedule">本學期課程總表</a></li>
+  </tal:news>
+
+  <tal:news condition="python:tid == 'language_study'">
+    <li><a href="${portal/absolute_url}/schedule/@@course_schedule">107學期度下學期</a></li>
+    <li><a href="${portal/absolute_url}/schedule_107_1/@@course_schedule?range=107_1">107學期度上學期</a></li>
+  </tal:news>
+
+
+
+</ul>
               </li>
             </tal:tabs>
         </ul>
+
+<script>
+$(document).ready(function(){
+    $('#portal-globalnav li').hover(
+        function(){
+            $(this).children('.sub-menu').slideDown().css(
+                {'display':'block', 'position': 'absolute'}
+            )
+        }, function(){
+            $(this).children('.sub-menu').hide()
+        }
+    )
+})
+</script>
+
+<style>
+.sub-menu {
+    display: none;
+    position: absolute;
+    z-index: 100;
+    background: #a10d0d;
+    list-style: none;
+    padding: 8px 0px 8px 15px;
+}
+.sub-menu li {
+    width: 150px;
+    margin: 5px 0;
+}
+.sub-menu a {color:#fff}
+</style>
+
+
       </div>
     </div>
   </nav>
