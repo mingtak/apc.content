@@ -1355,8 +1355,26 @@ class Rollcall(BrowserView):
 
         context.onCall = request.form.get('on_call').replace('||', '\n')
         context.notOnCall = request.form.get('not_on_call').replace('||', '\n')
-#        import pdb; pdb.set_trace()
 
+        # email
+        for item in context.notOnCall.split('\n'):
+            if not item:
+                continue
+            cityTitle, schoolName, name = item.split(',')
+            city = api.content.find(path='/apc_costudy/school', Title=cityTitle, depth=1)[0]
+            school = api.content.find(path=city.getPath(), Title=schoolName)[0]
+            email = school.getObject().email
+            # 寄 Email
+            try:
+                api.portal.send_email(
+                    recipient=email,
+                    sender="noreply@17study.com.tw",
+                    subject="原住民族語直播共學平台系統通知: 學生點名未到課",
+                    body="共學組: {}\n課堂日期:{}\n點名未到學生: {}".format(context.getParentNode().title.encode('utf-8'),
+                          context.title.encode('utf-8'), item),
+                )
+            except:
+                pass
         return
 
 
