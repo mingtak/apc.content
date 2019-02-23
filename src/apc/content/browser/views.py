@@ -492,6 +492,16 @@ class LiveClassView(BrowserView):
         request = self.request
         self.portal = api.portal.get()
 
+        vMeetingRoom = context.title[0:4]
+        course = api.content.find(portal_type='Course', vMeetingRoom=vMeetingRoom, context=self.portal['language_study']['latest'])[0]
+
+        year = DateTime().year()
+        month = DateTime().month()
+        day = DateTime().day()
+        prepareId = '%s_%s_%s' % (year, month, day)
+#        import pdb; pdb.set_trace()
+        self.prepare = self.portal['language_study']['latest']['class_intro'][course.id]['%s_%s' % (course.id, prepareId)]
+
         return self.template()
 
 
