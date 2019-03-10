@@ -53,15 +53,15 @@ siteName = 'site-%s' % portal.absolute_url().split('//')[1].split('.')[0]
 
   <tal:news condition="python:tid == 'news'">
     <li><a href="${portal/absolute_url}/news">消息公告</a></li>
-    <li><a href="${portal/absolute_url}/schedule/@@course_schedule">本學期課程總表</a></li>
+<!--    <li><a href="${portal/absolute_url}/schedule/@@course_schedule">本學期課程總表</a></li> -->
   </tal:news>
 
   <tal:news condition="python:tid == 'language_study'">
+    <li><a href="${portal/absolute_url}/language_study/latest">課程行事曆</a></li>
+
     <li><a href="${portal/absolute_url}/schedule/@@course_schedule">107學期度下學期</a></li>
     <li><a href="${portal/absolute_url}/schedule_107_1/@@course_schedule?range=107_1">107學期度上學期</a></li>
   </tal:news>
-
-
 
 </ul>
               </li>

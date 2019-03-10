@@ -27,6 +27,7 @@ class ICourse(model.Schema):
         required=True,
     )
 
+    form.mode(description='hidden')
     description = schema.Text(
         title=_(u'CoStudy Course Description'),
         required=False,
@@ -75,7 +76,7 @@ class ICourse(model.Schema):
         required=False,
     )
 
-    form.mode(place='hidden')
+#    form.mode(place='hidden')
     place = schema.TextLine(
         title=_(u'Place of Study'),
         required=False,

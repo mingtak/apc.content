@@ -1,7 +1,22 @@
 <?python
 from plone import api
+from DateTime import DateTime
 from Products.CMFPlone.utils import safe_unicode
 portal = api.portal.get()
+catalog = portal.portal_catalog
+
+effective = {
+    'query': DateTime(),
+    'range': 'max',
+}
+expires = {
+    'query': DateTime(),
+    'range': 'min',
+}
+
+newsBrain = catalog(path='/apc_costudy/news/news02', portal_type='News Item', effective=effective,
+                expires=expires, sort_on='effective', sort_order='reverse', sort_limit=10)[0:10]
+
 leaveBrain = api.content.find(leaveALesson=True, sort_on='modified', sort_order='reverse', sort_limit=10)
 ?>
 
@@ -13,9 +28,9 @@ leaveBrain = api.content.find(leaveALesson=True, sort_on='modified', sort_order=
       <ul>
         <table>
           <tbody>
-           <tal:repeat repeat="item python:list(portal['news']['news02'].getChildNodes())[:10]">
-            <tr class="tr-list">
-              <td width="100"><li class="publish-date">${python:item.created().strftime('%Y-%m-%d')}</li></td>
+           <tal:repeat repeat="brainItem newsBrain">
+            <tr class="tr-list" tal:define="item python:brainItem.getObject()">
+              <td width="100"><li class="publish-date">${python:brainItem.effective.strftime('%Y-%m-%d')}</li></td>
               <td>
                   <a href="${item/absolute_url}" class="title">${item/title}</a>
               </td>

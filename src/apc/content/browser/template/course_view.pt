@@ -20,6 +20,7 @@
                         item_schools obj/school;
                         item_hireSchool obj/hire_school;
                         item_place obj/place;
+                        item_vMeetingRoom obj/vMeetingRoom;
                         item_courseDate obj/course_date;
                         item_courseTime obj/timeSection;
                         item_courseOutline obj/course_outline;">
@@ -63,6 +64,15 @@
     <a href="${python: item_teacher.to_object.absolute_url()}">${python: item_teacher.to_object.title}</a>
   </div>
 </div>
+<div class="row">
+  <div class="col-md-4">
+    虛擬教室
+  </div>
+  <div class="col-md-8">
+    ${item_vMeetingRoom}
+  </div>
+</div>
+
 <div class="row">
   <div class="col-md-4">
     授課地點

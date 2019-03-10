@@ -86,6 +86,11 @@ class IPrepare(model.Schema):
         required=False,
     )
 
+    place = schema.TextLine(
+        title=_(u'Place of Study'),
+        required=False,
+    )
+
 @implementer(IPrepare)
 class Prepare(Item):
     """

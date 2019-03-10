@@ -1648,10 +1648,13 @@ class CourseSchedule(BrowserView):
     template = ViewPageTemplateFile("template/course_schedule.pt")
 
     def getWeekDay(self, id):
-        year = int(id.split('_')[-3])
-        month = int(id.split('_')[-2])
-        day = int(id.split('_')[-1])
-        return datetime.datetime(year, month, day).strftime('%w')
+        try:
+            year = int(id.split('_')[1])
+            month = int(id.split('_')[2])
+            day = int(id.split('_')[3])
+            return datetime.datetime(year, month, day).strftime('%w')
+        except:
+            import  pdb; pdb.set_trace()
 
 
     def __call__(self):

@@ -19,12 +19,13 @@
         <li class="">
           <a href="${context/absolute_url}/teacher_intro">教師介紹</a>
         </li>
-        <li class="" tal:condition="python:mode=='past'">
+<!--        <li class="" tal:condition="python:mode=='past'">
           <a class="mode_future" tal:attributes="href view/mode_future_url">近期課程</a>
         </li>
         <li class="" tal:condition="python:mode=='future'">
           <a class="mode_past" tal:attributes="href view/mode_past_url">前期課程</a>
         </li>
+-->
         <li class="">
           <a class="schedule" target="_blank" href="${portal_url}/schedule/@@course_schedule">課程總表</a>
         </li>
