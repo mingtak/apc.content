@@ -14,6 +14,7 @@
   <ul>
     <li><b>課程編號:</b>${python:context.title[:4]}</li>
     <li><b>課程名稱:</b>${context/title}</li>
+<tal:cond condition="view/prepare">
     <li tal:condition="view/prepare/file">
       <b>課堂教材1:</b> <a href="${view/prepare/absolute_url}/@@download/file/${view/prepare/file/filename}">${view/prepare/file/filename}</a>
     </li>
@@ -23,7 +24,7 @@
     <li tal:condition="view/prepare/file3">
       <b>課堂教材3:</b> <a href="${view/prepare/absolute_url}/@@download/file3/${view/prepare/file3/filename}">${view/prepare/file3/filename}</a>
     </li>
-
+</tal:cond>
 
     <li><b>課堂直播:</b>
         <div id="embedCode" class="col-xs-12col-md-12" tal:content="structure context/embeded">

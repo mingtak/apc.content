@@ -500,7 +500,10 @@ class LiveClassView(BrowserView):
         day = DateTime().day()
         prepareId = '%s_%s_%s' % (year, month, day)
 #        import pdb; pdb.set_trace()
-        self.prepare = self.portal['language_study']['latest']['class_intro'][course.id]['%s_%s' % (course.id, prepareId)]
+        try:
+            self.prepare = self.portal['language_study']['latest']['class_intro'][course.id]['%s_%s' % (course.id, prepareId)]
+        except:
+            self.prepare = None
 
         return self.template()
 
