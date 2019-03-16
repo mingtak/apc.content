@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+
+<?python
+from plone import api
+from DateTime import DateTime
+from Products.CMFPlone.utils import safe_unicode
+
+portal = api.portal.get()
+?>
+  <div class="row" tal:repeat="item view/brain"
+       style="margin: 10px; border: 1px solid #555; background:#ccc; box-shadow:2px 2px 1px 1px #333;">
+    <div class="col-md-2" style="text-align: center; color:#a10d0d; padding: 8px">
+        ${python:item.modified.strftime('%Y-%m-%d')}
+    </div>
+    <div class="col-md-10" style="padding: 8px">
+        <p tal:replace="structure python:'%s' % safe_unicode(item.getObject().leave).replace('\n', '<br>')"></p>
+    </div>
+  </div>
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>

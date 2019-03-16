@@ -38,6 +38,17 @@ class TestPage(BrowserView):
         import pdb; pdb.set_trace()
 
 
+class LeaveListing(BrowserView):
+
+    template = ViewPageTemplateFile("template/leave_listing.pt")
+
+    def __call__(self):
+
+        self.brain = api.content.find(leaveALesson=True, sort_on='modified', sort_order='reverse')
+
+        return self.template()
+
+
 class ContactView(BrowserView):
 
     def __call__(self):

@@ -48,7 +48,7 @@ leaveBrain = api.content.find(leaveALesson=True, sort_on='modified', sort_order=
 
   <div class="row">
     <div class="col-xs-12 col-md-6 announcement">
-      <h3 class="cover-news"><i class="far fa-newspaper fa-2x"></i><span class="text">消息公告</span></h3>
+      <h3 class="cover-news"><i class="far fa-newspaper fa-2x"></i><span class="text">共學公告</span></h3>
       <div class="title-border-bottom" />
       <ul>
         <table>

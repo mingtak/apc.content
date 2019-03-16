@@ -59,6 +59,7 @@
     <element value="match_system"/>
     <element value="teacher_area"/>
     <element value="school_area"/>
+    <element value="leave_listing"/>
   </property>
 
   <!-- Method aliases -->
