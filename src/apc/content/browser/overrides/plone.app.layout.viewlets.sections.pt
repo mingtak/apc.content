@@ -42,17 +42,21 @@ siteName = 'site-%s' % portal.absolute_url().split('//')[1].split('.')[0]
                     Tab Name
                   </a>
 <ul class="${python:'sub-menu' if tid in ['language_study', 'about', 'news'] else ''}"
-    tal:condition="python:tid in ['language_study', 'about', 'news']">
-  <tal:news condition="python:tid == 'about'">
+    tal:condition="python:tid in ['language_study', 'news']">
+
+<!--  <tal:news condition="python:tid == 'about'">
     <li><a href="${portal/absolute_url}/about">關於共學系統</a></li>
     <li><a href="${portal/absolute_url}/about/1075e745ea665cf8a9e65cf8a9e65595b7876f464ad51715b7867b669cb.png/view">族語教學直播共學架構</a></li>
     <li><a href="${portal/absolute_url}/about/51715b78806f76df.png/view">共學圈系統</a></li>
   </tal:news>
-
+-->
 
 
   <tal:news condition="python:tid == 'news'">
-    <li><a href="${portal/absolute_url}/news">消息公告</a></li>
+    <li><a href="${portal/absolute_url}/news/news03">最新消息</a></li>
+    <li><a href="${portal/absolute_url}/news/news02">共學公告</a></li>
+    <li><a href="${portal/absolute_url}/news/news01">停/補課公告</a></li>
+
 <!--    <li><a href="${portal/absolute_url}/schedule/@@course_schedule">本學期課程總表</a></li> -->
   </tal:news>
 

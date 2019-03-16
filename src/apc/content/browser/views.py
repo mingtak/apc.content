@@ -38,6 +38,15 @@ class TestPage(BrowserView):
         import pdb; pdb.set_trace()
 
 
+class AboutView(BrowserView):
+
+    template = ViewPageTemplateFile("template/about_view.pt")
+
+    def __call__(self):
+
+        return self.template()
+
+
 class LeaveListing(BrowserView):
 
     template = ViewPageTemplateFile("template/leave_listing.pt")

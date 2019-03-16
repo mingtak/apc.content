@@ -86,6 +86,7 @@ class IPrepare(model.Schema):
         required=False,
     )
 
+    fieldset(_(u'Place of Study'), fields=['place'])
     place = schema.TextLine(
         title=_(u'Place of Study'),
         required=False,

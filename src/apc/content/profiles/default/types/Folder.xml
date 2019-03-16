@@ -60,6 +60,7 @@
     <element value="teacher_area"/>
     <element value="school_area"/>
     <element value="leave_listing"/>
+    <element value="about_view"/>
   </property>
 
   <!-- Method aliases -->

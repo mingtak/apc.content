@@ -143,6 +143,14 @@ from Products.CMFPlone.utils import safe_unicode
         <a tal:condition="item/file"
            tal:attributes="href string:${item/absolute_url}/@@pdf_embeded">${item/file/filename}</a>
     </p>
+<?python
+from plone import api
+?>
+    <p tal:condition="python:item.place and not api.user.is_anonymous()">
+       <b>授課地點：</b>
+        <span tal:condition="item/place">${item/place}</span>
+    </p>
+
     <p>
         <a tal:condition="item/file"
            tal:attributes="href string:${item/absolute_url}"><b>觀看上課影片</b></a>
