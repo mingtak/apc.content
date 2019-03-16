@@ -359,3 +359,5 @@ body.template-course_view ul.school {
     padding-inline-start: 0;
 }
 .course-info.row {margin-left:0; margin-right:0}
+
+.course-info.row .col-md-8 { padding-left: 40px;}

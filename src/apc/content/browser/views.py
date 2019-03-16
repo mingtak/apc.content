@@ -495,6 +495,12 @@ class LiveClassView(BrowserView):
         vMeetingRoom = context.title[0:4]
         course = api.content.find(portal_type='Course', vMeetingRoom=vMeetingRoom, context=self.portal['language_study']['latest'])[0]
 
+        # get Teacher name
+        try:
+            self.teacher = course.getObject().teacher.to_object.title
+        except:
+            self.teacher = None
+
         year = DateTime().year()
         month = DateTime().month()
         day = DateTime().day()

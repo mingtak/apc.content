@@ -66,7 +66,7 @@
 </div>
 <div class="row">
   <div class="col-md-4">
-    虛擬教室
+    虛擬教室:
   </div>
   <div class="col-md-8">
     ${item_vMeetingRoom}
@@ -75,7 +75,7 @@
 
 <div class="row">
   <div class="col-md-4">
-    授課地點
+    授課地點:
   </div>
   <div class="col-md-8">
     ${item_place}
@@ -88,6 +88,7 @@
   <div class="col-md-8">
     ${item_courseTime}
   </div>
+
 </div>
 </div>
 <div class="col-md-6">
@@ -115,10 +116,14 @@ from Products.CMFPlone.utils import safe_unicode
 
 
 </div>
+
+  <div class="col-md-12" tal:condition="item_courseOutline" >
+    <h4 style="color:yellow">課程簡介</h4>
+    <tal:content tal:content="structure python: item_courseOutline.raw" />
   </div>
 
-  <div tal:condition="item_courseOutline">
-    <tal:content tal:content="structure python: item_courseOutline.raw" />
+
+
   </div>
 
   <h3>各堂課程</h3>

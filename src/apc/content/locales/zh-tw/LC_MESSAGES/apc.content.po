@@ -88,7 +88,7 @@ msgstr "授課日期"
 
 #: ./content/course.py:85
 msgid "Course Outline"
-msgstr "課程大綱"
+msgstr "課程簡介"
 
 #: ./content/course.py:80
 msgid "Course Time"

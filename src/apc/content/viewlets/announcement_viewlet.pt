@@ -14,13 +14,38 @@ expires = {
     'range': 'min',
 }
 
-newsBrain = catalog(path='/apc_costudy/news/news02', portal_type='News Item', effective=effective,
+news02Brain = catalog(path='/apc_costudy/news/news02', portal_type='News Item', effective=effective,
                 expires=expires, sort_on='effective', sort_order='reverse', sort_limit=10)[0:10]
-
+news03Brain = catalog(path='/apc_costudy/news/news03', portal_type='News Item', effective=effective,
+                expires=expires, sort_on='effective', sort_order='reverse', sort_limit=10)[0:5]
 leaveBrain = api.content.find(leaveALesson=True, sort_on='modified', sort_order='reverse', sort_limit=10)
 ?>
 
 <div class="container" id="announcement_viewlet">
+
+  <div class="row">
+    <div class="col-xs-12 col-md-12 announcement">
+      <h3 class="cover-news"><i class="far fa-newspaper fa-2x"></i><span class="text">最新消息</span></h3>
+      <div class="title-border-bottom" />
+      <ul>
+        <table>
+          <tbody>
+           <tal:repeat repeat="brainItem news03Brain">
+            <tr class="tr-list" tal:define="item python:brainItem.getObject()">
+              <td width="100"><li class="publish-date">${python:brainItem.effective.strftime('%Y-%m-%d')}</li></td>
+              <td>
+                  <a href="${item/absolute_url}" class="title">${item/title}</a>
+              </td>
+            </tr>
+           </tal:repeat>
+          </tbody>
+        </table>
+      </ul>
+      <div class="readmore pull-right">[<a href="${portal/absolute_url}/news/news03">閱讀更多</a>]</div>
+    </div>
+  </div>
+
+
   <div class="row">
     <div class="col-xs-12 col-md-6 announcement">
       <h3 class="cover-news"><i class="far fa-newspaper fa-2x"></i><span class="text">消息公告</span></h3>
@@ -28,7 +53,7 @@ leaveBrain = api.content.find(leaveALesson=True, sort_on='modified', sort_order=
       <ul>
         <table>
           <tbody>
-           <tal:repeat repeat="brainItem newsBrain">
+           <tal:repeat repeat="brainItem news02Brain">
             <tr class="tr-list" tal:define="item python:brainItem.getObject()">
               <td width="100"><li class="publish-date">${python:brainItem.effective.strftime('%Y-%m-%d')}</li></td>
               <td>
@@ -61,7 +86,7 @@ leaveBrain = api.content.find(leaveALesson=True, sort_on='modified', sort_order=
           </tbody>
         </table>
       </ul>
-<!--      <div class="readmore">[<a href="${portal/absolute_url}/news/news01">閱讀更多</a>]</div> -->
+      <div class="readmore">[<a href="${portal/absolute_url}/news/news01">閱讀更多</a>]</div>
     </div>
   </div>
 
