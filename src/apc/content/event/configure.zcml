@@ -8,6 +8,12 @@
         for="plone.app.contenttypes.interfaces.INewsItem zope.lifecycleevent.interfaces.IObjectAddedEvent"
         handler=".event.moveObjectsToTop"
     />
+
+    <subscriber
+        for="apc.content.content.prepare.IPrepare zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+        handler=".event.updateDate"
+    />
+
 <!--
     <subscriber
         for="apc.content.content.prepare.IPrepare zope.lifecycleevent.interfaces.IObjectModyfiedEvent"
