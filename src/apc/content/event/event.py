@@ -13,10 +13,13 @@ def updateDate(obj, event):
     day = obj.title.split(safe_unicode('月'))[1].split(safe_unicode('日'))[0]
     tzinfo = obj.start.tzinfo
 
+    newId = '%s_%s_%s_%s' % (course, year, month, day)
+    if newId == obj.id:
+        return
+
     obj.start = datetime.datetime(int(year), int(month), int(day), 8, 0, tzinfo=tzinfo)
     obj.end = datetime.datetime(int(year), int(month), int(day), 9, 0, tzinfo=tzinfo)
 
-    newId = '%s_%s_%s_%s' % (course, year, month, day)
     api.content.rename(obj=obj, new_id=newId, safe_id=True)
     obj.reindexObject()
 

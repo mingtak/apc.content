@@ -1680,7 +1680,8 @@ class CourseSchedule(BrowserView):
             day = int(id.split('_')[3])
             return datetime.datetime(year, month, day).strftime('%w')
         except:
-            import  pdb; pdb.set_trace()
+            pass
+#            import  pdb; pdb.set_trace()
 
 
     def __call__(self):
