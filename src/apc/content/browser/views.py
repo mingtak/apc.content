@@ -1684,9 +1684,11 @@ class CourseSchedule(BrowserView):
 #            import  pdb; pdb.set_trace()
 
     def getCourse(self, timeSection):
+        context = self.context
+        request = self.request
         portal = api.portal.get()
         range = request.form.get('range', 'latest')
-        brain = api.content.find(timeSection=timeSection, context=self.portal['language_study'][range])
+        brain = api.content.find(timeSection=timeSection, context=self.portal['language_study'][range], sort_on='id')
         return brain
 
     def __call__(self):

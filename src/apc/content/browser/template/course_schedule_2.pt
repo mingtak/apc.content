@@ -13,11 +13,13 @@
 <?python
 from plone import api
 from datetime import datetime
+from Products.CMFPlone.utils import safe_unicode
 portal = api.portal.get()
 times = {'8':'早自習', '9':'第一節', '10':'第二節', '11':'第三節', '12':'第四節', '13':'午休', '14':'第五節',
          '15':'第六節', '16':'第七節', '17':'第八節', '18':'課後'}
-weekday = ['周一', '周二', '周三', '周四', '周五']
-time_section = ['早自習', '第一節', '第二節', '第三節', '第四節', '午休', '第五節', '第六節', '第七節', '第八節', '課後']
+weekday = [safe_unicode('週一'), safe_unicode('週二'), safe_unicode('週三'), safe_unicode('週四'), safe_unicode('週五')]
+time_section = [safe_unicode('早自習'), safe_unicode('第一節'), safe_unicode('第二節'), safe_unicode('第三節'), safe_unicode('第四節'),
+                safe_unicode('午休'), safe_unicode('第五節'), safe_unicode('第六節'), safe_unicode('第七節'), safe_unicode('第八節'), safe_unicode('課後')]
 lang = {
  '南勢阿美語' : 'A01',
  '秀姑巒阿美語' : 'A02',
@@ -66,7 +68,26 @@ lang = {
 }
 ?>
 
+<h4>依語言選擇</h4>
+<tal:lang repeat="item lang">
+  <span style="white-space:nowrap"><input type="checkbox" class="lang-selector" value="${item}">${item}</span>
+  <span tal:condition="not:repeat/item/end">&nbsp;</span>
+</tal:lang>
+<script>
+$(document).ready(function(){
+  $('.lang-selector').click(function(){
+    items = $('.lang-selector:checked')
+    $('.course_title p').hide()
+    for(i=0; i<items.length; i++){
+      $('p.' + $(items[i]).val()).show()
+    }
+  })
+})
+</script>
 
+
+
+<br><br>
 <table class="schedule">
   <tr class="tr-title">
     <th class="course"></th>
@@ -80,13 +101,14 @@ lang = {
   <tr class="tr-body" tal:repeat="item time_section">
     <td class="time_section">${item}</td>
     <tal:c repeat="day weekday">
-      <td tal:define="timeSection python:'%s%s' % (day, item);
+      <td class="course_title"
+          tal:define="timeSection python:'%s%s' % (day, item);
                       brain python:view.getCourse(timeSection)">
-        <p tal:repeat="course brain">
-            ${course}
+        <p tal:repeat="course brain" class="${python:course.Title[6:]}">
+             <a href="${course/getURL}">${course/Title}</a>
         </p>
       </td>
-    </tal:c
+    </tal:c>
   </tr>
 </table>
 

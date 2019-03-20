@@ -330,10 +330,20 @@ margin:20px -15px;
 }
 
 .template-course_schedule th.course {
-  width: 20%
+  width: 10%
 }
+
+.template-course_schedule td.time_section {
+  text-align:center
+}
+
+.template-course_schedule td.course_title p{
+  margin: 2px 0;
+  padding-left: 10px;
+}
+
 .template-course_schedule th.weekday {
-  width: 16%
+  width: 18%
 }
 .template-course_schedule td {
   vertical-align:middle;
@@ -361,3 +371,4 @@ body.template-course_view ul.school {
 .course-info.row {margin-left:0; margin-right:0}
 
 .course-info.row .col-md-8 { padding-left: 40px;}
+

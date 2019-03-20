@@ -7,12 +7,14 @@ from apc.content.content.teacher import ITeacher
 from apc.content.content.school import ISchool
 from apc.content.content.course import ICourse
 from apc.content.content.prepare import IPrepare
+from Products.CMFPlone.utils import safe_unicode
+
 import hashlib
 
 
 @indexer(ICourse)
 def timeSection(obj):
-    return obj.timeSection
+    return safe_unicode(obj.timeSection)
 
 @indexer(ICourse)
 def vMeetingRoom(obj):
