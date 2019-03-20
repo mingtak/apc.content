@@ -14,4 +14,5 @@
     <adapter name="vMeetingRoom" factory=".indexers.vMeetingRoom" />
     <adapter name="leaveALesson" factory=".indexers.leaveALesson" />
     <adapter name="zip" factory=".indexers.zip" />
+    <adapter name="timeSection" factory=".indexers.timeSection" />
 </configure>

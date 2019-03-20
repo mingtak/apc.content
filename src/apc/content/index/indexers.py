@@ -11,6 +11,10 @@ import hashlib
 
 
 @indexer(ICourse)
+def timeSection(obj):
+    return obj.timeSection
+
+@indexer(ICourse)
 def vMeetingRoom(obj):
     return obj.vMeetingRoom
 

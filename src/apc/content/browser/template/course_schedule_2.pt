@@ -1,0 +1,101 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+
+<?python
+from plone import api
+from datetime import datetime
+portal = api.portal.get()
+times = {'8':'早自習', '9':'第一節', '10':'第二節', '11':'第三節', '12':'第四節', '13':'午休', '14':'第五節',
+         '15':'第六節', '16':'第七節', '17':'第八節', '18':'課後'}
+weekday = ['周一', '周二', '周三', '周四', '周五']
+time_section = ['早自習', '第一節', '第二節', '第三節', '第四節', '午休', '第五節', '第六節', '第七節', '第八節', '課後']
+lang = {
+ '南勢阿美語' : 'A01',
+ '秀姑巒阿美語' : 'A02',
+ '海岸阿美語' : 'A03',
+ '馬蘭阿美語' : 'A04',
+ '恆春阿美語' : 'A05',
+ '賽考利克泰雅語' : 'B06',
+ '澤敖利泰雅語' : 'B07',
+ '汶水泰雅語' : 'B08',
+ '萬大泰雅語' : 'B09',
+ '四季泰雅語' : 'B10',
+ '宜蘭澤敖利泰雅語' : 'B11',
+ '賽夏語' : 'C13',
+ '邵語' : 'D14',
+ '都達語' : 'E15',
+ '德固達雅語' : 'E16',
+ '德路固語' : 'E17',
+ '卓群布農語' : 'F18',
+ '卡群布農語' : 'F19',
+ '丹群布農語' : 'F20',
+ '巒群布農語' : 'F21',
+ '郡群布農語' : 'F22',
+ '東排灣語' : 'G23',
+ '北排灣語' : 'G24',
+ '中排灣語' : 'G25',
+ '南排灣語' : 'G26',
+ '東魯凱語' : 'H27',
+ '霧臺魯凱語' : 'H28',
+ '霧台魯凱語' : 'H28',
+ '大武魯凱語' : 'H29',
+ '多納魯凱語' : 'H30',
+ '茂林魯凱語' : 'H31',
+ '萬山魯凱語' : 'H32',
+ '太魯閣語' : 'I33',
+ '噶瑪蘭語' : 'J34',
+ '鄒語' : 'K35',
+ '卡那卡那富語' : 'L36',
+ '拉阿魯哇語' : 'M37',
+ '南王卑南語' : 'N38',
+ '知本卑南語' : 'N39',
+ '初鹿卑南語' : 'N40',
+ '建和卑南語' : 'N41',
+ '雅美語' : 'O42',
+ '撒奇萊雅語' : 'P43',
+ '囒哈巫語' : 'Q00',
+}
+?>
+
+
+<table class="schedule">
+  <tr class="tr-title">
+    <th class="course"></th>
+    <th class="weekday">星期一</th>
+    <th class="weekday">星期二</th>
+    <th class="weekday">星期三</th>
+    <th class="weekday">星期四</th>
+    <th class="weekday">星期五</th>
+  </tr>
+
+  <tr class="tr-body" tal:repeat="item time_section">
+    <td class="time_section">${item}</td>
+    <tal:c repeat="day weekday">
+      <td tal:define="timeSection python:'%s%s' % (day, item);
+                      brain python:view.getCourse(timeSection)">
+        <p tal:repeat="course brain">
+            ${course}
+        </p>
+      </td>
+    </tal:c
+  </tr>
+</table>
+
+
+
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+

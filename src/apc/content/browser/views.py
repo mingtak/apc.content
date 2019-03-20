@@ -1671,7 +1671,7 @@ class LiveListing(BrowserView):
 
 class CourseSchedule(BrowserView):
 
-    template = ViewPageTemplateFile("template/course_schedule.pt")
+    template = ViewPageTemplateFile("template/course_schedule_2.pt")
 
     def getWeekDay(self, id):
         try:
@@ -1683,14 +1683,19 @@ class CourseSchedule(BrowserView):
             pass
 #            import  pdb; pdb.set_trace()
 
+    def getCourse(self, timeSection):
+        portal = api.portal.get()
+        range = request.form.get('range', 'latest')
+        brain = api.content.find(timeSection=timeSection, context=self.portal['language_study'][range])
+        return brain
 
     def __call__(self):
         context = self.context
         request = self.request
         self.portal = api.portal.get()
 
-        range = request.form.get('range', 'latest')
-        self.brain = api.content.find(context=self.portal['language_study'][range], portal_type='Course', sort_on='id')
+#        range = request.form.get('range', 'latest')
+#        self.brain = api.content.find(context=self.portal['language_study'][range], portal_type='Course', sort_on='id')
         return self.template()
 
 

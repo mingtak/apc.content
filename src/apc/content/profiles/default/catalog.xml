@@ -39,4 +39,10 @@
     <indexed_attr value="school_id" />
   </index>
   <column value="school_id"/>
+
+  <index name="timeSection" meta_type="FieldIndex">
+    <indexed_attr value="timeSection" />
+  </index>
+  <column value="timeSection"/>
+
 </object>
