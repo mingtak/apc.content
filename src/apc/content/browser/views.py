@@ -66,13 +66,34 @@ class ContactView(BrowserView):
         context = self.context
         request = self.request
 
+        mailTo = {
+            'mailTo_1': api.portal.get_registry_record('mingtak.ECBase.browser.configlet.ICustom.mailTo_1'),
+            'mailTo_2': api.portal.get_registry_record('mingtak.ECBase.browser.configlet.ICustom.mailTo_2'),
+            'mailTo_3': api.portal.get_registry_record('mingtak.ECBase.browser.configlet.ICustom.mailTo_3'),
+            'mailTo_4': api.portal.get_registry_record('mingtak.ECBase.browser.configlet.ICustom.mailTo_4'),
+            'mailTo_5': api.portal.get_registry_record('mingtak.ECBase.browser.configlet.ICustom.mailTo_5'),
+        }
+
+        categories = {
+            'mailTo_1': '族語師資教學',
+            'mailTo_2': '直播共學諮詢',
+            'mailTo_3': '共學小組聯絡',
+            'mailTo_4': '平台系統操作',
+            'mailTo_5': '系統設備叫修',
+        }
+
+
         name = request.form.get('name')
         email = request.form.get('email')
         content = request.form.get('content')
+        phone = request.form.get('phone')
+        org = request.form.get('org')
+        category = request.form.get('category')
 
-        message = "姓名:{}\nEmail:{}\n聯絡事項:{}".format(name, email, content)
+
+        message = "姓名:{}\nEmail:{}\n電話:{}\n單位名稱:{}\n留言分類:{}\n留言內容:{}".format(name, email, phone, org, categories[category], content)
         api.portal.send_email(
-            recipient="andy@mingtak.com.tw",
+            recipient=mailTo[category],
             sender="noreply@17study.com.tw",
             subject="經由 原住民族語直播共學平台 寄來的 聯絡我們 表單通知",
             body=message,
