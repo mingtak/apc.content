@@ -72,7 +72,7 @@
     ${item_vMeetingRoom}
   </div>
 </div>
-
+<!--
 <div class="row">
   <div class="col-md-4">
     授課地點:
@@ -81,6 +81,7 @@
     ${item_place}
   </div>
 </div>
+-->
 <div class="row">
   <div class="col-md-4">
     授課時段:
@@ -146,9 +147,10 @@ from Products.CMFPlone.utils import safe_unicode
 <?python
 from plone import api
 ?>
-    <p tal:condition="python:item.place and not api.user.is_anonymous()">
+    <p talcondition="python:item.place and not api.user.is_anonymous()">
        <b>授課地點：</b>
         <span tal:condition="item/place">${item/place}</span>
+        <span tal:condition="not:item/place">${item_place}</span>
     </p>
 
     <p>

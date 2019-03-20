@@ -880,7 +880,7 @@ class PrepareUniLessons(BrowserView):
         upload_topic = request.form.get('topic', '')
         upload_text = request.form.get('description', '')
 
-        data = {"description": upload_text, "upload_topic": upload_topic}
+        data = {"description": upload_text, "topic": upload_topic}
         data.update({"vacation": False})
         if request.get('vacation', '') == 'true':
             data.update({"vacation": True})

@@ -14,7 +14,7 @@ portal = api.portal.get()
 
   <div class="col-xs-12 col-md-4">
     <i class="fas fa-video fa-4x"></i>
-    <span class="title"><a href="${portal/absolute_url}/live_video">直播頻道</a></span>
+    <span class="title"><a href="${portal/absolute_url}/live_video">正在直播</a></span>
     <p class="info">族語直播共學系統打造原住民部落直播共學環境,推動遠距教學風氣,可藉由遠距學習獲得...</p>
   </div>
 
