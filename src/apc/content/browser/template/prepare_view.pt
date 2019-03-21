@@ -18,7 +18,7 @@
     <li><b>課堂主題:</b><span tal:condition="context/topic" tal:content="context/topic"></span>
     </li>
 
-    <li><b>課堂概要:</b><br>
+    <li><b>課堂概述:</b><br>
         <p tal:condition="context/description" tal:content="structure python:context.description.replace('\n', '<br>')"></p>
     </li>
     <li><b>課堂教材:</b>

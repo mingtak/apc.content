@@ -55,6 +55,11 @@ class IPrepare(model.Schema):
         required=False,
     ) """
 
+    cover_url = schema.TextLine(
+        title=_(u'cover url'),
+        required=False,
+    )
+
     embeded = schema.Text(
         title=_(u'Embeded Code'),
         required=False,

@@ -119,7 +119,7 @@ from Products.CMFPlone.utils import safe_unicode
           <span itemprop="topic" class="topic" tal:condition="data/context/topic" tal:content="data/context/topic" />
 </p>
 <p>
-<span>課堂概要:</span>
+<span>課堂概述:</span>
           <span itemprop="description" class="description" tal:condition="data/description" tal:content="data/description" />
 </p>
 <span>教學影片: </span>

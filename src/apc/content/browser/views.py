@@ -1063,14 +1063,18 @@ class TeacherInfo(BrowserView):
     template = ViewPageTemplateFile("template/teacher_info.pt")
     def __call__(self):
         request = self.request
+        portal = api.portal.get()
         teacher_uid = self.request.cookies.get("teacher_login", "")
         teacher = api.content.find(UID=teacher_uid, sort_on='getObjPositionInParent')
         if len(teacher) != 1:
             return self.request.response.redirect('{}/teacher-area/teacher-login'.format(self.context.portal_url()))
         self.teacher = teacher[0]
 
+        # 以 respapi 執行更新族語教師個資
         if request.form.get('widget-form-btn', '') == 'widget-form-btn':
-            teacherFields = ['certification', 'study', 'qualified_teacher', 'ethnic_teacher', 'education', 'experience', 'teaching_years', 'remarks', 'email', 'gender', 'nameSpell', 'aboriginalsLang']
+            teacherFields = ['certification', 'study', 'qualified_teacher',
+                             'ethnic_teacher', 'education', 'experience', 'teaching_years',
+                             'remarks', 'email', 'gender', 'nameSpell', 'aboriginalsLang']
             data = {}
             url = self.teacher.getURL()
             headers = {
@@ -1093,9 +1097,20 @@ class TeacherInfo(BrowserView):
                         }
                     }
                 )
-         
+            # 先 copy/paste 再 update (teacher_waiting_for_review)
+            targetFolderURL = portal['teacher_waiting_for_review'].absolute_url()
+            copyAction = requests.post(
+                             '%s/@copy' % targetFolderURL,
+                             headers={ 'Accept': 'application/json', 'Content-Type': 'application/json', },
+                             json={ 'source': url, }, auth=('admin', '123456')
+                         )
+            if not copyAction.ok:
+                api.portal.show_message(message=u'更新失敗，請稍候再試，若持續異常，請聯絡系統工程師.', request=request, type='error')[source]
+                return
+            url = copyAction.json()[0].get('target')
+            # 以下同原動作
             response = requests.request("PATCH", url, headers=headers, json=data)
-            self.context.plone_utils.addPortalMessage(_(u'The Teacher info is success update'), 'info')
+            self.context.plone_utils.addPortalMessage(u'資訊已更新，待系統審核後生效.', 'info')
             return self.request.response.redirect('{}/teacher-area/teacher-info'.format(self.context.portal_url()))
         return self.template()
 

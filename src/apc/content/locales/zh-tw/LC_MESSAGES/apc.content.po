@@ -219,7 +219,7 @@ msgstr "備課"
 
 #: ./content/prepare.py:27
 msgid "Prepare Description"
-msgstr "課堂內容"
+msgstr "課堂概述"
 
 #: ./content/teacher.py:93
 msgid "Prepare Lessons Link Effective Date"

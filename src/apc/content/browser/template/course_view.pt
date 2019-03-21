@@ -152,11 +152,12 @@ from plone import api
         <span tal:condition="item/place">${item/place}</span>
         <span tal:condition="not:item/place">${item_place}</span>
     </p>
-
+<!--
     <p>
         <a tal:condition="item/file"
            tal:attributes="href string:${item/absolute_url}"><b>觀看上課影片</b></a>
     </p>
+-->
 <!--
     <h4>直播視訊</h4>
 
@@ -170,7 +171,8 @@ from plone import api
 </div>
 <div class="col-md-6 video-item" id="video-${item/UID}" style="max-width:100%; overflow:hidden; text-align:center">
  <a tal:condition="item/embeded"
-    href="javascript:void(0)"><img src="${portal_url}/resource/images/film.png/@@images/image/preview" style="width:50%"></a>
+    href="javascript:void(0)"><img src="${item/cover_url}" style="width:100%">
+ </a>
 
 <p tal:condition="item/embeded">影片預覽</p>
 
