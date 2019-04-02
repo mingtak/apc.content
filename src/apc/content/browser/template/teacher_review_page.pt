@@ -1,0 +1,59 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+
+
+<h3>教師欄報資料審核</h3>
+<?python
+from plone import api
+portal = api.portal.get()
+?>
+<table>
+  <tr>
+    <td style="width:10%">教師姓名</td>
+    <td style="width:75%">填報資料</td>
+    <td style="width:15%">審核結果</td>
+  </tr>
+  <tr tal:repeat="item python:portal['teacher_waiting_for_review'].getChildNodes()">
+    <td>${item/title}<br>${python:item.created().strftime('%c')}</td>
+    <td>
+      <div tal:content="structure item/@@full_view_item" />
+    </td>
+    <td>
+<form method="POST">
+<input name="title" value="${item/title}" hidden/>
+<input name="uid" value="${item/UID}" hidden/>
+<input name="action" value="accept" hidden/>
+<input type="submit" value="通過" name="submit" style="float:left; margin: 10px;"/>
+</form>
+
+<form method="POST">
+<input name="title" value="${item/title}" hidden/>
+<input name="uid" value="${item/UID}" hidden/>
+<input name="action" value="reject" hidden/>
+<input type="submit" value="刪除" name="submit" style="float:left; margin: 10px;"/>
+</form>
+
+
+    </td>
+  </tr>
+
+</table>
+
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+

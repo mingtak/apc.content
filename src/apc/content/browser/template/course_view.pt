@@ -61,7 +61,10 @@
     族語師資: 
   </div>
   <div class="col-md-8">
-    <a href="${python: item_teacher.to_object.absolute_url()}">${python: item_teacher.to_object.title}</a>
+    <a onclick="window.open('${python: item_teacher.to_object.absolute_url()}/@@full_view_item',
+                            'Teacher', config='height=500,width=600');"
+       href="javascript:void(0)">${python: item_teacher.to_object.title}</a>
+
   </div>
 </div>
 <div class="row">
@@ -142,7 +145,14 @@ from Products.CMFPlone.utils import safe_unicode
     <p tal:condition="item/description" tal:content="structure python:item.description.replace('\n', '<br>')"></p>
     <p><b>課堂教材：</b>
         <a tal:condition="item/file"
-           tal:attributes="href string:${item/absolute_url}/@@pdf_embeded">${item/file/filename}</a>
+           tal:attributes="href string:${item/absolute_url}/@@download/file/${item/file/filename}">${item/file/filename}</a>
+<span tal:condition="item/file2"> / </span>
+        <a tal:condition="item/file2"
+           tal:attributes="href string:${item/absolute_url}/@@download/file2/${item/file2/filename}">${item/file2/filename}</a>
+<span tal:condition="item/file3"> / </span>
+        <a tal:condition="item/file3"
+           tal:attributes="href string:${item/absolute_url}/@@download/file3/${item/file3/filename}">${item/file3/filename}</a>
+
     </p>
 <?python
 from plone import api

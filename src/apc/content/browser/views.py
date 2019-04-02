@@ -38,6 +38,64 @@ class TestPage(BrowserView):
         import pdb; pdb.set_trace()
 
 
+class TeacherReviewPage(BrowserView):
+
+    template = ViewPageTemplateFile("template/teacher_review_page.pt")
+
+    def accept(self):
+        context = self.context
+        request = self.request
+        portal = api.portal.get()
+
+        uid = request.get('uid')
+        title = request.get('title')
+        obj = api.content.find(UID=uid)[0].getObject()
+
+        teacher = api.content.find(Title=title, context=portal['teacher'])[0].getObject()
+        teacher.image = obj.image
+        teacher.gender = obj.gender
+        teacher.nameSpell = obj.nameSpell
+        teacher.aboriginalsLang = obj.aboriginalsLang
+        teacher.certification = obj.certification
+        teacher.study = obj.study
+        teacher.qualified_teacher = obj.qualified_teacher
+        teacher.ethnic_teacher = obj.ethnic_teacher
+        teacher.education = obj.education
+        teacher.teaching_years = obj.teaching_years
+        teacher.remarks = obj.remarks
+        teacher.experience = obj.experience
+
+        teacher.reindexObject()
+
+        api.content.delete(obj=obj)
+
+
+    def reject(self):
+        context = self.context
+        request = self.request
+
+        uid = request.get('uid')
+        obj = api.content.find(UID=uid)[0].getObject()
+        api.content.delete(obj=obj)
+        return
+
+
+    def __call__(self):
+        alsoProvides(self.request, IDisableCSRFProtection)
+        portal = api.portal.get()
+        context = self.context
+        request = self.request
+
+        action = request.form.get('action')
+        if action == 'accept':
+            self.accept()
+        elif action == 'reject':
+            self.reject()
+
+#        import pdb; pdb.set_trace()
+        return self.template()
+
+
 class AboutView(BrowserView):
 
     template = ViewPageTemplateFile("template/about_view.pt")
