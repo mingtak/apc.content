@@ -198,16 +198,18 @@ time = {'1': '周一早自習',
       需求人數:
      </p>
     </td>
-    <td class="ce4" colspan="2" style="text-align:left;width:22.58mm; ">
-<span class="rank">低年級</span>
+    <td class="ce4" colspan="2" style="text-align:left;width:30%; ">
+<span class="rank">低年段(123年級)</span>
 <input type="number" name="lang-${index}" value="0">
     </td>
-    <td class="ce4" colspan="2" style="text-align:left;width:22.58mm; ">
-<span class="rank">中年級</span>
-      <input type="number" name="lang-${index}" value="0">
+
+    <td class="ce4" colspan="2" style="text-align:left;width:0; ">
+<!-- <span class="rank">中年級</span> -->
+      <input type="number" name="lang-${index}" value="0" hidden style="display:none">
     </td>
+
     <td class="ce4" colspan="2" style="text-align:left;width:22.58mm; ">
-<span class="rank">高年級</span>
+<span class="rank">高年段(456年級)</span>
       <input type="number" name="lang-${index}" value="0">
     </td>
    </tr>

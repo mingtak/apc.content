@@ -17,6 +17,12 @@
 </style>
 
 
+  <script>
+    $(document).ready(function(){
+      $('.bxslider').bxSlider();
+    });
+  </script>
+
 </metal:content-core>
 </metal:content-core>
 

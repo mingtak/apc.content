@@ -168,7 +168,7 @@
           </tr>
           <tr>
             <td >
-              <p>課程主題</p>
+              <p>課堂主題</p>
             </td>
             <td colspan=2>
               <input type="text" class="form-control" name="prepare.topic:records" value="${python: item.getObject().topic}" />
@@ -176,7 +176,7 @@
           </tr>
           <tr>
             <td >
-              <p>課程內容</p>
+              <p>課堂概述</p>
             </td>
             <td colspan=2>
               <textarea name="prepare.description:records" cols="40" rows="5">${python: item.getObject().description}</textarea>

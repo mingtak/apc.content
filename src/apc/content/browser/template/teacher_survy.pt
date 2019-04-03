@@ -179,9 +179,9 @@ time = {'1': '周一早自習',
 </select>
 <br>
 可教授級別:
-低年級<input class="checkbox" type="checkbox" name="lang-${index}" value="primary">
-中年級<input class="checkbox" type="checkbox" name="lang-${index}" value="intermediate">
-高年級<input class="checkbox" type="checkbox" name="lang-${index}" value="advanced">
+低年段(123年級)<input class="checkbox" type="checkbox" name="lang-${index}" value="primary">
+<input class="checkbox" type="checkbox" name="lang-${index}" value="intermediate" hidden>
+高年段(456年級)<input class="checkbox" type="checkbox" name="lang-${index}" value="advanced">
 <hr>
 </div>
 

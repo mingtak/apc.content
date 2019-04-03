@@ -15,5 +15,4 @@ portal = api.portal.get()
       <img alt="${item/description}" src="${item/absolute_url}/@@images/image/preview">
     </div>
   </div>
-
 </div>

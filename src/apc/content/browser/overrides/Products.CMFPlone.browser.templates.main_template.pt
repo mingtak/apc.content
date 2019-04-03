@@ -40,6 +40,7 @@
 
     <link tal:replace="structure provider:plone.htmlhead.links" />
     <meta name="generator" content="Plone - http://plone.com" />
+
   </head>
 
   <body tal:define="isRTL portal_state/is_rtl;

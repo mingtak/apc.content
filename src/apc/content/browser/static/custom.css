@@ -372,3 +372,6 @@ body.template-course_view ul.school {
 
 .course-info.row .col-md-8 { padding-left: 40px;}
 
+#content-core img{
+    max-width: 100%;
+}

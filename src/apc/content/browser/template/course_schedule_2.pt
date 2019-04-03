@@ -66,11 +66,15 @@ lang = {
  '撒奇萊雅語' : 'P43',
  '囒哈巫語' : 'Q00',
 }
+lang_cata = ['阿美語', '泰雅語', '賽夏語', '邵語', '都達語', '德固達雅語',
+             '德魯固語', '布農語' ,'排灣語','魯凱語', '太魯閣語','噶瑪蘭語',
+             '鄒語', '卡那卡那富語','拉阿魯哇語', '卑南語', '雅美語','撒奇萊雅語', '哈巫語']
 ?>
 
 <h4>依語言選擇</h4>
-<tal:lang repeat="item lang">
-  <span style="white-space:nowrap"><input type="checkbox" class="lang-selector" value="${item}">${item}</span>
+<tal:lang repeat="item lang_cata">
+  <span style="white-space:nowrap">
+    <input type="checkbox" class="lang-selector" value="${python:item[-9:]}">${item}</span>
   <span tal:condition="not:repeat/item/end">&nbsp;</span>
 </tal:lang>
 <script>
@@ -104,7 +108,7 @@ $(document).ready(function(){
       <td class="course_title"
           tal:define="timeSection python:'%s%s' % (day, item);
                       brain python:view.getCourse(timeSection)">
-        <p tal:repeat="course brain" class="${python:course.Title[6:]}">
+        <p tal:repeat="course brain" class="${python:course.Title[-9:]}">
              <a href="${course/getURL}">${course/Title}</a>
         </p>
       </td>
