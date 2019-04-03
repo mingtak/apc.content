@@ -86,7 +86,7 @@ from Products.CMFPlone.utils import safe_unicode
 
         <div class="cal_info clearfix">
           <h2 class="tileHeadline" style="margin-top:8px">
-            <a href="" itemprop="url" class="url ${hasVacation}" tal:attributes="href data/url">
+            <a href="" itemprop="url" class="url ${hasVacation}" tal:attributes="href python:data.context.getParentNode().absolute_url() if data else ''">
 <p tal:condition="hasVacation">本周放假</p>
               <span itemprop="summary" class="summary ${hasVacation}" style="font-size: 16px;"
                     tal:define="courseTitle python:data.context.getParentNode().title;

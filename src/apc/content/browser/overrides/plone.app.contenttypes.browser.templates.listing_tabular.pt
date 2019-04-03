@@ -19,6 +19,9 @@
   </div>
 
   <metal:listingmacro define-macro="listing">
+<?python
+from plone import api
+?>
   <tal:results define="batch view/batch">
     <tal:listing condition="batch">
 
@@ -94,7 +97,7 @@
                           tal:content="name">Jos Henken</a>
                     </td>
                   </tal:block>
-<td>${python:item.created.strftime('%Y/%m/%d')}
+<td>${python:item.effective.strftime('%Y/%m/%d')}
 </td>
 
                 </tr>
@@ -110,9 +113,13 @@
 
     <metal:empty metal:define-slot="no_items_in_listing">
     <p class="discreet"
-    tal:condition="not: view/batch"
+    tal:condition="python:view.batch and not context.id=='live_video'"
     tal:content="view/no_items_message">
     There are currently no items in this folder.
+    </p>
+    <p class="discreet"
+    tal:condition="python:view.batch and context.id=='live_video'">
+目前無直播課程，直播時間請參閱課表。
     </p>
     </metal:empty>
 
