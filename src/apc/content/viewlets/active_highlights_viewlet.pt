@@ -11,8 +11,15 @@ portal = api.portal.get()
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-6 col-md-3 highlight" tal:repeat="item python:list(portal['resource']['highlights'].getChildNodes())[:6]">
-      <img alt="${item/description}" src="${item/absolute_url}/@@images/image/preview">
+    <div class="flexslider2 carousel">
+      <ul class="slides">
+        <li tal:repeat="item python:list(portal['resource']['highlights'].getChildNodes())">
+          <img alt="${item/title}" title="${item/title}" src="${item/absolute_url}/@@images/image/mini">
+        </li>
+      </ul>
     </div>
   </div>
 </div>
+<style>
+/*.flexslider2 li {margin-right:5px}*/
+</style>

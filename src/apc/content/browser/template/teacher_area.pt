@@ -101,10 +101,10 @@ portal = api.portal.get()
                                         parent_time  parent/course_time;">
                   <div class="tr-list row">
 
-                    <div class="col-xs-12 col-sm-4">
+                    <div class="col-xs-12 col-sm-3">
                       <span class="title">${parent_title}</span>
                     </div>
-                    <div class="col-xs-12 col-sm-4">
+                    <div class="col-xs-12 col-sm-3">
                       <a target="_blank" href="${item_url}" class="title">${item_title}</a> (<a target="_blank" href="${view/context/portal_url}/teacher-area/uni-lessons/@@prepare_uni_lessons?id=${obj/UID}">前往備課</a>)
                     </div>
                   </div>
