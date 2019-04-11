@@ -65,7 +65,7 @@
     <section>
     <tal:items repeat="data batch">
 
-      <article itemscope itemtype="http://data-vocabulary.org/Event" class="vevent tileItem" style="padding: initial; height:initial"
+      <article itemscope itemtype="http://data-vocabulary.org/Event" class="vevent tileItem" style="padding: initial; height:100%"
           tal:define="startf python:view.date_speller(data.start);
                       hasVacation python: 'hasVacation' if data.context.vacation else ''">
 

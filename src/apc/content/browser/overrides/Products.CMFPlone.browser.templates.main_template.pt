@@ -40,7 +40,10 @@
 
     <link tal:replace="structure provider:plone.htmlhead.links" />
     <meta name="generator" content="Plone - http://plone.com" />
-
+<!--
+<link href="${portal_url}/++plone++apc.content/FlexSlider-master/flexslider.css">
+<script src="${portal_url}/++plone++apc.content/FlexSlider-master/jquery.flexslider.js" type="text/javascript"></script>
+-->
   </head>
 
   <body tal:define="isRTL portal_state/is_rtl;
