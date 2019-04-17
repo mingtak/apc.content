@@ -3,7 +3,9 @@ from plone import api
 from Products.CMFPlone.utils import safe_unicode
 from apc.content import _
 
+from DateTime import DateTime
 import datetime
+import pytz
 
 
 def updateDate(obj, event):
@@ -28,6 +30,18 @@ def moveObjectsToTop(obj, event):
     """
     Moves Items to the top of its folder
     """
+#    import pdb; pdb.set_trace()
+
+    if obj.effective() < DateTime(2000,1,1):
+        year = DateTime().year()
+        month = DateTime().month()
+        day = DateTime().day()
+        tz = pytz.timezone('Asia/Taipei')
+
+        obj.effective = datetime.datetime(year, month, day, 0, 0, tzinfo=tz)
+        obj.reindexObject()
+#        import pdb; pdb.set_trace()
+
     folder = obj.getParentNode()
     if folder != None and hasattr(folder, 'moveObjectsToTop'):
         folder.moveObjectsToTop(obj.id)

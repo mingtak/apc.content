@@ -63,11 +63,11 @@ portal = api.portal.get()
                                         parent_date  parent/course_date;
                                         parent_time  parent/course_time;">
                   <div class="tr-list row">
-                    <div class="col-xs-12 col-sm-3 col-md-2">
-                      <li class="publish-date">${parent_time}</li>
+                    <div class="col-xs-12 col-sm-3 col-md-3">
+                      <li class="publish-date">${parent_title}</li>
                     </div>
-                    <div class="col-xs-12 col-sm-4">
-                      <span class="bold-title">${parent_place}</span>
+                    <div class="col-xs-12 col-sm-3">
+                      <span class="bold-title">${python:obj.place or parent_place or '授課地點未填'}</span>
                     </div>
                     <div class="col-xs-12 col-sm-4">
                       <a href="${item_url}/pdf_embeded" class="title toclass" target='_blank' style="color:#3788b8">${item_title}(前往課堂上課)</a>

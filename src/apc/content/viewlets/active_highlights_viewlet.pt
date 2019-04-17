@@ -13,8 +13,10 @@ portal = api.portal.get()
   <div class="row">
     <div class="flexslider2 carousel">
       <ul class="slides">
-        <li tal:repeat="item python:list(portal['resource']['highlights'].getChildNodes())">
+        <li tal:repeat="item python:list(portal['album'].getFirstChild().getChildNodes())">
+<a href="${python:portal['album'].getFirstChild().absolute_url()}">
           <img alt="${item/title}" title="${item/title}" src="${item/absolute_url}/@@images/image/mini">
+</a>
         </li>
       </ul>
     </div>
