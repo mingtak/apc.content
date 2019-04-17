@@ -15,7 +15,7 @@ siteName = 'site-%s' % portal.absolute_url().split('//')[1].split('.')[0]
 
 
   <p class="hiddenStructure" i18n:translate="heading_sections">Navigation</p>
-  <nav class="plone-navbar" id="portal-globalnav-wrapper" tal:condition="python:siteName == 'site-apc'">
+  <nav class="plone-navbar" id="portal-globalnav-wrapper" tal:condition="python:siteName in ['site-apc', 'site-apc2']">
     <div class="container">
       <div class="plone-navbar-header">
         <button type="button" class="plone-navbar-toggle" data-toggle="collapse" data-target="#portal-globalnav-collapse">
