@@ -15,7 +15,7 @@ portal = api.portal.get()
       <ul class="slides">
         <li tal:repeat="item python:list(portal['album'].getFirstChild().getChildNodes())">
 <a href="${python:portal['album'].getFirstChild().absolute_url()}">
-          <img alt="${item/title}" title="${item/title}" src="${item/absolute_url}/@@images/image/mini">
+          <img alt="${item/title}" title="${item/title}" src="${item/absolute_url}/@@images/image/preview">
 </a>
         </li>
       </ul>
@@ -25,3 +25,22 @@ portal = api.portal.get()
 <style>
 /*.flexslider2 li {margin-right:5px}*/
 </style>
+
+  <script>
+
+$(window).load(function() {
+  $('.flexslider2').flexslider({
+    animation: "slide",
+    animationLoop: true,
+    itemWidth: 200,
+    itemMargin: 3,
+    maxItems: 3
+  });
+});
+
+
+    $(document).ready(function(){
+  //    $('.flexslider').flexslider({controlNav: false});
+    });
+  </script>
+
