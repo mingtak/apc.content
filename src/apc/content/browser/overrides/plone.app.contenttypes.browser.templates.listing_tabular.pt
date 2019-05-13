@@ -43,7 +43,7 @@ from plone import api
                   tal:condition="python:field not in ['Type']"
                   tal:content="field">Field name</th>
 </tal:th>
-<th>發佈日期</th>
+<th tal:condition="python:context.id != 'live_video'">發佈日期</th>
             </tr>
           </thead>
           <tbody tal:define="portal context/@@plone_portal_state/portal;
@@ -97,7 +97,7 @@ from plone import api
                           tal:content="name">Jos Henken</a>
                     </td>
                   </tal:block>
-<td>${python:item.effective.strftime('%Y/%m/%d')}
+<td tal:condition="python:context.id != 'live_video'">${python:item.effective.strftime('%Y/%m/%d')}
 </td>
 
                 </tr>

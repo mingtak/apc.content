@@ -12,8 +12,9 @@
 .template-teacher_survy .langlist .rank {float:left; margin:8px 5px 5px 5px}
 .template-teacher_survy .langlist input.checkbox {width: 20px; margin-right: 30px}
 
-
-
+.template-teacher_survy .class-time table{width: 50%}
+.template-teacher_survy .class-time table tr:nth-child(even){background: #eee}
+.template-teacher_survy .class-time table input{width: 20px; height: 20px}
 
 
 .template-school_survy td.title {background: #aad6ea; white-space:nowrap; padding-right:5px}

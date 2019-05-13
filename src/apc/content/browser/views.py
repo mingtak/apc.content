@@ -239,6 +239,8 @@ class SchoolSurvy(BrowserView):
         result['cell'] = request.get('cell')
         result['email'] = request.get('email')
         result['lang-class-time'] = request.get('lang-class-time')
+#        result['class-time'] = request.get('time')
+#        result['location'] = request.get('location') if request.get('location') != '其他' else request.get('location-other')
         if result['lang-class-time'] == '6':
             result['lang-class-time'] = '12345'
         result['lang-class-time-other'] = request.get('lang-class-time-other')
@@ -351,8 +353,7 @@ class TeacherSurvy(BrowserView):
         output = StringIO()
         spamwriter = csv.writer(output)
 #        import pdb; pdb.set_trace()
-        spamwriter.writerow(['name_han', 'han_zu', 'phone', 'cell', 'city', 'zip', 'address',
-                             'lang-class-time', 'lang-class-time-other',
+        spamwriter.writerow(['name_han', 'han_zu', 'phone', 'cell', 'city', 'zip', 'address', 'class-time', 'location'
             'lang1', 'level1',
             'lang2', 'level2',
             'lang3', 'level3',
@@ -379,7 +380,7 @@ class TeacherSurvy(BrowserView):
             row = [item.get('name_han').encode('utf-8'), item.get('name_zu').encode('utf-8'),
                    item.get('phone').encode('utf-8'), item.get('cell').encode('utf-8'),
                    item.get('city').encode('utf-8'), item.get('zip'), item.get('address').encode('utf-8'),
-                   item.get('lang-class-time', ' ').encode('utf-8'), item.get('lang-class-time-other', ' ').encode('utf-8')]
+                   item.get('class-time'), item.get('location').encode('utf-8')]
             for index in range(20):
                 if type(item['lang'][index]) == type([]):
                     row.append(item['lang'][index][0])
@@ -422,10 +423,13 @@ class TeacherSurvy(BrowserView):
         result['city'] = request.get('city')
         result['zip'] = request.get('zip')
         result['address'] = request.get('address')
-        result['lang-class-time'] = request.get('lang-class-time')
-        if result['lang-class-time'] == '6':
-            result['lang-class-time'] = '12345'
-        result['lang-class-time-other'] = request.get('lang-class-time-other')
+        result['class-time'] = request.get('time')
+        result['location'] = request.get('location') if request.get('location') != '其他' else request.get('location-other')
+
+#        result['lang-class-time'] = request.get('lang-class-time')
+#        if result['lang-class-time'] == '6':
+#            result['lang-class-time'] = '12345'
+#        result['lang-class-time-other'] = request.get('lang-class-time-other')
 
         lang = []
         for index in range(20):
