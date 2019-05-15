@@ -376,3 +376,7 @@ body.template-course_view ul.school {
 #content-core img{
     max-width: 100%;
 }
+
+.template-plone_root_view .flex-control-nav.flex-control-paging {
+    display:none;
+}

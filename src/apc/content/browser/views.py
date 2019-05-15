@@ -28,6 +28,92 @@ from StringIO import StringIO
 logger = logging.getLogger("apc.content")
 
 
+class ShowChart(BrowserView):
+    template = ViewPageTemplateFile("template/show_chart.pt")
+    template2 = ViewPageTemplateFile("template/lang_chart.pt")
+    template3 = ViewPageTemplateFile("template/study_chart.pt")
+
+    def __call__(self):
+        request = self.request
+        mode = request.get('mode')
+        period = request.get('period')
+        search = request.get('search')
+        selected_course = request.get('selected_course')
+        portal = api.portal.get()
+
+        if search:
+            course = api.content.find(context=portal['language_study'][period]['class_intro'], depth=1, portal_type='Course')
+            courseList = []
+            for i in course:
+                courseList.append({'title': i.Title, 'id': i.id})
+            return json.dumps(courseList)
+
+        if mode and period:
+            if mode == 'lang':
+                course = api.content.find(context=portal['language_study'][period]['class_intro'], depth=1, portal_type='Course')
+                lang_cata = {
+                    '阿美語': '南勢阿美語 秀姑巒阿美語 海岸阿美語 馬蘭阿美語 恆春阿美語', 
+                    '泰雅語': '賽考利克泰雅語 澤敖利泰雅語 汶水泰雅語 萬大泰雅語 四季泰雅語 澤敖利泰雅語', 
+                    '賽夏語': '賽夏語', 
+                    '邵語': '邵語', 
+                    '賽德克語': '都達語 德固達雅語 德魯固語', 
+                    '布農語': '卓群布農語 卡群布農語 丹群布農語 巒群布農語 郡群布農語' , 
+                    '排灣語': '東排灣語 北排灣語 中排灣語 南排灣語', 
+                    '魯凱語': '東魯凱語 霧臺魯凱語 大武魯凱語 多納魯凱語 茂林魯凱語 萬山魯凱語', 
+                    '太魯閣語': '太魯閣語', 
+                    '噶瑪蘭語': '噶瑪蘭語', 
+                    '鄒語': '鄒語', 
+                    '卡那卡那富語': '卡那卡那富語', 
+                    '拉阿魯哇語': '拉阿魯哇語', 
+                    '卑南語': '南王卑南語 知本卑南語 初鹿卑南語 建和卑南語', 
+                    '雅美語': '雅美語', 
+                    '撒奇萊雅語': '撒奇萊雅語'
+                }
+                count = {'阿美語':0, '泰雅語': 0, '賽夏語': 0, '邵語': 0, '賽德克語': 0, '布農語': 0, '排灣語': 0, '魯凱語': 0, '太魯閣語': 0, '噶瑪蘭語': 0, '鄒語': 0, '卡那卡那富語': 0, '拉阿魯哇語': 0, '卑南語': 0, '雅美語': 0, '撒奇萊雅語': 0}
+                for i in course:
+                    title = i.Title[6:]
+                    flag = True
+                    for k,v in lang_cata.items():
+                        if title in v.split(' '):
+                            count[k] += 1
+                            flag = False
+                            continue
+                self.count = json.dumps(count)
+                return self.template2()
+            elif mode == 'study':
+                now = datetime.datetime.now()
+                count = {'到課': 0, '缺課': 0}
+                teacher = {'到課': 0, '缺課': 0}
+                prepare = api.content.find(context=portal['language_study'][period]['class_intro'][selected_course], depth=1, portal_type='Prepare')
+                for i in prepare:
+                    parent = i.getObject().getParentNode()
+                    numbers = len(parent.studentList.split('\n'))
+                    absence = 0
+                    parentId = parent.id
+                    pat = '%s_%%Y_%%m_%%d' %parentId
+                    try:
+                        if now > datetime.datetime.strptime(i.id, pat):
+                            notOnCall = i.getObject().notOnCall
+                            onCall = i.getObject().onCall
+                            if notOnCall:
+                                absence = len(notOnCall.split('\r'))
+                            count['到課'] += numbers - absence
+                            count['缺課'] += absence
+                            if onCall or notOnCall:
+                                teacher['到課'] += 1
+                            else:
+                                teacher['缺課'] += 1
+
+                    except:
+                        pass
+                self.teacher = json.dumps(teacher)
+                self.count = json.dumps(count)
+                return self.template3()
+        else:
+            return self.template()
+
+
+
 class TestPage(BrowserView):
 
     def __call__(self):
@@ -396,7 +482,7 @@ class TeacherSurvy(BrowserView):
             except:
                 import pdb; pdb.set_trace()
         request.response.setHeader('Content-Type', 'application/csv')
-        request.response.setHeader('Content-Disposition', 'attachment; filename="techer_survy.csv"')
+        request.response.setHeader('Content-Disposition', 'attachment; filename="教師課程媒合調查表.csv"')
 
         return output.getvalue()
 
@@ -1614,7 +1700,8 @@ class SchoolInit(BrowserView):
 class SchoolAreaSelector(BrowserView):
     template = ViewPageTemplateFile("template/school_area_selector.pt")
     def __call__(self):
-        self.brain = api.content.find(portal_type="School", sort_on="id")
+        portal = api.portal.get()
+        self.brain = api.content.find(context=portal['teacher'], portal_type="School", sort_on="id")
         return self.template()
 
 

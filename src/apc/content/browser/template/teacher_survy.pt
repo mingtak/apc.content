@@ -74,7 +74,7 @@ time = {'1': '周一早自習',
    下載調查表
 </a>
 
-<h3>族語教師調查表</h3>
+<h3>教師課程媒合調查表</h3>
 <form method="post">
 <h4>基本資料</h4>
 
@@ -374,9 +374,12 @@ time = {'1': '周一早自習',
 
 
 <br>
-<input type="button" name="addline" value="增加一項可教授語別" id="addline">
-<input name="submit" type="submit" value="完成問卷提交">
+<div style='display: flex'>
+  <input type="button" name="addline" value="增加一項可教授語別" id="addline" style='background: #e5e5e5;border: 1px solid #939393;height: 34px;margin-right: 10px'>
+  <input name="submit" type="submit" value="完成問卷提交">
+</div>
 </form>
+
 <script>
 $(document).ready(function(){
     $('.langlist-0').show()

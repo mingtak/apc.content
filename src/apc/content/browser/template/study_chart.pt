@@ -1,0 +1,53 @@
+<div class='row'>
+  <div class='col-md-6' style='text-align: center'>
+    <h2>學生到課率</h2>
+    <div id='count' class='col-md-12'></div>
+  </div>
+  <div class='col-md-6' style='text-align: center'>
+    <h2>老師到課率</h2>
+    <div id='teacher2' class='col-md-12'></div>
+  </div>
+</div>
+<script>
+    var amount_total = c3.generate({
+        bindto: '#count',
+        data: {
+            json: ${view/count},
+            type: 'pie'
+        },
+        size: {
+            height: 600,
+            width: 600
+        },
+        tooltip: {
+            format: {
+                title: function (d) { return d},
+                value: function (value, ratio, id) {
+                    return value + '人次'
+                }
+            }
+        }
+    });
+    var teacher = c3.generate({
+        bindto: '#teacher2',
+        data: {
+            json: ${view/teacher},
+            type: 'pie'
+        },
+        size: {
+            height: 600,
+            width: 600
+        },
+        tooltip: {   
+            format: {
+                title: function (d) { return d},
+                value: function (value, ratio, id) {
+                    return value + '人次'
+                }
+            }
+        }
+    });
+
+
+</script>
+

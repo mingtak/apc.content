@@ -1,0 +1,25 @@
+
+<div id='count'/>
+
+<script>
+    var amount_total = c3.generate({
+        bindto: '#count',
+        data: {
+            json: ${view/count},
+            type: 'pie'
+        },
+        size: {
+            height: 650,
+            width: 1200
+        },
+        tooltip: {
+            format: {
+                title: function (d) { return d},
+                value: function (value, ratio, id) {
+                    return value
+                }
+            }
+        }
+
+    });
+</script>

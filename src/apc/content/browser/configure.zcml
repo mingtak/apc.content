@@ -26,6 +26,13 @@
       layer="apc.content.interfaces.IApcContentLayer"
       permission="zope2.View"
   />
+  <browser:page
+      name="show_chart"
+      for="*"
+      class=".views.ShowChart"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="cmf.ManagePortal"
+  />
 
   <browser:page
       name="teacher_review_page"
