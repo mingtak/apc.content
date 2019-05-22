@@ -11,26 +11,103 @@
                     tal:define="toc context/table_of_contents|nothing;">
 <style>
 label{
-  margin: 0;      
+  margin: 0;
+}
+.btn-primary{
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus{
+    background-color: #0069d9;
+    border-color: #0062cc;
+    color: #fff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.5);
+}
+.btn-send{
+    color: #fff;
+    background-color: #117a8b;
+    border-color: #10707f;
+    width: 75px;
+}
+.btn-send:hover, .btn-send:active, .btn-send:focus{
+    color: #fff;
+    background-color: #117a8b;
+    border-color: #10707f;
+}
+.flex{
+    display: none;
+}
+.selected{
+    background: #e84545;
+}
+.selected:hover, .selected:active, .selected:focus{
+    background: #903749;
+    border-color: #903749;
 }
 </style>
-<div style='display: flex;align-items: center'>
-  <select id='period' style='margin-right: 15px'>
-    <option value='107_1'>上學期</option>
-    <option value='latest'>下學期</option>
-  </select>
-  <label>
-    <input type='radio' value='study' name='mode'>
-    到課率
-  </label>
-  <label style='margin: 0px 5px'>
-    <input type='radio' value='lang' name='mode' checked>
-    語系分析
-  </label>
-  <select id='selected_course'>
-  </select>
-  <input type='submit' id='send' style='margin-left: 5px'>
+
+<h3>直播即時監控列表</h3>
+<div id="live-content" class="row">
+    <div class="col-sx-12 col-md-3" tal:repeat="item view/brain">
+        <span>${item/Title}</span>
+        <div tal:content="structure python:item.getObject().embeded.replace('640', '208').replace('360', '117')">
+        </div>
+    </div>
 </div>
+
+<br><br>
+<div>
+  <button type="button" class="btn-primary" data-option="student_rate">學生到課率</button>
+  <button type="button" class="btn-primary" data-option="lang">課程語言別比率</button>
+  <button type="button" class="btn-primary" data-option="page_count">各族與課程點閱次數</button>
+  <button type="button" class="btn-primary" data-option="number">各族上課學生數</button>
+</div>
+
+<br>
+
+<div class='option_group'>
+  <div id='student_rate' class='flex' style='flex-direction: column'>
+    <div style='display: flex'>
+      <h4 style='margin-right: 10px'>開始時間</h4>
+      <input type='date' id='student_rate_start' style='width: 250px'>
+      <h4 style='margin-left: 20px;marign-right: 10px'>結束時間</h4>
+      <input type='date' id='student_rate_end' style='width: 250px'>
+    </div>
+    <div style='display: flex'>
+      <h4 style='margin-right: 10px'>月份</h4>
+      <input type='month' id='student_rate_month' style='width: 250px'>
+    </div>
+    <button class='btn-send' data-mode='student_rate'>送出</button>
+  </div>
+
+  <div id='lang' class='flex'>
+    <select class='lang_period'>
+      <option value='107_1'>上學期</option>
+      <option value='latest'>下學期</option>
+    </select>
+    <button class='btn-send' data-mode='lang' style='margin-left: 15px'>送出</button>
+  </div>
+  <div id='page_count' class='flex'>
+    <select class='page_count_period'>
+      <option value='107_1'>上學期</option>
+      <option value='latest'>下學期</option>
+    </select>
+    <button class='btn-send' data-mode='page_count' style='margin-left: 15px'>送出</button>
+  </div>
+
+  <div id='number' class='flex'>
+    <select class='number_period'>
+      <option value='107_1'>上學期</option>
+      <option value='latest'>下學期</option>
+    </select>
+    <select class='number_select' style='margin: 0 10px'></select>
+    <input type='number' class='number_total' style='width: 100px' placeholder='總人數'>
+    <button class='btn-send' data-mode='number'  style='margin-left: 15px'>送出</button>
+  </div>
+
+</div>
+
 <br><br>
 <div id='result'/>
 
@@ -39,61 +116,107 @@ label{
 
 <script>
 $(function(){
-  $('#selected_course').hide()
-
-  $('input[type=radio]').change(function(){
-    period = $('#period').val()
-
-    if($(this).val() == 'study'){
-      $.ajax({
-        method: 'post',
-        url: '${context/absolute_url}/show_chart',
-        data: {search: 1, period: period},
-        success: function(e){
-          e = JSON.parse(e)
-          $('#selected_course option').remove()
-          e.forEach((i)=>{
-              $('#selected_course').append("<option value=" + i.id +">" + i.title + "</option>")
-              $('#selected_course').show()
-          })
-        }
-      })
-    }else{
-       $('#selected_course').hide()
-    }
-  })
-  $('#period').change(function(){
-    if($('#selected_course').is(':visible')){
-      $.ajax({
-        method: 'post',
-        url: '${context/absolute_url}/show_chart',
-        data: {search: 1, period: $(this).val()},
-        success: function(e){
-          e = JSON.parse(e)
-          $('#selected_course option').remove()
-          e.forEach((i)=>{
-              $('#selected_course').append("<option value=" + i.id +">" + i.title + "</option>")
-              $('#selected_course').show()
-          })
-        }
-      })
-    }
-  })
-
-  $('#send').click(function(){
-    mode = $('input[type=radio]:checked').val()
-    period = $('#period').val()
-    selected_course = $('#selected_course').val()
-
     $.ajax({
-      method: 'post',
-      url: '${context/absolute_url}/show_chart',
-      data: {'mode': mode, 'period': period, selected_course: selected_course},
-      success: function(e){
-          $('#result').html(e)
-      }
+        method: 'post',
+        url: '${context/absolute_url}/show_chart',
+        data: {search: 1, period: '107_1'},
+        success: function(e){
+            e = JSON.parse(e)
+            $('.number_select option').remove()
+            e.forEach((i)=>{
+                $('.number_select').append("<option value=" + i.title +">" + i.title + "</option>")
+            })
+        }
     })
-  })
+
+
+    $('#student_rate_start').change(function(){
+        $('#student_rate_month').val('')
+    })
+    $('#student_rate_end').change(function(){
+        $('#student_rate_month').val('')
+    })
+    $('#student_rate_month').change(function(){
+        $('#student_rate_start').val('')
+        $('#student_rate_end').val('')
+    })
+
+    $('.btn-primary').click(function(){
+        option = $(this).data('option')
+        $(this).addClass('selected')
+        $(this).siblings().removeClass('selected')
+        $('#' + option).siblings().hide()
+        $('#' + option).show()
+        $('#' + option).css('display', 'flex')
+    })
+
+    $('.btn-send').click(function(){
+        $('#result').html('')
+        mode = $(this).data('mode')
+        if(mode == 'student_rate'){
+            student_rate_start = $('#student_rate_start').val()
+            student_rate_end = $('#student_rate_end').val()
+            student_rate_month = $('#student_rate_month').val()
+            if(!student_rate_start && !student_rate_end && !student_rate_month){
+                alert('請至少選擇一個時間')
+                return    
+            }
+            if(!student_rate_start && student_rate_end){
+                alert('請選擇開始時間')
+                return
+            }
+            if(student_rate_start && !student_rate_end){ 
+                alert('請選擇結束時間')
+                return
+            }
+            if(student_rate_start && student_rate_end){
+                data = {start: student_rate_start, end: student_rate_end, mode: 'student_rate'}
+            }
+            else if(student_rate_month){
+                data = {month: student_rate_month, mode: 'student_rate'}
+            }
+        }
+        else if(mode == 'lang'){
+            lang_period = $('.lang_period').val()
+            data = {mode: 'lang', period: lang_period}
+        }
+        else if(mode == 'page_count'){
+            page_count_period = $('.page_count_period').val()
+            data = {mode: 'page_count', period: page_count_period}
+        }
+        else if(mode == 'number'){
+            number_select = $('.number_select').val()
+            number_total = $('.number_total').val()
+            if(!number_total){
+                alert('請輸入總人數')
+                return
+            }
+            data = {mode: 'number', course: number_select, number: number_total}
+        }
+
+        $.ajax({
+            method: 'post',
+            url: '${context/absolute_url}/show_chart',
+            data: data,
+            success: function(e){
+                $('#result').html(e)
+            }
+        })
+    })
+    $('.number_period').change(function(){
+        $.ajax({
+            method: 'post',
+            url: '${context/absolute_url}/show_chart',
+            data: {search: 1, period: $(this).val()},
+            success: function(e){
+                e = JSON.parse(e)
+                $('.number_select option').remove()
+                e.forEach((i)=>{
+                    $('.number_select').append("<option value=" + i.title +">" + i.title + "</option>")
+                })
+            }
+        })
+    })
 })
 
 </script>

@@ -1,0 +1,53 @@
+<?python
+import json
+?>
+<div class='row'>
+  <div class='col-md-12' style='text-align: center'>
+    <div class='col-md-2' tal:define='result python: json.loads(view.result)'>
+      <h3>應到人數</h3>
+      <h3>${python: result['onCall'] + result['notOnCall']}
+      <h3>出席人數</h3>
+      <h3>${python: result['onCall']}
+      <h3>缺席人數</h3>
+      <h3>${python: result['notOnCall']}
+    </div>
+    <div id='count' class='col-md-10'></div>
+  </div>
+</div>
+<script>
+    var amount_total = c3.generate({
+        bindto: '#count',
+        data: {
+            json: ${view/result},
+            type: 'pie',
+            names:{
+                onCall: '出席',
+                notOnCall: '缺席'
+            },
+            onclick: function(){
+                $('#result').html('')
+                $.ajax({
+                    method: 'post',
+                    url: '${context/absolute_url}/show_chart',
+                    data: {mode: 'notOnCallDetail', start: '${view/start}', end: '${view/end}', month: '${view/month}'},
+                    success: function(e){
+                        $('#result').html(e)
+                    }
+                })
+            }
+        },
+        size: {
+            height: 600,
+            width: 600
+        },
+        tooltip: {
+            format: {
+                title: function (d) { return d},
+                value: function (value, ratio, id) {
+                    return value + '人次'
+                }
+            }
+        }
+    });
+</script>
+

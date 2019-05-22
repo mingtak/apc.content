@@ -1,6 +1,18 @@
-
-<div id='count'/>
-
+<?python
+import json
+?>
+<style>
+h4{
+    margin: 5px 0;
+}
+</style>
+<div id='count' class='col-md-10'/>
+<div class='col-md-2' tal:define="count python: json.loads(view.count)">
+  <div tal:repeat="item count" style='display: flex; border: 1px solid #ccc'>
+    <h4 style='width: 140px'>${item}</h4>
+    <h4>${python: count[item]}</h4>
+  </div>
+</div>
 <script>
     var amount_total = c3.generate({
         bindto: '#count',

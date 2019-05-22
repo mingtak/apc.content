@@ -24,6 +24,7 @@ from DateTime import DateTime
 import json
 import csv
 from StringIO import StringIO
+from mingtak.ECBase.browser.views import SqlObj
 
 logger = logging.getLogger("apc.content")
 
@@ -31,7 +32,9 @@ logger = logging.getLogger("apc.content")
 class ShowChart(BrowserView):
     template = ViewPageTemplateFile("template/show_chart.pt")
     template2 = ViewPageTemplateFile("template/lang_chart.pt")
-    template3 = ViewPageTemplateFile("template/study_chart.pt")
+    template3 = ViewPageTemplateFile("template/student_rate_chart.pt")
+    template4 = ViewPageTemplateFile("template/not_on_call_detail.pt")
+    template5 = ViewPageTemplateFile("template/page_count.pt")
 
     def __call__(self):
         request = self.request
@@ -40,6 +43,25 @@ class ShowChart(BrowserView):
         search = request.get('search')
         selected_course = request.get('selected_course')
         portal = api.portal.get()
+        execSql = SqlObj()
+        lang_cata = {
+            '阿美語': '南勢阿美語 秀姑巒阿美語 海岸阿美語 馬蘭阿美語 恆春阿美語', 
+            '泰雅語': '賽考利克泰雅語 澤敖利泰雅語 汶水泰雅語 萬大泰雅語 四季泰雅語 澤敖利泰雅語', 
+            '賽夏語': '賽夏語', 
+            '邵語': '邵語',    
+            '賽德克語': '都達語 德固達雅語 德魯固語', 
+            '布農語': '卓群布農語 卡群布農語 丹群布農語 巒群布農語 郡群布農語' , 
+            '排灣語': '東排灣語 北排灣語 中排灣語 南排灣語', 
+            '魯凱語': '東魯凱語 霧臺魯凱語 大武魯凱語 多納魯凱語 茂林魯凱語 萬山魯凱語', 
+            '太魯閣語': '太魯閣語', 
+            '噶瑪蘭語': '噶瑪蘭語', 
+            '鄒語': '鄒語', 
+            '卡那卡那富語': '卡那卡那富語', 
+            '拉阿魯哇語': '拉阿魯哇語', 
+            '卑南語': '南王卑南語 知本卑南語 初鹿卑南語 建和卑南語', 
+            '雅美語': '雅美語', 
+            '撒奇萊雅語': '撒奇萊雅語'
+        }
 
         if search:
             course = api.content.find(context=portal['language_study'][period]['class_intro'], depth=1, portal_type='Course')
@@ -48,68 +70,91 @@ class ShowChart(BrowserView):
                 courseList.append({'title': i.Title, 'id': i.id})
             return json.dumps(courseList)
 
-        if mode and period:
-            if mode == 'lang':
-                course = api.content.find(context=portal['language_study'][period]['class_intro'], depth=1, portal_type='Course')
-                lang_cata = {
-                    '阿美語': '南勢阿美語 秀姑巒阿美語 海岸阿美語 馬蘭阿美語 恆春阿美語', 
-                    '泰雅語': '賽考利克泰雅語 澤敖利泰雅語 汶水泰雅語 萬大泰雅語 四季泰雅語 澤敖利泰雅語', 
-                    '賽夏語': '賽夏語', 
-                    '邵語': '邵語', 
-                    '賽德克語': '都達語 德固達雅語 德魯固語', 
-                    '布農語': '卓群布農語 卡群布農語 丹群布農語 巒群布農語 郡群布農語' , 
-                    '排灣語': '東排灣語 北排灣語 中排灣語 南排灣語', 
-                    '魯凱語': '東魯凱語 霧臺魯凱語 大武魯凱語 多納魯凱語 茂林魯凱語 萬山魯凱語', 
-                    '太魯閣語': '太魯閣語', 
-                    '噶瑪蘭語': '噶瑪蘭語', 
-                    '鄒語': '鄒語', 
-                    '卡那卡那富語': '卡那卡那富語', 
-                    '拉阿魯哇語': '拉阿魯哇語', 
-                    '卑南語': '南王卑南語 知本卑南語 初鹿卑南語 建和卑南語', 
-                    '雅美語': '雅美語', 
-                    '撒奇萊雅語': '撒奇萊雅語'
-                }
-                count = {'阿美語':0, '泰雅語': 0, '賽夏語': 0, '邵語': 0, '賽德克語': 0, '布農語': 0, '排灣語': 0, '魯凱語': 0, '太魯閣語': 0, '噶瑪蘭語': 0, '鄒語': 0, '卡那卡那富語': 0, '拉阿魯哇語': 0, '卑南語': 0, '雅美語': 0, '撒奇萊雅語': 0}
-                for i in course:
-                    title = i.Title[6:]
-                    flag = True
-                    for k,v in lang_cata.items():
-                        if title in v.split(' '):
-                            count[k] += 1
-                            flag = False
-                            continue
-                self.count = json.dumps(count)
-                return self.template2()
-            elif mode == 'study':
-                now = datetime.datetime.now()
-                count = {'到課': 0, '缺課': 0}
-                teacher = {'到課': 0, '缺課': 0}
-                prepare = api.content.find(context=portal['language_study'][period]['class_intro'][selected_course], depth=1, portal_type='Prepare')
-                for i in prepare:
-                    parent = i.getObject().getParentNode()
-                    numbers = len(parent.studentList.split('\n'))
-                    absence = 0
-                    parentId = parent.id
-                    pat = '%s_%%Y_%%m_%%d' %parentId
-                    try:
-                        if now > datetime.datetime.strptime(i.id, pat):
-                            notOnCall = i.getObject().notOnCall
-                            onCall = i.getObject().onCall
-                            if notOnCall:
-                                absence = len(notOnCall.split('\r'))
-                            count['到課'] += numbers - absence
-                            count['缺課'] += absence
-                            if onCall or notOnCall:
-                                teacher['到課'] += 1
-                            else:
-                                teacher['缺課'] += 1
+        if mode == 'lang':
+            course = api.content.find(context=portal['language_study'][period]['class_intro'], depth=1, portal_type='Course')
+            count = {'阿美語':0, '泰雅語': 0, '賽夏語': 0, '邵語': 0, '賽德克語': 0, '布農語': 0, '排灣語': 0, '魯凱語': 0, 
+            '太魯閣語': 0, '噶瑪蘭語': 0, '鄒語': 0, '卡那卡那富語': 0, '拉阿魯哇語': 0, '卑南語': 0, '雅美語': 0, '撒奇萊雅語': 0}
+            for i in course:
+                title = i.Title[6:]
+                flag = True
+                for k,v in lang_cata.items():
+                    if title in v.split(' '):
+                        count[k] += 1
+                        flag = False
+                        continue
+            self.count = json.dumps(count)
+            return self.template2()
+        elif mode == 'student_rate':
+            count = {'到課': 0, '缺課': 0}
 
-                    except:
-                        pass
-                self.teacher = json.dumps(teacher)
-                self.count = json.dumps(count)
-                return self.template3()
+            start = request.get('start')
+            end = request.get('end')
+            month = request.get('month')
+
+            sqlStr = """SELECT COUNT(status) FROM attend WHERE date """
+
+            if start and end:
+                onCallStr = """BETWEEN '{}' AND '{}' AND status = 'onCall'""".format(start, end)
+                notOnCallStr = """BETWEEN '{}' AND '{}' AND status = 'notOnCall'""".format(start, end)
+            elif month:
+                onCallStr = """like '{}' AND status = 'onCall'""".format(month + '%%')
+                notOnCallStr = """like '{}' AND status = 'notOnCall'""".format(month + '%%')
+
+            onCall = execSql.execSql('%s %s' %(sqlStr, onCallStr))[0][0]
+            notOnCall = execSql.execSql('%s %s' %(sqlStr, notOnCallStr))[0][0]
+            self.start = start
+            self.end = end
+            self.month = month
+            self.result = json.dumps({'onCall': onCall, 'notOnCall': notOnCall})
+            return self.template3()
+
+        elif mode == 'notOnCallDetail':
+            start = request.get('start')
+            end = request.get('end')
+            month = request.get('month')
+
+            if start and end:
+                sqlStr = """SELECT course, status FROM attend WHERE date BETWEEN '{}' AND '{}'""".format(start, end)
+            elif month:
+                sqlStr = """SELECT course, status FROM attend WHERE date LIKE '{}'""".format(month + '%%')
+            result = execSql.execSql(sqlStr)
+            """
+            count = {'阿美語':{'出席': 0, '缺席': 0}, '泰雅語': {'出席': 0, '缺席': 0}, '賽夏語': {'出席': 0, '缺席': 0}, '邵語': {'出席': 0, '缺席': 0}, '賽德克語': {'出席': 0, '缺席': 0}, '布農語': {'出席': 0, '缺席': 0}, '排灣語': {'出席': 0, '缺席': 0},
+                     '魯凱語': {'出席': 0, '缺席': 0}, '太魯閣語': {'出席': 0, '缺席': 0}, '噶瑪蘭語': {'出席': 0, '缺席': 0},
+                     '鄒語': {'出席': 0, '缺席': 0}, '卡那卡那富語': {'出席': 0, '缺席': 0}, '拉阿魯哇語': {'出席': 0, '缺席': 0},
+                     '卑南語': {'出席': 0, '缺席': 0}, '雅美語': {'出席': 0, '缺席': 0}, '撒奇萊雅語': {'出席': 0, '缺席': 0}}
+            """
+            count = {}
+            for item in result:
+                obj = dict(item)
+                course = obj['course'][6:].encode('utf-8')
+                status = obj['status']
+                for k,v in lang_cata.items():
+                    if course in v.split(' '):
+                        if count.has_key(k):
+                            count[k]['出席' if status == 'onCall' else '缺席'] += 1
+                        else:
+                            count[k] = {'出席': 1 if status == 'onCall' else 0, '缺席':1 if status == 'notOnCall' else 0}
+                        continue
+            self.count = count
+            return self.template4()
+        elif mode == 'page_count':
+            period = request.get('period')
+            url =  'http://apc2.17study.com.tw/language_study/%s/class_intro/' %period
+
+            sqlStr = """SELECT url,count,title FROM page_count WHERE url LIKE '{}%%'""".format(url)
+
+            self.count = execSql.execSql(sqlStr)
+            return self.template5()
+        elif mode == 'number':
+            course = request.get('course')
+            number = request.get('number')
+
+            sqlStr = """SELECT COUNT(id) FROM attend WHERE course = '{}'""".format(course)
+            count = execSql.execSql(sqlStr)[0][0]
+            return '<h3>各族上課學生/各族學生總人數</h3><h3>%s/%s=%s%%</h3>' %(count, number, round(float(count) / float(number), 1) * 100 )
         else:
+            self.brain = api.content.find(portal_type='LiveClass')
             return self.template()
 
 
@@ -1266,7 +1311,8 @@ class TeacherInfo(BrowserView):
 class TeacherAreaSelector(BrowserView):
     template = ViewPageTemplateFile("template/teacher_area_selector.pt")
     def __call__(self):
-        self.brain = api.content.find(portal_type="Teacher")
+        portal = api.portal.get()
+        self.brain = api.content.find(context=portal['teacher'], portal_type="Teacher")
         return self.template()
 
 
@@ -1596,17 +1642,46 @@ class Rollcall(BrowserView):
         request = self.request
         context = self.context
 
-        #TODO: 老師登入權限
-        if api.user.is_anonymous():
-            return request.response.redirect(api.portal.get().absolute_url())
+        on_call = request.form.get('on_call').split('||')
+        not_on_call = request.form.get('not_on_call').split('||')
 
-        context.onCall = request.form.get('on_call').replace('||', '\n')
-        context.notOnCall = request.form.get('not_on_call').replace('||', '\n')
+        course = context.getParentNode().title.encode('utf-8')
 
+        id = context.id.split('_')
+        date = '%s-%s-%s' %(id[1], id[2], id[3])
+        uid = context.UID()
+
+        execSql = SqlObj()
+
+        sqlStr = """DELETE FROM attend WHERE uid = '{}'""".format(uid)
+        execSql.execSql(sqlStr)
+
+        for i in on_call:
+            if not i:
+                continue
+            temp = i.split(',')
+            name = temp[2].split('(')[0]
+            sqlStr = """INSERT INTO attend(name, date, course, country, school, uid, status) VALUES('{}', '{}', '{}', '{}', '{}', '{}', 'onCall')
+                     """.format(name, date, course, temp[0], temp[1], uid)
+            execSql.execSql(sqlStr)
+
+        for i in not_on_call:
+            if not i:
+                continue
+            temp = i.split(',')
+            name = temp[2].split('(')[0]
+
+            sqlStr = """INSERT INTO attend(name, date, course, country, school, uid, status) VALUES('{}', '{}', '{}', '{}', '{}', '{}', 'notOnCall')
+                     """.format(name, date, course, temp[0], temp[1], uid)
+            execSql.execSql(sqlStr)
+
+
+        return 
         # email
         for item in context.notOnCall.split('\n'):
             if not item:
                 continue
+#            import pdb;pdb.set_trace()
             cityTitle, schoolName, name = item.split(',')
             city = api.content.find(path='/apc_costudy/school', Title=cityTitle, depth=1)[0]
             school = api.content.find(path=city.getPath(), Title=schoolName)[0]
@@ -1700,8 +1775,7 @@ class SchoolInit(BrowserView):
 class SchoolAreaSelector(BrowserView):
     template = ViewPageTemplateFile("template/school_area_selector.pt")
     def __call__(self):
-        portal = api.portal.get()
-        self.brain = api.content.find(context=portal['teacher'], portal_type="School", sort_on="id")
+        self.brain = api.content.find(portal_type="School", sort_on="id")
         return self.template()
 
 

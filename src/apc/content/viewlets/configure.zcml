@@ -33,5 +33,13 @@
         layer="apc.content.interfaces.IApcContentLayer"
         permission="zope2.View"
     />
-
+    <browser:viewlet
+        name="page_count_viewlet"
+        for="*"
+        manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
+        template="page_count.pt"
+        class=".viewlets.PageCountViewlet"
+        layer="apc.content.interfaces.IApcContentLayer"
+        permission="zope2.View"
+    />
 </configure>

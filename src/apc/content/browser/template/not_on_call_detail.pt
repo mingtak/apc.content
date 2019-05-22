@@ -1,0 +1,29 @@
+<style>
+.not_call_table th{
+    text-align: center;
+}
+.not_call_table th, .not_call_table td{
+    padding: 10px;
+}
+.not_call_table tr:nth-child(even){
+    background: #eee
+}
+</style>
+<table class='not_call_table'>
+    <tr>
+        <th></th>
+        <th>族語別</th>
+        <th>應出席數</th>
+        <th>實際出席數</th>
+        <th>缺席數</th>
+        <th>補課數</th>
+    </tr>
+    <tr tal:repeat="item view/count">
+        <td>${repeat/item/number}</td>
+        <td>${python: item}</td>
+        <td>${python: ''}</td>
+        <td>${python: view.count[item]['出席']}</td>
+        <td>${python: view.count[item]['缺席']}</td>
+        <td>${python: ''}</td>
+    </tr>
+</table>
