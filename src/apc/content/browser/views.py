@@ -411,12 +411,12 @@ class SchoolSurvy(BrowserView):
         result['phone'] = request.get('phone')
         result['cell'] = request.get('cell')
         result['email'] = request.get('email')
-        result['lang-class-time'] = request.get('lang-class-time')
-#        result['class-time'] = request.get('time')
+#        result['lang-class-time'] = request.get('lang-class-time')
+        result['class-time'] = request.get('time')
 #        result['location'] = request.get('location') if request.get('location') != '其他' else request.get('location-other')
-        if result['lang-class-time'] == '6':
-            result['lang-class-time'] = '12345'
-        result['lang-class-time-other'] = request.get('lang-class-time-other')
+#        if result['lang-class-time'] == '6':
+#            result['lang-class-time'] = '12345'
+#        result['lang-class-time-other'] = request.get('lang-class-time-other')
 
         lang = []
         for index in range(20):
@@ -457,8 +457,7 @@ class SchoolSurvy(BrowserView):
         output = StringIO()
         spamwriter = csv.writer(output)
 #        import pdb; pdb.set_trace()
-        spamwriter.writerow(['city', 'zip', 'school_id', 'school_name', 'contact', 'phone', 'cell', 'email',
-                             'lang-class-time', 'lang-class-time-other',
+        spamwriter.writerow(['city', 'zip', 'school_id', 'school_name', 'contact', 'phone', 'cell', 'email', 'class-time',
             'lang1', 'level1',
             'lang2', 'level2',
             'lang3', 'level3',
@@ -485,7 +484,7 @@ class SchoolSurvy(BrowserView):
             row = [item.get('city', ' ').encode('utf-8'), item.get('zip', ' ').encode('utf-8'), item.get('school_id', ' ').encode('utf-8'),
                    item.get('school_name', ' ').encode('utf-8'), item.get('contact', ' ').encode('utf-8'),
                    item.get('phone', ' ').encode('utf-8'), item.get('cell', ' ').encode('utf-8'), item.get('email', ' ').encode('utf-8'),
-                   item.get('lang-class-time', ' ').encode('utf-8'), item.get('lang-class-time-other', ' ').encode('utf-8')]
+                   item.get('class-time', [])]
             for index in range(20):
                 if item['lang'][index][1:4] != ["0", "0", "0"]:
                     row.append(item['lang'][index][0]) # 語別
