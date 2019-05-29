@@ -29,6 +29,48 @@ from mingtak.ECBase.browser.views import SqlObj
 logger = logging.getLogger("apc.content")
 
 
+class InsertStudent(BrowserView):
+    def __call__(self):
+        portal = api.portal.get()
+        latest = api.content.find(context=portal["language_study"]["latest"]["class_intro"], depth=1, portal_type='Course')
+        first = api.content.find(context=portal["language_study"]["107_1"]["class_intro"], depth=1, portal_type='Course')
+        execSql = SqlObj()
+        self.insertData(latest)
+        self.insertData(first)
+
+    def insertData(self, data):
+        execSql = SqlObj()
+        for i in data:
+            obj = i.getObject()
+            studentList = obj.studentList
+            title = obj.title
+            course = title[:6].encode('utf-8')
+            language = title[6:].encode('utf-8')
+            if studentList:
+                for student in studentList.split('\r\n'):
+                    if student:
+                        try:
+                            temp = student.split(',')
+                            try:
+                                county = temp[0].encode('utf-8')
+                            except:
+                                county = temp[0]
+                            try:
+                                school = temp[1].encode('utf-8')
+                            except:
+                                school = temp[1]
+                            try:
+                                name = temp[2].split('(')[0].encode('utf-8')
+                            except:
+                                name = temp[2]
+                            sqlStr = """INSERT INTO student(county, school, course, language, name) VALUES('{}', '{}', '{}', '{}', '{}')
+                                     """.format(county, school, course, language, name)
+                            execSql.execSql(sqlStr)
+                        except Exception as e:
+                            print e
+                            import pdb;pdb.set_trace()
+
+
 class ShowChart(BrowserView):
     template = ViewPageTemplateFile("template/show_chart.pt")
     template2 = ViewPageTemplateFile("template/lang_chart.pt")

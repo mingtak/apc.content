@@ -17,7 +17,14 @@
       type="plone"
       directory="static"
       />
- 
+   <browser:page
+      name="insert_student"
+      for="*"
+      class=".views.InsertStudent"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
   <browser:page
       name="plone_root_view"
       for="*"

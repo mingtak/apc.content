@@ -24,7 +24,9 @@ import json
                 onCall: '出席',
                 notOnCall: '缺席'
             },
-            onclick: function(){
+            onclick: function(d, l){
+                if(d.name != '缺席') return
+
                 $('#result').html('')
                 $.ajax({
                     method: 'post',
