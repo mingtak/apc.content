@@ -570,7 +570,7 @@ class TeacherSurvy(BrowserView):
             except:
                 import pdb; pdb.set_trace()
         request.response.setHeader('Content-Type', 'application/csv')
-        request.response.setHeader('Content-Disposition', 'attachment; filename="教師課程媒合調查表.csv"')
+        request.response.setHeader('Content-Disposition', 'attachment; filename="teacher_survy.csv"')
 
         return output.getvalue()
 
@@ -1016,7 +1016,7 @@ class MatchResult(BrowserView):
         # 統計
 #        self.result = {''}
 #        for item in self.courseMatch:
-        import pdb; pdb.set_trace()
+#        import pdb; pdb.set_trace()
         return self.template()
 
 
