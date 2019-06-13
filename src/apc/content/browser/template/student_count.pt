@@ -1,0 +1,25 @@
+<style>
+#student_count th{
+    text-align: center;
+}
+#student_count th, #student_count td{
+    padding: 10px;
+}
+#student_count tr:nth-child(even){
+    background: #eee
+}
+#student_count{
+    width: 17%;
+}
+</style>
+
+<table id='student_count'>
+  <tr>
+    <th>語言</th>
+    <th>人數</th>
+  </tr>
+  <tr tal:repeat="lang view/count">
+    <td>${lang}</td>
+    <td>${python: view.count[lang]}</td>
+  </tr>
+</table>

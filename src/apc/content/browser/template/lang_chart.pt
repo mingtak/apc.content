@@ -10,8 +10,13 @@ h4{
 <div class='col-md-2' tal:define="count python: json.loads(view.count)">
   <div tal:repeat="item count" style='display: flex; border: 1px solid #ccc'>
     <h4 style='width: 140px'>${item}</h4>
-    <h4>${python: count[item]}</h4>
+    <h4>${python: count[item]}堂</h4>
   </div>
+  <div  style='display: flex; border: 1px solid #ccc'>
+    <h4 style='width: 140px'>總共</h4>
+    <h4>${python: view.total}堂</h4>
+  </div>
+
 </div>
 <script>
     var amount_total = c3.generate({

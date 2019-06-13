@@ -98,14 +98,11 @@ label{
 
   <div id='number' class='flex'>
     <select class='number_period'>
-      <option value='107_1'>上學期</option>
-      <option value='latest'>下學期</option>
+      <option value='1071'>上學期</option>
+      <option value='1072'>下學期</option>
     </select>
-    <select class='number_select' style='margin: 0 10px'></select>
-    <input type='number' class='number_total' style='width: 100px' placeholder='總人數'>
     <button class='btn-send' data-mode='number'  style='margin-left: 15px'>送出</button>
   </div>
-
 </div>
 
 <br><br>
@@ -185,13 +182,8 @@ $(function(){
             data = {mode: 'page_count', period: page_count_period}
         }
         else if(mode == 'number'){
-            number_select = $('.number_select').val()
-            number_total = $('.number_total').val()
-            if(!number_total){
-                alert('請輸入總人數')
-                return
-            }
-            data = {mode: 'number', course: number_select, number: number_total}
+            number_period = $('.number_period').val()
+            data = {mode: 'number', number_period: number_period}
         }
 
         $.ajax({

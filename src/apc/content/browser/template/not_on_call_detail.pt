@@ -5,7 +5,7 @@
 .not_call_table th, .not_call_table td{
     padding: 10px;
 }
-.not_call_table tr:nth-child(even){
+.two{
     background: #eee
 }
 </style>
@@ -18,12 +18,40 @@
         <th>缺席數</th>
         <th>補課數</th>
     </tr>
-    <tr tal:repeat="item view/count">
-        <td>${repeat/item/number}</td>
-        <td>${python: item}</td>
-        <td>${python: ''}</td>
-        <td>${python: view.count[item]['出席']}</td>
-        <td>${python: view.count[item]['缺席']}</td>
-        <td>${python: ''}</td>
-    </tr>
+    <tal:rep repeat="item view/count">
+        <tr tal:attributes="class python: 'notCall two' if repeat.item.number % 2 != 0 else 'notCall'"  data-target='collapse${repeat/item/number}'>
+            <td>${repeat/item/number}</td>
+            <td>${python: item}</td>
+            <td>${python: ''}</td>
+            <td>${python: view.count[item]['出席']}</td>
+            <td >${python: view.count[item]['缺席']}</td>
+            <td>${python: ''}</td>
+        </tr>
+        <tr class="collapse collapse${repeat/item/number}" style='background: #f08a5d;display: none'
+            tal:condition="python: view.count[item]['缺席資料']">
+            <td> </td>
+            <th>姓名</th>
+            <th>上課日期</th>
+            <th>課程名稱</th>
+            <th>縣市</th>
+            <th>國小</th>
+        </tr>
+        <tr tal:repeat="notCall python: view.count[item]['缺席資料']" class="collapse collapse${repeat/item/number}" style='display: none;background: #fce38a'>
+            <td>${repeat/notCall/number}</td>
+            <td>${python: notCall['name']}</td>
+            <td>${python: notCall['date']}</td>
+            <td>${python: notCall['course']}</td>
+            <td>${python: notCall['county']}</td>
+            <td>${python: notCall['school']}</td>
+        </tr>  
+    </tal:rep>
 </table>
+
+<script>
+$(function(){
+    $('.notCall').click(function(){
+        target = $(this).data()['target']
+        $('.' + target).toggle('normal')
+    })
+})
+</script>

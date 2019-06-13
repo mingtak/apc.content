@@ -18,6 +18,8 @@
     <tr tal:repeat="item view/count">
       <td>${python: item['title']}</td>
       <td>${python: item['count']}</td>
-      <td>${python: item['url']}</td>
+      <td>
+        <a href="${python: item['url']}" target="_blank">${python: item['url']}</a>
+      </td>
     </tr>
 </table>

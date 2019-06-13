@@ -29,55 +29,10 @@ from mingtak.ECBase.browser.views import SqlObj
 logger = logging.getLogger("apc.content")
 
 
-class InsertStudent(BrowserView):
-    def __call__(self):
-        portal = api.portal.get()
-        latest = api.content.find(context=portal["language_study"]["latest"]["class_intro"], depth=1, portal_type='Course')
-        first = api.content.find(context=portal["language_study"]["107_1"]["class_intro"], depth=1, portal_type='Course')
-        execSql = SqlObj()
-        self.insertData(latest)
-        self.insertData(first)
-
-    def insertData(self, data):
-        execSql = SqlObj()
-        for i in data:
-            obj = i.getObject()
-            studentList = obj.studentList
-            title = obj.title
-            course = title[:6].encode('utf-8')
-            language = title[6:].encode('utf-8')
-            if studentList:
-                for student in studentList.split('\r\n'):
-                    if student:
-                        try:
-                            temp = student.split(',')
-                            try:
-                                county = temp[0].encode('utf-8')
-                            except:
-                                county = temp[0]
-                            try:
-                                school = temp[1].encode('utf-8')
-                            except:
-                                school = temp[1]
-                            try:
-                                name = temp[2].split('(')[0].encode('utf-8')
-                            except:
-                                name = temp[2]
-                            sqlStr = """INSERT INTO student(county, school, course, language, name) VALUES('{}', '{}', '{}', '{}', '{}')
-                                     """.format(county, school, course, language, name)
-                            execSql.execSql(sqlStr)
-                        except Exception as e:
-                            print e
-                            import pdb;pdb.set_trace()
-
-
 class ShowChart(BrowserView):
     template = ViewPageTemplateFile("template/show_chart.pt")
     template2 = ViewPageTemplateFile("template/lang_chart.pt")
-    template3 = ViewPageTemplateFile("template/student_rate_chart.pt")
-    template4 = ViewPageTemplateFile("template/not_on_call_detail.pt")
-    template5 = ViewPageTemplateFile("template/page_count.pt")
-    template6 = ViewPageTemplateFile("template/student_count.pt")
+    template3 = ViewPageTemplateFile("template/study_chart.pt")
 
     def __call__(self):
         request = self.request
@@ -87,24 +42,6 @@ class ShowChart(BrowserView):
         selected_course = request.get('selected_course')
         portal = api.portal.get()
         execSql = SqlObj()
-        lang_cata = {
-            '阿美語': '南勢阿美語 秀姑巒阿美語 海岸阿美語 馬蘭阿美語 恆春阿美語', 
-            '泰雅語': '賽考利克泰雅語 澤敖利泰雅語 汶水泰雅語 萬大泰雅語 四季泰雅語 澤敖利泰雅語', 
-            '賽夏語': '賽夏語', 
-            '邵語': '邵語',    
-            '賽德克語': '都達語 德固達雅語 德魯固語', 
-            '布農語': '卓群布農語 卡群布農語 丹群布農語 巒群布農語 郡群布農語' , 
-            '排灣語': '東排灣語 北排灣語 中排灣語 南排灣語', 
-            '魯凱語': '東魯凱語 霧臺魯凱語 大武魯凱語 多納魯凱語 茂林魯凱語 萬山魯凱語', 
-            '太魯閣語': '太魯閣語', 
-            '噶瑪蘭語': '噶瑪蘭語', 
-            '鄒語': '鄒語', 
-            '卡那卡那富語': '卡那卡那富語', 
-            '拉阿魯哇語': '拉阿魯哇語', 
-            '卑南語': '南王卑南語 知本卑南語 初鹿卑南語 建和卑南語', 
-            '雅美語': '雅美語', 
-            '撒奇萊雅語': '撒奇萊雅語'
-        }
 
         if search:
             course = api.content.find(context=portal['language_study'][period]['class_intro'], depth=1, portal_type='Course')
@@ -115,20 +52,34 @@ class ShowChart(BrowserView):
 
         if mode == 'lang':
             course = api.content.find(context=portal['language_study'][period]['class_intro'], depth=1, portal_type='Course')
-            count = {'阿美語':0, '泰雅語': 0, '賽夏語': 0, '邵語': 0, '賽德克語': 0, '布農語': 0, '排灣語': 0, '魯凱語': 0, 
-            '太魯閣語': 0, '噶瑪蘭語': 0, '鄒語': 0, '卡那卡那富語': 0, '拉阿魯哇語': 0, '卑南語': 0, '雅美語': 0, '撒奇萊雅語': 0}
-            total = 0
+            lang_cata = {
+                '阿美語': '南勢阿美語 秀姑巒阿美語 海岸阿美語 馬蘭阿美語 恆春阿美語', 
+                '泰雅語': '賽考利克泰雅語 澤敖利泰雅語 汶水泰雅語 萬大泰雅語 四季泰雅語 澤敖利泰雅語', 
+                '賽夏語': '賽夏語', 
+                '邵語': '邵語', 
+                '賽德克語': '都達語 德固達雅語 德魯固語', 
+                '布農語': '卓群布農語 卡群布農語 丹群布農語 巒群布農語 郡群布農語' , 
+                '排灣語': '東排灣語 北排灣語 中排灣語 南排灣語', 
+                '魯凱語': '東魯凱語 霧臺魯凱語 大武魯凱語 多納魯凱語 茂林魯凱語 萬山魯凱語', 
+                '太魯閣語': '太魯閣語', 
+                '噶瑪蘭語': '噶瑪蘭語', 
+                '鄒語': '鄒語', 
+                '卡那卡那富語': '卡那卡那富語', 
+                '拉阿魯哇語': '拉阿魯哇語', 
+                '卑南語': '南王卑南語 知本卑南語 初鹿卑南語 建和卑南語', 
+                '雅美語': '雅美語', 
+                '撒奇萊雅語': '撒奇萊雅語'
+            }
+            count = {'阿美語':0, '泰雅語': 0, '賽夏語': 0, '邵語': 0, '賽德克語': 0, '布農語': 0, '排灣語': 0, '魯凱語': 0, '太魯閣語': 0, '噶瑪蘭語': 0, '鄒語': 0, '卡那卡那富語': 0, '拉阿魯哇語': 0, '卑南語': 0, '雅美語': 0, '撒奇萊雅語': 0}
             for i in course:
                 title = i.Title[6:]
                 flag = True
                 for k,v in lang_cata.items():
                     if title in v.split(' '):
                         count[k] += 1
-                        total += 1
                         flag = False
                         continue
             self.count = json.dumps(count)
-            self.total = total
             return self.template2()
         elif mode == 'student_rate':
             count = {'到課': 0, '缺課': 0}
@@ -140,78 +91,21 @@ class ShowChart(BrowserView):
             sqlStr = """SELECT COUNT(status) FROM attend WHERE date """
 
             if start and end:
-                onCallStr = """BETWEEN '{}' AND '{}' AND status = 'onCall'""".format(start, end)
-                notOnCallStr = """BETWEEN '{}' AND '{}' AND status = 'notOnCall'""".format(start, end)
-            elif month:
-                onCallStr = """like '{}' AND status = 'onCall'""".format(month + '%%')
-                notOnCallStr = """like '{}' AND status = 'notOnCall'""".format(month + '%%')
+                secStr = """BETWEEN '{}' AND '{}' AND status = 'onCall'""".format(start, end)
+                onCall = execSql.execSql('%s %s' %(sqlStr, secStr))
 
-            onCall = execSql.execSql('%s %s' %(sqlStr, onCallStr))[0][0]
-            notOnCall = execSql.execSql('%s %s' %(sqlStr, notOnCallStr))[0][0]
-            self.start = start
-            self.end = end
-            self.month = month
-            self.result = json.dumps({'onCall': onCall, 'notOnCall': notOnCall})
+                secStr = """BETWEEN '{}' AND '{}' AND status = 'onCall'""".format(start, end)
+                onCall = execSql.execSql('%s %s' %(sqlStr, secStr))
+
+            elif month:
+                sqlStr = """SELECT * FROM attend WHERE date like '{}'""".format(month + '%%')
+
+            self.count = json.dumps(count)
             return self.template3()
 
-        elif mode == 'notOnCallDetail':
-            start = request.get('start')
-            end = request.get('end')
-            month = request.get('month')
 
-            if start and end:
-                sqlStr = """SELECT * FROM attend WHERE date BETWEEN '{}' AND '{}'""".format(start, end)
-            elif month:
-                sqlStr = """SELECT * FROM attend WHERE date LIKE '{}'""".format(month + '%%')
-            result = execSql.execSql(sqlStr)
-
-            count = {}
-            for item in result:
-                obj = dict(item)
-                course = obj['course'][6:].encode('utf-8')
-                status = obj['status']
-                for k,v in lang_cata.items():
-                    if course in v.split(' '):
-                        if count.has_key(k):
-                            count[k]['出席' if status == 'onCall' else '缺席'] += 1
-                            if status == 'notOnCall':
-                                count[k]['缺席資料'].append(obj)
-                        else:
-                            count[k] = {
-                                '出席': 1 if status == 'onCall' else 0,
-                                '缺席':1 if status == 'notOnCall' else 0,
-                                '缺席資料': [obj] if status == 'notOnCall' else []
-                            }
-                        continue
-            self.count = count
-            return self.template4()
-        elif mode == 'page_count':
-            period = request.get('period')
-            url =  'http://apc2.17study.com.tw/language_study/%s/class_intro/' %period
-
-            sqlStr = """SELECT url,count,title FROM page_count WHERE url LIKE '{}%%'""".format(url)
-
-            self.count = execSql.execSql(sqlStr)
-            return self.template5()
-        elif mode == 'number':
-            number_period = request.get('number_period')
-
-            sqlStr = """SELECT language FROM student WHERE course like '{}%%'""".format(number_period)
-            result = execSql.execSql(sqlStr)
-
-            count = {'阿美語':0, '泰雅語': 0, '賽夏語': 0, '邵語': 0, '賽德克語': 0, '布農語': 0, '排灣語': 0, '魯凱語': 0, 
-            '太魯閣語': 0, '噶瑪蘭語': 0, '鄒語': 0, '卡那卡那富語': 0, '拉阿魯哇語': 0, '卑南語': 0, '雅美語': 0, '撒奇萊雅語': 0}
-            for lang in result:
-                for k,v in lang_cata.items():
-                    if lang[0].encode('utf-8') in v.split(' '):
-                        count[k] += 1
-                        continue
-            self.count = count
-            self.total = len(result)
-            return self.template6()
-        else:
-            self.brain = api.content.find(portal_type='LiveClass')
-            return self.template()
+        self.brain = api.content.find(portal_type='LiveClass')
+        return self.template()
 
 
 
@@ -425,14 +319,12 @@ class SchoolSurvy(BrowserView):
         result['phone'] = request.get('phone')
         result['cell'] = request.get('cell')
         result['email'] = request.get('email')
-#        result['lang-class-time'] = request.get('lang-class-time')
-
-# 可上課時間採 JOSN, 方便後續媒合
-        result['class-time'] = json.dumps(request.get('time'))
+        result['lang-class-time'] = request.get('lang-class-time')
+#        result['class-time'] = request.get('time')
 #        result['location'] = request.get('location') if request.get('location') != '其他' else request.get('location-other')
-#        if result['lang-class-time'] == '6':
-#            result['lang-class-time'] = '12345'
-#        result['lang-class-time-other'] = request.get('lang-class-time-other')
+        if result['lang-class-time'] == '6':
+            result['lang-class-time'] = '12345'
+        result['lang-class-time-other'] = request.get('lang-class-time-other')
 
         lang = []
         for index in range(20):
@@ -473,7 +365,8 @@ class SchoolSurvy(BrowserView):
         output = StringIO()
         spamwriter = csv.writer(output)
 #        import pdb; pdb.set_trace()
-        spamwriter.writerow(['city', 'zip', 'school_id', 'school_name', 'contact', 'phone', 'cell', 'email', 'class-time',
+        spamwriter.writerow(['city', 'zip', 'school_id', 'school_name', 'contact', 'phone', 'cell', 'email',
+                             'lang-class-time', 'lang-class-time-other',
             'lang1', 'level1',
             'lang2', 'level2',
             'lang3', 'level3',
@@ -500,7 +393,7 @@ class SchoolSurvy(BrowserView):
             row = [item.get('city', ' ').encode('utf-8'), item.get('zip', ' ').encode('utf-8'), item.get('school_id', ' ').encode('utf-8'),
                    item.get('school_name', ' ').encode('utf-8'), item.get('contact', ' ').encode('utf-8'),
                    item.get('phone', ' ').encode('utf-8'), item.get('cell', ' ').encode('utf-8'), item.get('email', ' ').encode('utf-8'),
-                   item.get('class-time', [])]
+                   item.get('lang-class-time', ' ').encode('utf-8'), item.get('lang-class-time-other', ' ').encode('utf-8')]
             for index in range(20):
                 if item['lang'][index][1:4] != ["0", "0", "0"]:
                     row.append(item['lang'][index][0]) # 語別
@@ -541,7 +434,7 @@ class TeacherSurvy(BrowserView):
         output = StringIO()
         spamwriter = csv.writer(output)
 #        import pdb; pdb.set_trace()
-        spamwriter.writerow(['name_han', 'han_zu', 'phone', 'cell', 'city', 'zip', 'address', 'class-time', 'location',
+        spamwriter.writerow(['name_han', 'han_zu', 'phone', 'cell', 'city', 'zip', 'address', 'class-time', 'location'
             'lang1', 'level1',
             'lang2', 'level2',
             'lang3', 'level3',
@@ -584,7 +477,7 @@ class TeacherSurvy(BrowserView):
             except:
                 import pdb; pdb.set_trace()
         request.response.setHeader('Content-Type', 'application/csv')
-        request.response.setHeader('Content-Disposition', 'attachment; filename="teacher_survy.csv"')
+        request.response.setHeader('Content-Disposition', 'attachment; filename="教師課程媒合調查表.csv"')
 
         return output.getvalue()
 
@@ -611,9 +504,7 @@ class TeacherSurvy(BrowserView):
         result['city'] = request.get('city')
         result['zip'] = request.get('zip')
         result['address'] = request.get('address')
-
-# 可上課時間採 JOSN, 方便後續媒合
-        result['class-time'] = json.dumps(request.get('time'))
+        result['class-time'] = request.get('time')
         result['location'] = request.get('location') if request.get('location') != '其他' else request.get('location-other')
 
 #        result['lang-class-time'] = request.get('lang-class-time')
@@ -895,7 +786,8 @@ class MatchResult(BrowserView):
 #            if not set(school['lang-class-time']) & set(school['lang-class-time']): # 開課時間吻合
 #                return
 
-            for cTime in json.loads(teacher['class-time']):
+
+            for cTime in teacher['lang-class-time']:
                 try:
                     # 例：詹琍敏_2_A01_primary
                     for i in range(1, 21): # 可上語別
@@ -909,12 +801,12 @@ class MatchResult(BrowserView):
                             if not level_code == level:
                                 continue
                             # 開課時間吻合，開課語系吻合，開課程度吻合，共學校數未滿，最大學生數未滿，則成立
-                            if self.courseTable.has_key('%s_%s_%s_%s' % (teacher['name_han'], str(cTime), lang_code, level_code)) and \
-                               self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], str(cTime), lang_code, level_code)][2] in ['', language] and \
-                               self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], str(cTime), lang_code, level_code)][1] in ['', level] and \
-                               cTime in school['class-time'] and \
-                               len(self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], str(cTime), lang_code, level_code)]) < self.max_sc+2 and \
-                               self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], str(cTime), lang_code, level_code)][0] < self.max_st:
+                            if self.courseTable.has_key('%s_%s_%s_%s' % (teacher['name_han'], cTime, lang_code, level_code)) and \
+                               self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], cTime, lang_code, level_code)][2] in ['', language] and \
+                               self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], cTime, lang_code, level_code)][1] in ['', level] and \
+                               cTime in school['lang-class-time'] and \
+                               len(self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], cTime, lang_code, level_code)]) < self.max_sc+2 and \
+                               self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], cTime, lang_code, level_code)][0] < self.max_st:
 
                                 # 檢查是否已在其它時段開課
                                 already = False
@@ -927,13 +819,13 @@ class MatchResult(BrowserView):
                                 if not already:
                                     # 加入共學，加計人數，確認語言，確認程度
                                     self.courseTable['%s_%s_%s_%s' %
-                                        (teacher['name_han'], str(cTime), lang_code, level_code)].append(
+                                        (teacher['name_han'], cTime, lang_code, level_code)].append(
                                             ['%s%s' % (school['city'], school['school_name']),
                                             language, level, int(req_lv)]
                                         )
-                                    self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], str(cTime), lang_code, level_code)][0] += int(req_lv)
-                                    self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], str(cTime), lang_code, level_code)][1] = level
-                                    self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], str(cTime), lang_code, level_code)][2] = language
+                                    self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], cTime, lang_code, level_code)][0] += int(req_lv)
+                                    self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], cTime, lang_code, level_code)][1] = level
+                                    self.courseTable['%s_%s_%s_%s' % (teacher['name_han'], cTime, lang_code, level_code)][2] = language
                 except:
                     print '有錯'
                     import pdb; pdb.set_trace()
@@ -981,18 +873,17 @@ class MatchResult(BrowserView):
         # 確認可開班狀況, 大課表
         self.courseTable = {}
         for teacher in teachers:
-#            import pdb;pdb.set_trace()
-            for item in json.loads(teacher['class-time']): #可上課時段
+            for item in teacher['lang-class-time']: #可上課時段
                 for i in range(1, 21): # 可上語別
                     if teacher['lang%s' % i]:
                         if teacher['level%s' % i].split('/'):
                             # [學生數, 開課級別, 教學族語代號]
                             if teacher['level%s' % i].split('/')[0] == '1':
-                                self.courseTable['%s_%s_%s_primary' % (teacher['name_han'], str(item), teacher['lang%s' % i])] = [0, '', '']
+                                self.courseTable['%s_%s_%s_primary' % (teacher['name_han'], item, teacher['lang%s' % i])] = [0, '', '']
                             if teacher['level%s' % i].split('/')[1] == '1':
-                                self.courseTable['%s_%s_%s_intermediate' % (teacher['name_han'], str(item), teacher['lang%s' % i])] = [0, '', '']
+                                self.courseTable['%s_%s_%s_intermediate' % (teacher['name_han'], item, teacher['lang%s' % i])] = [0, '', '']
                             if teacher['level%s' % i].split('/')[2] == '1':
-                                self.courseTable['%s_%s_%s_advanced' % (teacher['name_han'], str(item), teacher['lang%s' % i])] = [0, '', '']
+                                self.courseTable['%s_%s_%s_advanced' % (teacher['name_han'], item, teacher['lang%s' % i])] = [0, '', '']
 
         for teacher in teachers:
             # 老師能教
@@ -1089,7 +980,7 @@ class PrepareLessons(BrowserView):
                         'Authorization': "Basic YWRtaW46MTIzNDU2",
                     }
                     response = requests.request("PATCH", url, headers=headers, json=data)
-                self.request.response.redirect(self.request.URL)
+9999999999999999                self.request.response.redirect(self.request.URL)
             return self.template()
         else:
             return self.request.response.redirect('{}/teacher-area/teacher-area'.format(self.context.portal_url()))
@@ -1720,7 +1611,7 @@ class Rollcall(BrowserView):
                 continue
             temp = i.split(',')
             name = temp[2].split('(')[0]
-            sqlStr = """INSERT INTO attend(name, date, course, county, school, uid, status) VALUES('{}', '{}', '{}', '{}', '{}', '{}', 'onCall')
+            sqlStr = """INSERT INTO attend(name, date, course, country, school, uid, status) VALUES('{}', '{}', '{}', '{}', '{}', '{}', 'onCall')
                      """.format(name, date, course, temp[0], temp[1], uid)
             execSql.execSql(sqlStr)
 
@@ -1730,7 +1621,7 @@ class Rollcall(BrowserView):
             temp = i.split(',')
             name = temp[2].split('(')[0]
 
-            sqlStr = """INSERT INTO attend(name, date, course, county, school, uid, status) VALUES('{}', '{}', '{}', '{}', '{}', '{}', 'notOnCall')
+            sqlStr = """INSERT INTO attend(name, date, course, country, school, uid, status) VALUES('{}', '{}', '{}', '{}', '{}', '{}', 'notOnCall')
                      """.format(name, date, course, temp[0], temp[1], uid)
             execSql.execSql(sqlStr)
 
