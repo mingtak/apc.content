@@ -29,6 +29,47 @@ from mingtak.ECBase.browser.views import SqlObj
 logger = logging.getLogger("apc.content")
 
 
+class SatisfactionSurvy(BrowserView):
+    template = ViewPageTemplateFile("template/satisfaction_survy.pt")
+
+    def getCityList(self):
+        """ 取得縣市列表 """
+        return api.portal.get_registry_record('mingtak.ECBase.browser.configlet.ICustom.citySorted')
+
+
+    def getDistList(self):
+        """ 取得鄉鎮市區列表及區碼 """
+        return api.portal.get_registry_record('mingtak.ECBase.browser.configlet.ICustom.distList')
+
+    def __call__(self):
+        request = self.request
+        city = request.get('city')
+        if city:
+            zip = request.get('zip')
+            school_id = request.get('school_name')
+            school_name = api.content.find(portal_type='School', id=school_id)[0].Title
+            contact = request.get('contact')
+            phone = request.get('phone')
+            cell = request.get('cell')
+            email = request.get('email')
+            identity = request.get('identity')
+            anw1 = request.get('anw1')
+            anw2 = request.get('anw2')
+            anw3 = request.get('anw3')
+            anw4 = request.get('anw4')
+            anw5 = request.get('anw5')
+
+            execSql = SqlObj()
+            sqlStr = """INSERT INTO `satisfaction`(`identity`, `contact`, `city`, `zip`, `school_name`, `phone`, `cell`, `email`, `anw1`,
+                     `anw2`, `anw3`, `anw4`, `anw5`) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')
+                     """.format(identity, contact, city, zip, school_name, phone, cell, email, anw1, anw2, anw3, anw4, anw5)
+            execSql.execSql(sqlStr)
+
+            api.portal.show_message(message='填寫成功！'.decode('utf-8'), request=request)
+
+        return self.template()
+
+
 class InsertStudent(BrowserView):
     def __call__(self):
         portal = api.portal.get()
@@ -78,6 +119,7 @@ class ShowChart(BrowserView):
     template4 = ViewPageTemplateFile("template/not_on_call_detail.pt")
     template5 = ViewPageTemplateFile("template/page_count.pt")
     template6 = ViewPageTemplateFile("template/student_count.pt")
+    template7 = ViewPageTemplateFile("template/satisfaction_result.pt")
 
     def __call__(self):
         request = self.request
@@ -209,6 +251,30 @@ class ShowChart(BrowserView):
             self.count = count
             self.total = len(result)
             return self.template6()
+        elif mode == 'satisfaction':
+            sqlStr = """SELECT anw1, anw2, anw3, anw4, anw5 FROM satisfaction"""
+            result = execSql.execSql(sqlStr)
+            count = {
+                        'anw1': {'非常滿意': 0, '滿意': 0, '普通': 0, '不滿意': 0, '非常不滿意': 0},
+                        'anw2': {'非常滿意': 0, '滿意': 0, '普通': 0, '不滿意': 0, '非常不滿意': 0},
+                        'anw3': {'非常滿意': 0, '滿意': 0, '普通': 0, '不滿意': 0, '非常不滿意': 0},
+                        'anw4': {'非常滿意': 0, '滿意': 0, '普通': 0, '不滿意': 0, '非常不滿意': 0},
+                        'anw5': {'非常滿意': 0, '滿意': 0, '普通': 0, '不滿意': 0, '非常不滿意': 0},
+                    }
+            for item in result:
+                obj = dict(item)
+                anw1 = obj['anw1'].encode('utf-8')
+                anw2 = obj['anw2'].encode('utf-8')
+                anw3 = obj['anw3'].encode('utf-8')
+                anw4 = obj['anw4'].encode('utf-8')
+                anw5 = obj['anw5'].encode('utf-8')
+                count ['anw1'][anw1] += 1
+                count ['anw2'][anw2] += 1
+                count ['anw3'][anw3] += 1
+                count ['anw4'][anw4] += 1
+                count ['anw5'][anw5] += 1
+            self.count = json.dumps(count)
+            return self.template7()
         else:
             self.brain = api.content.find(portal_type='LiveClass')
             return self.template()
@@ -1419,6 +1485,11 @@ class TeacherArea(BrowserView):
 
         return self.template()
 
+    def getStudentData(self, uid):
+        execSql = SqlObj()
+        sqlStr = """SELECT name, county, school FROM student WHERE uid = '%s'""" %uid
+        return execSql.execSql(sqlStr)
+
     def getPathname(self):
         cookie_path = api.portal.get().absolute_url_path()
         return cookie_path
@@ -1678,11 +1749,13 @@ class PdfEmbeded(BrowserView):
     def __call__(self):
         request = self.request
         context = self.context
-
         teacher_uid = self.request.cookies.get("teacher_login", "")
         teacher = api.content.get(UID=teacher_uid)
         if teacher or not api.user.is_anonymous():
             self.canRollcall = True
+            execSql = SqlObj()
+            sqlStr = """SELECT * FROM student WHERE uid = '{}'""".format(context.getParentNode().UID())
+            self.studentData = execSql.execSql(sqlStr)
         else:
             self.canRollcall = False
         return self.template()
@@ -1864,6 +1937,10 @@ class SchoolArea(BrowserView):
             self.updateNamelist()
             return request.response.redirect('%s/school/@@school_area?uid=%s' % (portal.absolute_url(), school_uid))
 
+        if request.get("widget-form-btn", "") == "widget-addStudent-form":
+            self.addStudent()
+            return request.response.redirect('%s/school/@@school_area?uid=%s' % (portal.absolute_url(), school_uid))\
+
         return self.template()
 
     def getPathname(self):
@@ -1873,8 +1950,32 @@ class SchoolArea(BrowserView):
     def getCourse(self):
         school_uid = self.school.UID()
         portal = api.portal.get()
+
         course = api.content.find(portal_type='Course', course_schools=school_uid, context=portal['language_study']['latest']['class_intro'])
         return course
+
+    def getStudentData(self, uid):
+        execSql = SqlObj()
+        school = self.school.Title()
+        sqlStr = """SELECT name FROM student WHERE uid = '%s' AND school = '%s'""" %(uid, school)
+        data = execSql.execSql(sqlStr)
+        return data
+
+    def addStudent(self):
+        request = self.request
+        course_uid = request.get('course_uid')
+        student = request.get('student')
+        course = request.get('course')
+        language = request.get('language')
+        level = request.get('level')
+        school = self.school.title.encode('utf-8')
+        county = self.school.getParentNode().title.encode('utf-8')
+
+        execSql = SqlObj()
+        sqlStr = """INSERT INTO student(school, course, language, name, uid, county, level) VALUES('{}', '{}', '{}', '{}', '{}', '{}', {})
+                 """.format(school, course, language, student, course_uid, county, level)
+        execSql.execSql(sqlStr)
+
 
     def getNamelist(self, course):
         school_title = safe_unicode(self.school.title)

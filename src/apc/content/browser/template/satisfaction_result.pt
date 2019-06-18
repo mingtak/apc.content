@@ -1,0 +1,99 @@
+<?python
+import json
+?>
+<style>
+.col-md-6{
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+</style>
+<div class='row'>
+  <div class='col-md-6' style='text-align: center'>
+    <h3>1.請問您對本學期課程安排是否滿意</h3>
+    <div id='anw1' class='col-md-10'></div>
+  </div>
+  <div class='col-md-6' style='text-align: center'>
+    <h3>2.請問您對本學期族語老師教學是否滿意</h3>
+    <div id='anw2' class='col-md-10'></div>
+  </div>
+</div>
+<div class='row'>
+  <div class='col-md-6' style='text-align: center'>
+    <h3>3.請問您認為本學期課程對學生族語程度是否有幫助</h3>
+    <div id='anw3' class='col-md-10'></div>
+  </div>
+  <div class='col-md-6' style='text-align: center'>
+    <h3>4.請問您對本學期直播品質(硬體設備/網路品質)</h3>
+    <div id='anw4' class='col-md-10'></div>
+  </div>
+</div>
+<div class='row'>
+  <div class='col-md-6' style='text-align: center'>
+    <h3>5.請問您對本計畫實施成效是否滿意</h3>
+    <div id='anw5' class='col-md-10'></div>
+  </div>
+</div>
+
+
+<script>
+    var amount_total = c3.generate({
+        bindto: '#anw1',
+        data: {
+            json: ${view/count}.anw1,
+            type: 'pie',
+        },
+        size: {
+            height: 500,
+            width: 500
+        },
+    });
+    var amount_total = c3.generate({
+        bindto: '#anw2',
+        data: {
+            json: ${view/count}.anw2,
+            type: 'pie',
+        },
+        size: {
+            height: 500,
+            width: 500
+        },
+    });
+    var amount_total = c3.generate({
+        bindto: '#anw3',
+        data: {
+            json: ${view/count}.anw3,
+            type: 'pie',
+        },
+        size: {
+            height: 500,
+            width: 500
+        },
+    });
+    var amount_total = c3.generate({
+        bindto: '#anw4',
+        data: {
+            json: ${view/count}.anw4,
+            type: 'pie',
+        },
+        size: {
+            height: 500,
+            width: 500
+        },
+    });
+    var amount_total = c3.generate({
+        bindto: '#anw5',
+        data: {
+            json: ${view/count}.anw5,
+            type: 'pie',
+        },
+        size: {
+            height: 500,
+            width: 500
+        },
+    });
+
+</script>
+

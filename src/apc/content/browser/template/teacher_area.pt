@@ -35,8 +35,9 @@ portal = api.portal.get()
             <div class="col-md-4">${item/Title}</div>
             <div class="col-md-8">
              學生名單:
-             <div tal:content="structure python:item.getObject().studentList.replace('\n', '<br>')">
-             </div>
+             <tal:rep repeat="student python: view.getStudentData(item.getObject().UID())">
+               <p tal:define="obj python: dict(student)">${python: '%s, %s, %s' %(obj['name'], obj['school'], obj['county'])}</p>
+             </tal:rep>
             </div>
           </div>
 

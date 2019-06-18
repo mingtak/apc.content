@@ -58,16 +58,18 @@
   <h3>教師上課點名</h3><hr>
   <b>未到課請打勾</b>
   <div>
-    <ul tal:define="students python:context.getParentNode().studentList">
-      <li tal:repeat="item python:students.split('\n')">
-<tal:cond condition="python:len(item.split(',')) == 3">
-          <input type="checkbox" class="confirm" data-student="${item}" name="rollcall"> |
-          <span class="info" tal:content="python:item.split(',')[2]" />
-          <span class="info" tal:content="python:item.split(',')[1]" />
-          <span class="info" tal:content="python:item.split(',')[0]" />
-</tal:cond>
-      </li>
-    </ul>
+  <ul>
+    <tal:rep repeat="student view/studentData">
+      <tal:def define="obj python: dict(student)">
+        <li>
+          <input type="checkbox" class="confirm" data-student="${python: '%s,%s,%s' %(obj['county'], obj['school'], obj['name'])}" name="rollcall"> |
+          <span class="info" tal:content="python: obj['name']" />
+          <span class="info" tal:content="python: obj['school']" />
+          <span class="info" tal:content="python: obj['county']" />
+        </li>
+      </tal:def>
+    </tal:rep>
+  </ul>
 <hr>
 <a href="javascript:void(0)" class="button-field context update-rollcall">確認點名結果/送出</a>
   </div>

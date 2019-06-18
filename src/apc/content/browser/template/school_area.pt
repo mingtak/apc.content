@@ -74,7 +74,8 @@ portal = api.portal.get()
                                     item_title item/Title;
                                     item_url item/getURL;
                                     item_uid item/UID;
-                                    item_id item/id;">
+                                    item_id item/id;
+                                    student_data python: view.getStudentData(item.UID)">
               <div class="prepare">
                 <div class="tr-list row">
                   <div class="col-sm-4 col-md-2">
@@ -88,7 +89,7 @@ portal = api.portal.get()
                   <div class="col-sm-4 col-md-6">
                   <div class="col-xs-3">
                     <h4>學生名單</h4>
-                    <div tal:content="structure python: view.getNamelist(obj)['nameList'].replace('\n', '<br>')"></div>
+                    <div tal:repeat="student student_data">${python: student[0]}</div>
                   </div>
                   </div>
                 </div>

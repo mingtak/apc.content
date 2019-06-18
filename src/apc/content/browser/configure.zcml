@@ -17,6 +17,15 @@
       type="plone"
       directory="static"
       />
+
+  <browser:page
+      name="satisfaction_survy"
+      for="*"
+      class=".views.SatisfactionSurvy"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
    <browser:page
       name="insert_student"
       for="*"

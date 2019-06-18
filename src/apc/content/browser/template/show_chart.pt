@@ -62,6 +62,7 @@ label{
   <button type="button" class="btn-primary" data-option="lang">課程語言別比率</button>
   <button type="button" class="btn-primary" data-option="page_count">各族與課程點閱次數</button>
   <button type="button" class="btn-primary" data-option="number">各族上課學生數</button>
+  <button type="button" class="btn-primary" data-option="satisfaction">滿意度結果</button>
 </div>
 
 <br>
@@ -103,6 +104,11 @@ label{
     </select>
     <button class='btn-send' data-mode='number'  style='margin-left: 15px'>送出</button>
   </div>
+
+  <div id='satisfaction' class='flex'>
+    <button class='btn-send ' data-mode='satisfaction'  style='margin-left: 15px'>送出</button>
+  </div>
+
 </div>
 
 <br><br>
@@ -140,11 +146,15 @@ $(function(){
 
     $('.btn-primary').click(function(){
         option = $(this).data('option')
-        $(this).addClass('selected')
-        $(this).siblings().removeClass('selected')
-        $('#' + option).siblings().hide()
-        $('#' + option).show()
-        $('#' + option).css('display', 'flex')
+        if(option == 'satisfaction'){
+            $('.btn-send[data-mode="satisfaction"]').click()
+        }else{
+            $(this).addClass('selected')
+            $(this).siblings().removeClass('selected')
+            $('#' + option).siblings().hide()
+            $('#' + option).show()
+            $('#' + option).css('display', 'flex')
+        }
     })
 
     $('.btn-send').click(function(){
@@ -184,6 +194,9 @@ $(function(){
         else if(mode == 'number'){
             number_period = $('.number_period').val()
             data = {mode: 'number', number_period: number_period}
+        }
+        else if(mode == 'satisfaction'){
+            data = {mode: 'satisfaction'}
         }
 
         $.ajax({

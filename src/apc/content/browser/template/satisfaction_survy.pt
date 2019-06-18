@@ -1,0 +1,365 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    xmlns:v-bind="http://www.vue.org/v-bind"
+    xmlns:v-on="http://www.vue.org/v-bind"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+<?python
+from plone import api
+lang = [
+['A01', '南勢阿美語'],
+['A02', '秀姑巒阿美語'],
+['A03', '海岸阿美語'],
+['A04', '馬蘭阿美語'],
+['A05', '恆春阿美語'],
+['B06', '賽考利克泰雅語'],
+['B07', '澤敖利泰雅語'],
+['B08', '汶水泰雅語'],
+['B09', '萬大泰雅語'],
+['B10', '四季泰雅語'],
+['B11', '宜蘭澤敖利泰雅語'],
+['C13', '賽夏語'],
+['D14', '邵語'],
+['E15', '都達語'],
+['E16', '德固達雅語'],
+['E17', '德路固語'],
+['F18', '卓群布農語'],
+['F19', '卡群布農語'],
+['F20', '丹群布農語'],
+['F21', '巒群布農語'],
+['F22', '郡群布農語'],
+['G23', '東排灣語'],
+['G24', '北排灣語'],
+['G25', '中排灣語'],
+['G26', '南排灣語'],
+['H27', '東魯凱語'],
+['H28', '霧台魯凱語'],
+['H29', '大武魯凱語'],
+['H30', '多納魯凱語'],
+['H31', '茂林魯凱語'],
+['H32', '萬山魯凱語'],
+['I33', '太魯閣語'],
+['J34', '噶瑪蘭語'],
+['K35', '鄒語'],
+['L36', '卡那卡那富語'],
+['M37', '拉阿魯哇語'],
+['N38', '南王卑南語'],
+['N39', '知本卑南語'],
+['N40', '初鹿卑南語'],
+['N41', '建和卑南語'],
+['O42', '雅美語'],
+['P43', '撒奇萊雅語'],
+['Q00', '囒哈巫語'],
+]
+time = {'1': '周一早自習',
+        '2': '周二早自習',
+        '3': '周三早自習',
+        '4': '周四早自習',
+        '5': '周五早自習',
+        '6': '早自習均可',
+        '7': '其它',}
+?>
+
+<a tal:condition="python:api.user.get_current().id == 'admin'"
+   href="${context/absolute_url}/@@school_survy?download" style="float:right">
+   下載調查表
+</a>
+
+<h3>共學學校需求調查表</h3>
+<form method="post">
+<h4>基本資料</h4>
+
+  <table border="0" cellpadding="0" cellspacing="0" class="ta1">
+   <colgroup>
+    <col width="99"/>
+    <col width="99"/>
+    <col width="99"/>
+    <col width="99"/>
+    <col width="99"/>
+    <col width="99"/>
+   </colgroup>
+
+   <tr class='ro1'>
+    <td class="ce1 title" style="text-align:left;width:22.58mm; ">
+     <p>
+      身份
+     </p>
+    </td>
+    <td class='ce2' colspan="5">
+      <select name="identity">
+        <option value='學校承辦老師'>學校承辦老師</option>
+        <option value='共學伴讀人員'>共學伴讀人員</option>
+      </select>
+    </td>
+   </tr>
+   <tr class="ro1">
+    <td class="ce1 title" style="text-align:left;width:22.58mm; ">
+     <p>
+      學校名稱
+     </p>
+    </td>
+    <td class="ce2" colspan="5" style="text-align:left;width:22.58mm; ">
+       <select id="city-selector" name="city" tal:define="cityList view/getCityList" v-model="city" required>
+         <option value="">請選擇縣市</option>
+         <option tal:repeat="item python:cityList.split(',')"
+                 value="${item}">${item}</option>
+       </select>
+       <select id="zip-selector" name="zip" tal:define="distList view/getDistList" v-model="zip" required>
+         <option value="" selected>鄉鎮市區</option>
+         <option v-for="item in getZIP('city')"
+                 v-bind:value="item.split(',')[1]">{{item.split(',')[0]}}
+         </option>
+       </select>
+       <select id="school_name" name="school_name" v-model="school_name" required>
+         <option value="" selected>選擇學校</option>
+         <option v-for="item in schools"
+                 v-bind:value="item[0]">{{item[1]}}
+         </option>
+       </select>
+
+    </td>
+   </tr>
+   <tr class="ro1">
+    <td class="ce1 title" style="text-align:left;width:22.58mm; ">
+     <p>
+      聯絡人
+     </p>
+    </td>
+    <td class="ce1" style="text-align:left;width:22.58mm; ">
+<input name="contact" required style="width: 150px">
+    </td>
+    <td class="ce1 title" style="text-align:left;width:22.58mm; ">
+     <p>
+      電話
+     </p>
+    </td>
+    <td class="ce1" style="text-align:left;width:22.58mm; ">
+<input name="phone" required style="width: 150px">
+    </td>
+    <td class="ce1 title" style="text-align:left;width:22.58mm; ">
+     <p>
+      手機
+     </p>
+    </td>
+    <td class="ce1" style="text-align:left;width:22.58mm; ">
+<input name="cell" required style="width: 150px">
+    </td>
+   </tr>
+   <tr class="ro1">
+    <td class="ce1 title" style="text-align:left;width:22.58mm; ">
+     <p>
+      eamil
+     </p>
+    </td>
+    <td class="ce2" colspan="5" style="text-align:left;width:22.58mm; ">
+<input type="email" name="email" class="email" required>
+    </td>
+   </tr>
+  </table>
+
+  <table>
+    <tr>
+      <td class='ce1 title' style='width: 24%'>
+        <p>1.請問您對本學期課程安排是否滿意</p>
+      </td>
+      <td style='padding: 5px 0 0 15px'>
+        <label>
+          <input type='radio' value='非常滿意' name='anw1' required>非常滿意
+        </label>
+        <label>   
+          <input type='radio' value='滿意' name='anw1' required>滿意
+        </label>
+        <label>   
+          <input type='radio' value='普通' name='anw1' required>普通
+        </label>
+        <label>   
+          <input type='radio' value='不滿意' name='anw1' required>不滿意
+        </label>
+        <label>   
+          <input type='radio' value='非常不滿意' name='anw1' required>非常不滿意
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td class='ce1 title' style='width: 24%'>
+        <p>2.請問你對本學期族語老師教學是否滿意</p>
+      </td>
+      <td style='padding: 5px 0 0 15px'>
+        <label>
+          <input type='radio' value='非常滿意' name='anw2' required>非常滿意
+        </label>
+        <label>
+          <input type='radio' value='滿意' name='anw2' required>滿意
+        </label>
+        <label>
+          <input type='radio' value='普通' name='anw2' required>普通
+        </label>
+        <label>
+          <input type='radio' value='不滿意' name='anw2' required>不滿意
+        </label>
+        <label>
+          <input type='radio' value='非常不滿意' name='anw2' required>非常不滿意
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td class='ce1 title' style='width: 24%'>
+        <p>3.請問您認為本學期課程對學生族語程度是否有幫助</p>
+      </td>
+      <td style='padding: 5px 0 0 15px'>
+        <label>
+          <input type='radio' value='非常滿意' name='anw3' required>非常滿意
+        </label>
+        <label>
+          <input type='radio' value='滿意' name='anw3' required>滿意
+        </label>
+        <label>
+          <input type='radio' value='普通' name='anw3' required>普通
+        </label>
+        <label>
+          <input type='radio' value='不滿意' name='anw3' required>不滿意
+        </label>
+        <label>
+          <input type='radio' value='非常不滿意' name='anw3' required>非常不滿意
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td class='ce1 title' style='width: 24%'>
+        <p>4.請問你對本學期直播品質(硬體設備/網路品質)是否滿意</p>
+      </td>
+      <td style='padding: 5px 0 0 15px'>
+        <label>
+          <input type='radio' value='非常滿意' name='anw4' required>非常滿意
+        </label>
+        <label>
+          <input type='radio' value='滿意' name='anw4' required>滿意
+        </label>
+        <label>
+          <input type='radio' value='普通' name='anw4' required>普通
+        </label>
+        <label>
+          <input type='radio' value='不滿意' name='anw4' required>不滿意
+        </label>
+        <label>
+          <input type='radio' value='非常不滿意' name='anw4' required>非常不滿意
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td class='ce1 title' style='width: 24%'>
+        <p>5.請問您對本計畫實施成效是否滿意</p>
+      </td>
+      <td style='padding: 5px 0 0 15px'>
+        <label>
+          <input type='radio' value='非常滿意' name='anw5' required>非常滿意
+        </label>
+        <label>
+          <input type='radio' value='滿意' name='anw5' required>滿意
+        </label>
+        <label>
+          <input type='radio' value='普通' name='anw5' required>普通
+        </label>
+        <label>
+          <input type='radio' value='不滿意' name='anw5' required>不滿意
+        </label>
+        <label>
+          <input type='radio' value='非常不滿意' name='anw5' required>非常不滿意
+        </label>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+<input name="submit" type="submit" value="完成問卷提交">
+</form>
+
+<script>
+$(document).ready(function(){
+  $('#city-selector').change(function(){
+      app['zip'] = ''
+      app['school_name'] = ''
+  })
+
+  $('#zip-selector').change(function(){
+    zip = $(this).val()
+    $.get('${portal_url}/@@zip_get_schools?zip=' + zip, function(){
+    }).done(function(data){
+           app['schools'] = $.parseJSON(data)
+           app['school_name'] = ''
+       }).fail(function(){
+           alert('Fail')
+       });
+  })
+})
+
+
+var app = new Vue({
+    el: '#content-core',
+    data: {
+      message: 'Hello Vue!',
+      city: '',
+      zip: '',
+      school_name: '',
+      address: '',
+      distList: "${python:view.getDistList().replace('\n', '\t')}".split('\t'),
+      schools:[],
+      count: [],
+    },
+    methods: {
+      getZIP: function(cityStr){
+          city = this.city
+          for(i=0; i<this.distList.length; i++){
+              if(this.distList[i].startsWith(city)){
+                  distList = this.distList[i].split(':')[1].split('|')
+                  zips = []
+                  for(j=0; j<distList.length; j++){
+                      zips.push(distList[j])
+                  }
+                  return zips
+              }
+          }
+      },
+    }
+})
+
+
+</script>
+
+
+<style type="text/css">
+    @page {  }
+    table { border-collapse:collapse; border-spacing:0; empty-cells:show }
+    td, th { vertical-align:top; font-size:10pt;}
+    h1, h2, h3, h4, h5, h6 { clear:both;}
+    ol, ul { margin:0; padding:0;}
+    li { list-style: none; margin:0; padding:0;}
+    /* "li span.odfLiEnd" - IE 7 issue*/
+    li span. { clear: both; line-height:0; width:0; height:0; margin:0; padding:0; }
+    span.footnodeNumber { padding-right:1em; }
+    span.annotation_style_by_filter { font-size:95%; font-family:Arial; background-color:#fff000;  margin:0; border:0; padding:0;  }
+    span.heading_numbering { margin-right: 0.8rem; }* { margin:0;}
+    .ta1 { writing-mode:lr-tb; }
+    .ce1 { font-family:Liberation Sans; border-width:0.0133cm; border-style:solid; border-color:#000000; vertical-align:middle; text-align:center ! important; }
+    .ce2 { font-family:Liberation Sans; border-width:0.0133cm; border-style:solid; border-color:#000000; }
+    .co1 { width:22.58mm; }
+    .ro1 { height:4.52mm; }
+     { }
+</style>
+
+
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
