@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+
+<style>
+td, th{
+    padding: 5px;
+    vertical-align: middle !important;
+}
+th{
+    text-align: center !important;
+}
+</style>
+<button onclick='location.href="${view/context/absolute_url}/verify_student"'>更新列表</button>
+
+<br><br>
+
+<table>
+  <tr>
+    <th>姓名</th>
+    <th>年級</th>
+    <th>縣市</th>
+    <th>學校</th>
+    <th>語言</th>
+    <th style='width: 180px'>審核</th>
+  </tr>
+  <tr tal:repeat="student view/studentList">
+    <tal:def define="obj python: dict(student)">
+      <td>${python: obj['name']}</td>
+      <td>${python: obj['level']}</td>
+      <td>${python: obj['county']}</td>
+      <td>${python: obj['school']}</td>
+      <td>${python: '%s%s' %(obj['course'], obj['language'])}</td>
+      <td style='display: flex;justify-content: space-evenly;'>
+        <form method='post' onsubmit='return confirm("確認要通過嘛？")'>
+            <input type='hidden' name='id' value="${python: obj['id']}">
+            <input type='hidden' name='mode' value='verify'>
+            <button>通過</button>
+        </form>
+
+        <form method='post' onsubmit='return confirm("確認要刪除嘛？")'>
+            <input type='hidden' name='id' value="${python: obj['id']}">
+            <input type='hidden' name='mode' value='cancel'>
+            <button>刪除</button>  
+        </form>
+
+      </td>
+    </tal:def>
+  </tr>
+</table>
+
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>

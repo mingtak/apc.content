@@ -89,7 +89,7 @@ portal = api.portal.get()
                   <div class="col-sm-4 col-md-6">
                   <div class="col-xs-3">
                     <h4>學生名單</h4>
-                    <div tal:repeat="student student_data">${python: student[0]}</div>
+                    <div tal:repeat="student student_data">${python: '%s, %s' %(student[0], student[2])} ${python: '(審核中)' if not student[1] else ''}</div>
                   </div>
                   </div>
                 </div>

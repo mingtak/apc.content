@@ -69,12 +69,8 @@ time = {'1': '周一早自習',
         '7': '其它',}
 ?>
 
-<a tal:condition="python:api.user.get_current().id == 'admin'"
-   href="${context/absolute_url}/@@school_survy?download" style="float:right">
-   下載調查表
-</a>
 
-<h3>共學學校需求調查表</h3>
+<h3>滿意度調查表</h3>
 <form method="post">
 <h4>基本資料</h4>
 

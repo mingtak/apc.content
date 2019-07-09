@@ -26,8 +26,8 @@
 <!--請輸入最小學校數(預設值2)：--><input type="hidden" name="min_sc" value=2>
 <!--請輸入最大學校數(預設值5)：--><input type="hidden" name="max_sc" value=5>
 <!--請輸入最大學生數(預設值10)：--><input type="hidden" name="max_st" value=10>
-教師調查表:<input type="file" name="teacher_survy"><br>
-學校調查表:<input type="file" name="school_survy"><br>
+教師調查表(請轉檔為csv格式上傳):<input accept=".csv" type="file" name="teacher_survy"><br>
+學校調查表(請轉檔為csv格式上傳):<input accept=".csv" type="file" name="school_survy"><br>
 <input type="submit" name="submit" value="確認">
 </form>
 

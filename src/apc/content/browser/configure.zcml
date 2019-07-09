@@ -17,6 +17,21 @@
       type="plone"
       directory="static"
       />
+  <browser:page
+      name="detect_not_rollcall"
+      for="*"
+      class=".crontab.DetectNotRollCall"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+
+  <browser:page
+      name="verify_student"
+      for="*"
+      class=".views.VerifyStudent"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="cmf.ManagePortal"
+  />
 
   <browser:page
       name="satisfaction_survy"

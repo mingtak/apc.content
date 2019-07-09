@@ -46,6 +46,7 @@ setup(
         'setuptools',
         'z3c.jbot',
         'requests',
+        'future-fstrings',
     ],
     extras_require={
         'test': [

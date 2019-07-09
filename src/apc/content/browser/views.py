@@ -25,8 +25,39 @@ import json
 import csv
 from StringIO import StringIO
 from mingtak.ECBase.browser.views import SqlObj
+import codecs
+import os
+import xlwt
+#import adal
+#from pypowerbi.dataset import Column, Table, Dataset
+#from pypowerbi.client import PowerBIClient
+
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 
 logger = logging.getLogger("apc.content")
+
+
+
+class VerifyStudent(BrowserView):
+    template = ViewPageTemplateFile("template/verify_student.pt")
+    def __call__(self):
+        request = self.request
+        execSql = SqlObj()
+        mode = request.get('mode')
+        id = request.get('id')
+        if id and mode:
+            sqlStr = """UPDATE student SET %s = 1 WHERE id = %s""" %(mode, id)
+            execSql.execSql(sqlStr)
+            api.portal.show_message(message='已通過'.decode('utf-8') if mode == 'verify' else '已刪除'.decode('utf-8'), request=request)
+
+
+        sqlStr = """SELECT * FROM student WHERE verify = 0 AND cancel = 0 ORDER BY language"""
+        self.studentList = execSql.execSql(sqlStr)
+
+        return self.template()
 
 
 class SatisfactionSurvy(BrowserView):
@@ -188,8 +219,10 @@ class ShowChart(BrowserView):
                 onCallStr = """like '{}' AND status = 'onCall'""".format(month + '%%')
                 notOnCallStr = """like '{}' AND status = 'notOnCall'""".format(month + '%%')
 
+
             onCall = execSql.execSql('%s %s' %(sqlStr, onCallStr))[0][0]
             notOnCall = execSql.execSql('%s %s' %(sqlStr, notOnCallStr))[0][0]
+
             self.start = start
             self.end = end
             self.month = month
@@ -203,8 +236,10 @@ class ShowChart(BrowserView):
 
             if start and end:
                 sqlStr = """SELECT * FROM attend WHERE date BETWEEN '{}' AND '{}'""".format(start, end)
+
             elif month:
                 sqlStr = """SELECT * FROM attend WHERE date LIKE '{}'""".format(month + '%%')
+
             result = execSql.execSql(sqlStr)
 
             count = {}
@@ -226,6 +261,8 @@ class ShowChart(BrowserView):
                             }
                         continue
             self.count = count
+
+
             return self.template4()
         elif mode == 'page_count':
             period = request.get('period')
@@ -238,7 +275,7 @@ class ShowChart(BrowserView):
         elif mode == 'number':
             number_period = request.get('number_period')
 
-            sqlStr = """SELECT language FROM student WHERE course like '{}%%'""".format(number_period)
+            sqlStr = """SELECT language FROM student WHERE course like '{}%%' AND verify = 1 AND cancel = 0""".format(number_period)
             result = execSql.execSql(sqlStr)
 
             count = {'阿美語':0, '泰雅語': 0, '賽夏語': 0, '邵語': 0, '賽德克語': 0, '布農語': 0, '排灣語': 0, '魯凱語': 0, 
@@ -279,6 +316,53 @@ class ShowChart(BrowserView):
             self.brain = api.content.find(portal_type='LiveClass')
             return self.template()
 
+        if api.is_anonymous():
+            self.call_powerbi()
+
+
+    def call_powerbi(self):
+        # you might need to change these, but i doubt it
+        authority_url = 'https://login.windows.net/common'
+        resource_url = 'https://analysis.windows.net/powerbi/api'
+        api_url = 'https://api.powerbi.com'
+
+        # change these to your credentials
+        client_id = '871c010f-5e61-4fb1-83ac-98610a7e9110'
+        username = 'andy@mingtak.com.tw'
+        password = 'password' #假，資料移轉時請改輸入正確密碼，或由下一家提供
+
+        # first you need to authenticate using adal
+        context = adal.AuthenticationContext(authority=authority_url,
+                                             validate_authority=True,
+                                             api_version=None)
+
+        # get your authentication token
+        token = context.acquire_token_with_username_password(resource=resource_url,
+                                                             client_id=client_id,
+                                                             username=username,
+                                                             password=password)
+
+        # create your powerbi api client
+        client = PowerBIClient(api_url, token)
+
+        # create your columns
+        columns = []
+        columns.append(Column(name='id', data_type='Int64'))
+        columns.append(Column(name='name', data_type='string'))
+        columns.append(Column(name='is_interesting', data_type='boolean'))
+        columns.append(Column(name='cost_usd', data_type='double'))
+        columns.append(Column(name='purchase_date', data_type='datetime'))
+
+        # create your tables
+        tables = []
+        tables.append(Table(name='AnExampleTableName', columns=columns))
+
+        # create your dataset
+        dataset = Dataset(name='AnExampleDatasetName', tables=tables)
+
+        # post your dataset!
+        client.datasets.post_dataset(dataset)
+        return
 
 
 class TestPage(BrowserView):
@@ -536,10 +620,11 @@ class SchoolSurvy(BrowserView):
 
         result = json.loads(resultObj.description)
 
-        output = StringIO()
-        spamwriter = csv.writer(output)
-#        import pdb; pdb.set_trace()
-        spamwriter.writerow(['city', 'zip', 'school_id', 'school_name', 'contact', 'phone', 'cell', 'email', 'class-time',
+        workbook = xlwt.Workbook(encoding = 'utf-8')
+        sheet = workbook.add_sheet('sheet1')
+
+        index1 = 0
+        for i in ['city', 'zip', 'school_id', 'school_name', 'contact', 'phone', 'cell', 'email', 'class-time',
             'lang1', 'level1',
             'lang2', 'level2',
             'lang3', 'level3',
@@ -560,23 +645,38 @@ class SchoolSurvy(BrowserView):
             'lang18', 'level18',
             'lang19', 'level19',
             'lang20', 'level20',
-        ])
+        ]:
+            sheet.write(0, index1, i)
+            index1 += 1
 
+        index2 = 1
         for item in result:
-            row = [item.get('city', ' ').encode('utf-8'), item.get('zip', ' ').encode('utf-8'), item.get('school_id', ' ').encode('utf-8'),
-                   item.get('school_name', ' ').encode('utf-8'), item.get('contact', ' ').encode('utf-8'),
-                   item.get('phone', ' ').encode('utf-8'), item.get('cell', ' ').encode('utf-8'), item.get('email', ' ').encode('utf-8'),
-                   item.get('class-time', [])]
+            sheet.write(index2, 0, item.get('city'))
+            sheet.write(index2, 1, item.get('zip'))
+            sheet.write(index2, 2, item.get('school_id'))
+            sheet.write(index2, 3, item.get('school_name'))
+            sheet.write(index2, 4, item.get('contact'))
+            sheet.write(index2, 5, item.get('phone'))
+            sheet.write(index2, 6, item.get('cell'))
+            sheet.write(index2, 7, item.get('email'))
+            sheet.write(index2, 8, item.get('class-time'))
+            index3 = 9
             for index in range(20):
                 if item['lang'][index][1:4] != ["0", "0", "0"]:
-                    row.append(item['lang'][index][0]) # 語別
-                    row.append('/'.join(item['lang'][index][1:4])) # 所需級別
+                    sheet.write(index2, index3, item['lang'][index][0])
+                    index3 += 1
+                    sheet.write(index2, index3, '/'.join(item['lang'][index][1:4]))
+                    index3 += 1
 
-            spamwriter.writerow(row)
-        request.response.setHeader('Content-Type', 'application/csv')
-        request.response.setHeader('Content-Disposition', 'attachment; filename="school_survy.csv"')
+            index2 += 1
 
-        return output.getvalue()
+        workbook.save('school_survy.xlsx')
+
+        request.response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        request.response.setHeader('Content-Disposition', 'attachment; filename="school_survy.xlsx"')
+
+        with open('school_survy.xlsx', 'r') as f:
+            return f.read()
 
 
 class TeacherSurvy(BrowserView):
@@ -604,10 +704,11 @@ class TeacherSurvy(BrowserView):
 
         result = json.loads(resultObj.description)
 
-        output = StringIO()
-        spamwriter = csv.writer(output)
-#        import pdb; pdb.set_trace()
-        spamwriter.writerow(['name_han', 'han_zu', 'phone', 'cell', 'city', 'zip', 'address', 'class-time', 'location',
+        workbook = xlwt.Workbook(encoding = 'utf-8')
+        sheet = workbook.add_sheet('sheet1')
+
+        index1 = 0
+        for i in ['name_han', 'han_zu', 'phone', 'cell', 'city', 'zip', 'address', 'class-time', 'location',
             'lang1', 'level1',
             'lang2', 'level2',
             'lang3', 'level3',
@@ -628,32 +729,43 @@ class TeacherSurvy(BrowserView):
             'lang18', 'level18',
             'lang19', 'level19',
             'lang20', 'level20',
-        ])
+        ]:
+            sheet.write(0, index1, i)
+            index1 += 1
 
+        index2 = 1
         for item in result:
-            row = [item.get('name_han').encode('utf-8'), item.get('name_zu').encode('utf-8'),
-                   item.get('phone').encode('utf-8'), item.get('cell').encode('utf-8'),
-                   item.get('city').encode('utf-8'), item.get('zip'), item.get('address').encode('utf-8'),
-                   item.get('class-time'), item.get('location').encode('utf-8')]
+            sheet.write(index2, 0, item.get('name_han'))
+            sheet.write(index2, 1, item.get('name_zu'))
+            sheet.write(index2, 2, item.get('phone'))
+            sheet.write(index2, 3, item.get('cell'))
+            sheet.write(index2, 4, item.get('city'))
+            sheet.write(index2, 5, item.get('zip'))
+            sheet.write(index2, 6, item.get('address'))
+            sheet.write(index2, 7, item.get('class-time'))
+            sheet.write(index2, 8, item.get('location'))
+
+            index3 = 9
             for index in range(20):
                 if type(item['lang'][index]) == type([]):
-                    row.append(item['lang'][index][0])
+                    sheet.write(index2, index3, item['lang'][index][0])
+                    index3 += 1
 
                     primary = '1' if 'primary' in item['lang'][index] else '0'
                     intermediate = '1' if 'intermediate' in item['lang'][index] else '0'
                     advanced = '1' if 'advanced' in item['lang'][index] else '0'
 
-                    row.append('/'.join([primary, intermediate, advanced]))
+                    sheet.write(index2, index3, '/'.join([primary, intermediate, advanced]))
+                    index3 += 1
 
-            try:
-                spamwriter.writerow(row)
-            except:
-                import pdb; pdb.set_trace()
-        request.response.setHeader('Content-Type', 'application/csv')
-        request.response.setHeader('Content-Disposition', 'attachment; filename="teacher_survy.csv"')
+            index2 += 1
+        request.response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        request.response.setHeader('Content-Disposition', 'attachment; filename="teacher_survy.xlsx"')
 
-        return output.getvalue()
+        workbook.save('teacher_survy.xlsx')
 
+        with open('teacher_survy.xlsx', 'r') as f:
+            return f.read()
 
     def __call__(self):
         context = self.context
@@ -1018,6 +1130,7 @@ class MatchResult(BrowserView):
         # 讀取學校及教師調查表csv檔
         teacher_survy = request.get('teacher_survy', '')
         school_survy = request.get('school_survy', '')
+        import pdb;pdb.set_trace()
 
         tFile = StringIO(teacher_survy.read())
         tReader = csv.DictReader(tFile, delimiter=',')
@@ -1487,7 +1600,7 @@ class TeacherArea(BrowserView):
 
     def getStudentData(self, uid):
         execSql = SqlObj()
-        sqlStr = """SELECT name, county, school FROM student WHERE uid = '%s'""" %uid
+        sqlStr = """SELECT name, county, school FROM student WHERE uid = '%s' AND verify = 1""" %uid
         return execSql.execSql(sqlStr)
 
     def getPathname(self):
@@ -1754,7 +1867,7 @@ class PdfEmbeded(BrowserView):
         if teacher or not api.user.is_anonymous():
             self.canRollcall = True
             execSql = SqlObj()
-            sqlStr = """SELECT * FROM student WHERE uid = '{}'""".format(context.getParentNode().UID())
+            sqlStr = """SELECT * FROM student WHERE uid = '{}' AND verify = 1""".format(context.getParentNode().UID())
             self.studentData = execSql.execSql(sqlStr)
         else:
             self.canRollcall = False
@@ -1957,7 +2070,7 @@ class SchoolArea(BrowserView):
     def getStudentData(self, uid):
         execSql = SqlObj()
         school = self.school.Title()
-        sqlStr = """SELECT name FROM student WHERE uid = '%s' AND school = '%s'""" %(uid, school)
+        sqlStr = """SELECT name, verify, level FROM student WHERE uid = '%s' AND school = '%s' and cancel = 0""" %(uid, school)
         data = execSql.execSql(sqlStr)
         return data
 

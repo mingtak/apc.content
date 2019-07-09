@@ -98,16 +98,16 @@ portal = api.portal.get()
                   </div>
                 </div>
                 <div class="border-solid" />
-              </div>
 
                 <p tal:repeat="student student_data">
-                    ${python: student[0]}
+                    ${python: student[0]} ${python: '' if student[1] else '(審核中)'}
                 </p>
-              <form method="POST" style='display: flex;margin-left: 40px' class='namelist-${item_uid} prepare namelist'>
+              <br>
+              <form method="POST" style='display: flex;align-items: center;' class='namelist-${item_uid} prepare namelist'>
                 請輸入學生姓名：
-                <input type='text' name='student' style='width: 20%' required>
+                <input type='text' name='student' style='width: 20%;margin-right: 15px' required>
                 請輸入年級：
-                <input type='number' name='level' style='width: 20%' required>
+                <input type='number' name='level' style='width: 20%;' required>
                 <input type='hidden' name='course_uid' value='${item_uid}'>
                 <input type='hidden' name='course' value='${python: item_id[0:6]}'>
                 <input type='hidden' name='language' value='${python:item_title[6:]}'>
@@ -115,6 +115,8 @@ portal = api.portal.get()
                 <input type="hidden" name="widget-form-btn" value="widget-addStudent-form">
                 <button type="submit" class="btn context" >送出</button>
               </form>
+            </div>
+            <br>
             </tal:define>
           </tal:repeat>
         </ul>
