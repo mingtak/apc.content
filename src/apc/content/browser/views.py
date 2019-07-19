@@ -40,6 +40,11 @@ sys.setdefaultencoding('utf8')
 logger = logging.getLogger("apc.content")
 
 
+class GernalLogin(BrowserView):
+    template = ViewPageTemplateFile("template/gernal_login.pt")
+    def __call__(self):
+        return self.template()
+
 
 class VerifyStudent(BrowserView):
     template = ViewPageTemplateFile("template/verify_student.pt")
@@ -329,7 +334,7 @@ class ShowChart(BrowserView):
         # change these to your credentials
         client_id = '871c010f-5e61-4fb1-83ac-98610a7e9110'
         username = 'andy@mingtak.com.tw'
-        password = 'password' #假，資料移轉時請改輸入正確密碼，或由下一家提供
+        password = '!QAZ@WSX' #假，資料移轉時請改輸入正確密碼，或由下一家提供
 
         # first you need to authenticate using adal
         context = adal.AuthenticationContext(authority=authority_url,
@@ -1431,7 +1436,7 @@ class SendTeacherLink(BrowserView):
             self.context.plone_utils.addPortalMessage(_(u'This teacher has not email: ') + teacher.Title.decode('utf8'), 'info')
 
     def getHashSHA256(self, uid):
-        return hashlib.sha256(uid).hexdigest() 
+        return hashlib.sha256(uid).hexdigest()
 
 
 class TeacherInit(BrowserView):
@@ -1444,7 +1449,6 @@ class TeacherInit(BrowserView):
 
         if len(teacher) == 1:
             self.teacher = teacher[0]
-        
         if request.form.get('widget-form-btn', '') == 'widget-form-btn':
             portal_catalog = getToolByName(self.context, 'portal_catalog')
             index_id = portal_catalog.Indexes['teacher_id']
@@ -1453,7 +1457,7 @@ class TeacherInit(BrowserView):
             if request.form.get('widget-registered-btn', '') == 'widget-registered-btn':
                 if teacher_id == self.teacher.teacher_id or teacher_id not in index_id.uniqueValues():
                     self.initTeacher(teacher_id, teacher_pw, hashSHA256)
-                else: 
+                else:
                     self.context.plone_utils.addPortalMessage(_(u'This Teacher ID is already be used'), 'error')
             else:
                 self.checkLogin(teacher_id, teacher_pw)
@@ -1488,6 +1492,7 @@ class TeacherInit(BrowserView):
                 return self.request.response.redirect('{}/teacher-area/teacher-area'.format(self.context.portal_url()))
 
         self.context.plone_utils.addPortalMessage(_(u'Your Username or Password is not vaild'), 'error')
+        self.request.response.redirect('{}/teacher-area/gernal_login'.format(self.context.portal_url()))
 
 
 class TeacherInfo(BrowserView):
@@ -1590,7 +1595,7 @@ class TeacherArea(BrowserView):
         teacher = api.content.get(UID=teacher_uid)
 
         if not teacher:
-            return self.request.response.redirect('{}/teacher-area/teacher-login'.format(self.context.portal_url()))
+            return self.request.response.redirect('{}/teacher-area/gernal_login'.format(self.context.portal_url()))
         self.teacher = teacher
 
         if request.form.has_key('submit-leave-class'):
@@ -2015,6 +2020,7 @@ class SchoolInit(BrowserView):
                 return self.request.response.redirect('{}/school-area/school-area'.format(self.context.portal_url()))
 
         self.context.plone_utils.addPortalMessage(_(u'Your Username or Password is not vaild'), 'error')
+        self.request.response.redirect('{}/school-area/gernal_login'.format(self.context.portal_url()))
 
 
 class SchoolAreaSelector(BrowserView):
@@ -2039,7 +2045,7 @@ class SchoolArea(BrowserView):
         school = api.content.get(UID=school_uid)
 
         if not school:
-            return self.request.response.redirect('{}/school-area/school-login'.format(self.context.portal_url()))
+            return self.request.response.redirect('{}/school-area/gernal_login'.format(self.context.portal_url()))
         self.school = school
 
         if request.get("widget-form-btn", "") == "widget-email-form":

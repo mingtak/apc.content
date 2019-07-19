@@ -16,7 +16,7 @@ portal = api.portal.get()
 ?>
   <div style="height: 50px;">
       <span style="float:left;"><b style="color:blue">${view/school/Title}</b></span>
-      <button class="btn context" style="float:right;" onclick="logout()">登出</button>
+      <button class="btn context" style="float:right;" id='logout_form_inner'>登出</button>
   </div>
 
   <div class="pat-autotoc autotabs" data-pat-autotoc="section:fieldset;levels:legend;">
@@ -103,7 +103,15 @@ portal = api.portal.get()
     </tal:course>
   </div>
 
-
+<script>
+  $(document).ready(function(){
+    $('#logout_form_inner').click(function(){
+          document.cookie = 'teacher_login=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
+          document.cookie = 'school_login=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
+          document.location.reload();
+    })
+  })
+</script>
 
 </metal:content-core>
 </metal:content-core>

@@ -24,6 +24,13 @@
       layer="apc.content.interfaces.IApcContentLayer"
       permission="zope2.View"
   />
+  <browser:page
+      name="gernal_login"
+      for="*"
+      class=".views.GernalLogin"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
 
   <browser:page
       name="verify_student"
