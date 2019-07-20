@@ -89,7 +89,7 @@
                 <table>
                   <tr>
                     <td>
-                      <input type="file" name="prepare.file:records">
+                      <input type="file" name="prepare.file:records" ${python:'qrequired' if not item.getObject().file else ''}>
                     </td>
                     <td>
                       <input type="checkbox" class="form-check-input" id="del-file${repeat/item/index}" 
@@ -137,8 +137,9 @@
           </tr>
           <tr>
               <td>
-                <input type="checkbox" class="form-check-input" id="vacation${repeat/item/index}" name="prepare.vacation:records" value="true">
+<!--放假選項先拿掉，應由維運執行      <input type="checkbox" class="form-check-input" id="vacation${repeat/item/index}" name="prepare.vacation:records" value="true">
                 <label class="form-check-label" for="vacation${repeat/item/index}" i18n:translate="">Vacation</label>
+-->
                 <script>
                   if ('${python: item.getObject().vacation}' === 'True') $('#vacation').attr('checked', true);
                 </script>
@@ -171,7 +172,7 @@
               <p>課堂主題</p>
             </td>
             <td colspan=2>
-              <input type="text" class="form-control" name="prepare.topic:records" value="${python: item.getObject().topic}" />
+              <input type="text" class="form-control" name="prepare.topic:records" value="${python: item.getObject().topic}" qrequired/>
             </td>
           </tr>
           <tr>
@@ -179,7 +180,7 @@
               <p>課堂概述</p>
             </td>
             <td colspan=2>
-              <textarea name="prepare.description:records" cols="40" rows="5">${python: item.getObject().description}</textarea>
+              <textarea name="prepare.description:records" cols="40" rows="5" qrequired>${python: item.getObject().description}</textarea>
             </td>
           </tr>
         </tal:repeat>

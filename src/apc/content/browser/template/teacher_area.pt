@@ -167,9 +167,8 @@ portal = api.portal.get()
         </div>
       </fieldset>
 
-
-      <fieldset>
-        <legend>教學檔案上傳系統</legend>
+      <fieldset style="display:none">
+<!--        <legend>教學檔案上傳系統</legend> -->
         <tal:latest tal:switch="python: len(prepares) != 0">
           <tal:case tal:case="True">
             <div class="announcement">
