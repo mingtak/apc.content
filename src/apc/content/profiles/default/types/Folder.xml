@@ -61,6 +61,7 @@
     <element value="school_area"/>
     <element value="leave_listing"/>
     <element value="about_view"/>
+    <element value="gernal_login"/>
   </property>
 
   <!-- Method aliases -->

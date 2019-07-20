@@ -32,6 +32,15 @@ siteName = 'site-%s' % portal.absolute_url().split('//')[1].split('.')[0]
             tal:define="selected_tab python:view.selected_portal_tab">
             <tal:tabs tal:repeat="tab portal_tabs">
               <li tal:define="tid tab/id"
+                  tal:condition="python:( (not api.user.is_anonymous() or
+                                           view.request.cookies.get('teacher_login') or
+                                           view.request.cookies.get('school_login')
+                                          ) and tid != 'memberlogin'
+                                        ) or
+                                        ( api.user.is_anonymous() and
+                                          not view.request.cookies.get('teacher_login') and
+                                          not view.request.cookies.get('school_login')
+                                        )"
                   tal:attributes="id string:portaltab-${tid};
                                   class python:selected_tab==tid and 'selected %s' % siteName or siteName">
                   <a href=""
