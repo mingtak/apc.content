@@ -256,7 +256,13 @@ portal = api.portal.get()
         <legend>請假單申請</legend>
         <div>
           <form method="POST">
-日期: <input name="date" class="pat-pickadate" data-pat-pickadate="time:false"/>
+
+擬請假日期/課程(近二周課程表列如下):
+<p tal:repeat="item view/getTwoWeekCourse">
+  <input type="radio" name="prepare" value="${item/UID}"> ${python:item.getObject().getParentNode().title}: ${python:item.start.strftime('%Y-%m-%d')}
+</p>
+
+<!-- 日期: <input name="date" class="pat-pickadate" data-pat-pickadate="time:false"/> -->
 事由: <textarea name="reason"></textarea>
 <br>
 是否已公佈於Line群組： 是 <input type="radio" name="alert-to-line" value="true"> / 否 <input type="radio" name="alert-to-line" value="false">

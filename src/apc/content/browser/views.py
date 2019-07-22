@@ -372,11 +372,17 @@ class ShowChart(BrowserView):
 
 class TestPage(BrowserView):
 
+    index = ViewPageTemplateFile("template/testpage.pt")
+
     def __call__(self):
         alsoProvides(self.request, IDisableCSRFProtection)
         portal = api.portal.get()
         context = self.context
         request = self.request
+
+        self.brain = api.content.find(Type='Prepare')
+        return self.index()
+
         import pdb; pdb.set_trace()
 
 
@@ -393,7 +399,7 @@ class TeacherReviewPage(BrowserView):
         title = request.get('title')
         obj = api.content.find(UID=uid)[0].getObject()
 
-        teacher = api.content.find(Title=title, context=portal['teacher'])[0].getObject()
+        teacher = api.content.find(Title=title, context=portal['teacher'], sort_on="id")[0].getObject()
         teacher.image = obj.image
         teacher.gender = obj.gender
         teacher.nameSpell = obj.nameSpell
@@ -1565,18 +1571,35 @@ class TeacherArea(BrowserView):
         request = self.request
 
         teacherName = teacher.title
-        date = request.form.get('date')
+#        date = request.form.get('date')
+        prepareUID = request.form.get('prepare')
         reason = request.form.get('reason')
         alertToLine = request.form.get('alert-to-line')
         alertToSchool = request.form.get('alert-to-school')
         alertToLine = '是' if alertToLine == 'true' else '否'
         alertToSchool = '是' if alertToSchool == 'true' else '否'
         note = request.form.get('note')
+        teacher_uid = request.cookies.get("teacher_login", "")
+        if not teacher_uid or not prepareUID:
+            return
 
-        message = "請假日期:{}\n事由:{}\n是否已公佈於Line群組:{}\n是否已通知主聘學校:{}\n調課日期時段:{}".format(date,
-                   reason, alertToLine, alertToSchool, note)
+        prepare = api.content.get(UID=prepareUID)
+#        teacher = api.content.get(UID=teacher_uid)
+
+        url = '%s/edit#autotoc-item-autotoc-1' % prepare.absolute_url()
+
+        message = """請假資訊如下
+                     請假課程/日期:{}: {}
+                     事由:{}
+                     是否已公佈於Line群組:{}
+                     是否已通知主聘學校:{}
+                     調課日期時段:{}
+                     請連回系統准否教師請假及後續調課作業：
+                     {}""".format(prepare.getParentNode().title,
+                                  prepare.start.strftime('%Y-%m-%d'), reason, alertToLine, alertToSchool, note, url)
         api.portal.send_email(
-            recipient="andersen.smartedu@gmail.com",
+#            recipient="andersen.smartedu@gmail.com",
+            recipient="andy@mingtak.com.tw",
             sender="noreply@17study.com.tw",
             subject="%s 請假單通知" % teacherName.encode('utf-8'),
             body=message,
