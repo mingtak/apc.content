@@ -59,7 +59,6 @@
   <browser:page
       name="plone_root_view"
       for="*"
-      template="template/plone_root_view.pt"
       class=".views.PloneRootView"
       layer="apc.content.interfaces.IApcContentLayer"
       permission="zope2.View"

@@ -19,9 +19,82 @@ news02Brain = catalog(path='/apc_costudy/news/news02', portal_type='News Item', 
 news03Brain = catalog(path='/apc_costudy/news/news03', portal_type='News Item', effective=effective,
                 expires=expires, sort_on='effective', sort_order='reverse', sort_limit=10)[0:5]
 leaveBrain = api.content.find(leaveALesson=True, sort_on='modified', sort_order='reverse', sort_limit=10)
+liveBrain = api.content.find(context=portal['live_video'], portal_type='LiveClass', sort_on='start', sort_order='reverse')
+
+lang_cata = {
+    '阿美語': '南勢阿美語 秀姑巒阿美語 海岸阿美語 馬蘭阿美語 恆春阿美語', 
+    '泰雅語': '賽考利克泰雅語 澤敖利泰雅語 汶水泰雅語 萬大泰雅語 四季泰雅語 澤敖利泰雅語', 
+    '賽夏語': '賽夏語', 
+    '邵語': '邵語',    
+    '賽德克語': '都達語 德固達雅語 德魯固語', 
+    '布農語': '卓群布農語 卡群布農語 丹群布農語 巒群布農語 郡群布農語' , 
+    '排灣語': '東排灣語 北排灣語 中排灣語 南排灣語', 
+    '魯凱語': '東魯凱語 霧臺魯凱語 大武魯凱語 多納魯凱語 茂林魯凱語 萬山魯凱語', 
+    '太魯閣語': '太魯閣語', 
+    '噶瑪蘭語': '噶瑪蘭語', 
+    '鄒語': '鄒語', 
+    '卡那卡那富語': '卡那卡那富語', 
+    '拉阿魯哇語': '拉阿魯哇語', 
+    '卑南語': '南王卑南語 知本卑南語 初鹿卑南語 建和卑南語', 
+    '雅美語': '雅美語', 
+    '撒奇萊雅語': '撒奇萊雅語'
+}
 ?>
 
 <div class="container" id="announcement_viewlet">
+
+  <div class="row">
+    <div class="col-xs-12 announcement">
+      <h3><i class="fas fa-film fa-2x"></i><span class="text">正在直播</span></h3>
+    </div>
+    <div class="col-xs-12" style="margin-bottom:20px;" />
+    <div class="col-xs-12 announcement">
+      <div class="row">
+        <div class="col-xs-12" tal:condition="not:liveBrain">
+<h4>目前沒有直播, 你可以依語言別選擇課程觀看</h4>
+
+<form method="POST">
+<div class="row">
+<div class="col-xs-2">
+  <input name="live_to_schedule" hidden>
+  <select name="lang">
+    <option tal:repeat="item lang_cata"
+            tal:content="item"
+            tal:attributes="value item">
+    </option>
+  </select>
+</div>
+<div class="col-xs-2">
+  <select name="range">
+    <option value="schedule">107學年下學期</option>
+    <option value="schedule_107_1">107學年上學期</option>
+  </select>
+</div>
+<div class="col-xs-2">
+  <input type="submit" name="submit" value="送出">
+</div>
+</div>
+</form>
+
+
+
+        </div>
+
+        <tal:repeat tal:repeat="item liveBrain">
+         <tal:obj define="obj item/getObject" condition="obj/embeded">
+          <div class="col-xs-12 col-md-3" style="text-align:center;">
+            <a href="${item/getURL}" class="title">${item/Title}</a>
+            <div style="margin-bottom:10px;">
+              <a href="${item/getURL}" class="title">
+                <img src="${portal/absolute_url}/resource/images/live/@@images/image">
+              </a>
+            </div>
+          </div>
+         </tal:obj>
+        </tal:repeat>
+      </div>
+    </div>
+  </div>
 
   <div class="row">
     <div class="col-xs-12 col-md-12 announcement">
@@ -92,29 +165,6 @@ leaveBrain = api.content.find(leaveALesson=True, sort_on='modified', sort_order=
 
   <div class="border-dotted" />
 
-  <div class="row">
-    <div class="col-xs-12 announcement">
-      <h3><i class="fas fa-film fa-2x"></i><span class="text">正在直播</span></h3>
-    </div>
-    <div class="col-xs-12" style="margin-bottom:20px;" />
-    <div class="col-xs-12 announcement">
-      <div class="row">
-        <tal:repeat tal:repeat="item python:api.content.find(context=portal['live_video'],
-                                                portal_type='LiveClass', sort_on='start', sort_order='reverse')">
-         <tal:obj define="obj item/getObject" condition="obj/embeded">
-          <div class="col-xs-12 col-md-3" style="text-align:center;">
-            <a href="${item/getURL}" class="title">${item/Title}</a>
-            <div style="margin-bottom:10px;">
-              <a href="${item/getURL}" class="title">
-                <img src="${portal/absolute_url}/resource/images/live/@@images/image">
-              </a>
-            </div>
-          </div>
-         </tal:obj>
-        </tal:repeat>
-      </div>
-    </div>
-  </div>
 
 </div>
 

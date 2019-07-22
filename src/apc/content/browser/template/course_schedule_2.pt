@@ -87,11 +87,13 @@ lang_cata = {'阿美語': '南勢阿美語 秀姑巒阿美語 海岸阿美語 �
 <h4>依語言選擇</h4>
 <tal:lang repeat="item python:lang_cata.keys()">
   <span style="white-space:nowrap">
-    <input type="checkbox" class="lang-selector" value="${python:lang_cata[item]}">${item}</span>
+    <input type="checkbox" tal:attributes="checked python:item == view.request.form.get('lang')"
+           id="lang-category-${item}" class="lang-selector" value="${python:lang_cata[item]}">${item}</span>
   <span tal:condition="not:repeat/item/end">&nbsp;</span>
 </tal:lang>
 <script>
 $(document).ready(function(){
+// 手動選擇
   $('.lang-selector').click(function(){
     items = $('.lang-selector:checked')
     $('.course_title p').hide()
@@ -106,6 +108,24 @@ $(document).ready(function(){
   })
 })
 </script>
+
+<script tal:define="lang python:view.request.form.get('lang')"
+        tal:condition="lang">
+$(document).ready(function(){
+//外部進入搜尋
+      items = $('.lang-selector:checked')
+      $('.course_title p').hide()
+
+      for(i=0; i<items.length; i++){
+        debugger
+        $('#lang-category-${lang}').val().split(' ').forEach(function(item){
+            $('p.' + item).show()
+        })
+      }
+
+})
+</script>
+
 
 
 

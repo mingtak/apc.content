@@ -1731,7 +1731,21 @@ class TeacherChangePW(BrowserView):
 
 
 class PloneRootView(BrowserView):
-    pass
+
+    template = ViewPageTemplateFile("template/plone_root_view.pt")
+
+    def __call__(self):
+        context = self.context
+        request = self.request
+        portal = api.portal.get()
+
+        if request.form.has_key('live_to_schedule'):
+            range = request.form.get('range')
+            lang = request.form.get('lang')
+            request.response.redirect('%s/language_study/%s/@@course_schedule?lang=%s' % (portal.absolute_url(), range, lang))
+            return
+        return self.template()
+
 
 
 class CourseView(BrowserView):
