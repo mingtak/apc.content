@@ -8,7 +8,7 @@ portal = api.portal.get()
 <div class="row">
   <div class="col-xs-12 col-md-4">
     <i class="far fa-calendar-alt fa-4x"></i>
-    <span class="title"><a href="${portal/absolute_url}/language_study/latest">課程行事曆</a></span>
+    <span class="title"><a href="${portal/absolute_url}/language_study/schedule/@@course_schedule">課程行事曆</a></span>
     <p class="info">遠距授課方式,提供學生族語學習機會,規劃參與同一時段互動族語共學之學校,成立共學聯盟...</p>
   </div>
 
