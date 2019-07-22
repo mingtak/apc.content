@@ -1741,8 +1741,12 @@ class PloneRootView(BrowserView):
 
         if request.form.has_key('live_to_schedule'):
             range = request.form.get('range')
+            if range == 'latest':
+                path = 'schedule'
+            else:
+                path = 'schedule_%s' % range
             lang = request.form.get('lang')
-            request.response.redirect('%s/language_study/%s/@@course_schedule?lang=%s' % (portal.absolute_url(), range, lang))
+            request.response.redirect('%s/language_study/%s/@@course_schedule?lang=%s&range=%s' % (portal.absolute_url(), path, lang, range))
             return
         return self.template()
 

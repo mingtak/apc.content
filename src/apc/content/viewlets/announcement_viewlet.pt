@@ -66,8 +66,8 @@ lang_cata = {
 </div>
 <div class="col-xs-2">
   <select name="range">
-    <option value="schedule">107學年下學期</option>
-    <option value="schedule_107_1">107學年上學期</option>
+    <option value="latest">107學年下學期</option>
+    <option value="107_1">107學年上學期</option>
   </select>
 </div>
 <div class="col-xs-2">
