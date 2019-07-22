@@ -44,40 +44,39 @@ lang_cata = {
 <div class="container" id="announcement_viewlet">
 
   <div class="row">
+
     <div class="col-xs-12 announcement">
       <h3><i class="fas fa-film fa-2x"></i><span class="text">正在直播</span></h3>
     </div>
+
     <div class="col-xs-12" style="margin-bottom:20px;" />
     <div class="col-xs-12 announcement">
       <div class="row">
         <div class="col-xs-12" tal:condition="not:liveBrain">
-<h4>目前沒有直播, 你可以依語言別選擇課程觀看</h4>
+          <h4>目前沒有直播, 你可以依語言別選擇課程觀看</h4>
 
-<form method="POST">
-<div class="row">
-<div class="col-xs-2">
-  <input name="live_to_schedule" hidden>
-  <select name="lang">
-    <option tal:repeat="item lang_cata"
-            tal:content="item"
-            tal:attributes="value item">
-    </option>
-  </select>
-</div>
-<div class="col-xs-2">
-  <select name="range">
-    <option value="latest">107學年下學期</option>
-    <option value="107_1">107學年上學期</option>
-  </select>
-</div>
-<div class="col-xs-2">
-  <input type="submit" name="submit" value="送出">
-</div>
-</div>
-</form>
-
-
-
+          <form method="POST">
+            <div class="row">
+              <div class="col-xs-2">
+                <input name="live_to_schedule" hidden>
+                <select name="lang">
+                  <option tal:repeat="item lang_cata"
+                          tal:content="item"
+                          tal:attributes="value item">
+                  </option>
+                </select>
+              </div>
+              <div class="col-xs-2">
+                <select name="range">
+                  <option value="latest">107學年下學期</option>
+                  <option value="107_1">107學年上學期</option>
+                </select>
+              </div>
+              <div class="col-xs-2">
+                <input type="submit" name="submit" value="送出">
+              </div>
+            </div>
+          </form>
         </div>
 
         <tal:repeat tal:repeat="item liveBrain">
