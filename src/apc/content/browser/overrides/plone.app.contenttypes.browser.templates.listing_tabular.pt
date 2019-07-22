@@ -119,6 +119,56 @@ from plone import api
     tal:condition="python:not len(view.batch()) and context.id=='live_video'">
 目前無直播課程，直播時間請參閱課表。
     </p>
+
+    <div tal:condition="python:not len(view.batch()) and context.id=='live_video'">
+<?python
+lang_cata = {
+    '阿美語': '南勢阿美語 秀姑巒阿美語 海岸阿美語 馬蘭阿美語 恆春阿美語',
+    '泰雅語': '賽考利克泰雅語 澤敖利泰雅語 汶水泰雅語 萬大泰雅語 四季泰雅語 澤敖利泰雅語',
+    '賽夏語': '賽夏語',
+    '邵語': '邵語',
+    '賽德克語': '都達語 德固達雅語 德魯固語',
+    '布農語': '卓群布農語 卡群布農語 丹群布農語 巒群布農語 郡群布農語' ,
+    '排灣語': '東排灣語 北排灣語 中排灣語 南排灣語',
+    '魯凱語': '東魯凱語 霧臺魯凱語 大武魯凱語 多納魯凱語 茂林魯凱語 萬山魯凱語',
+    '太魯閣語': '太魯閣語',
+    '噶瑪蘭語': '噶瑪蘭語',
+    '鄒語': '鄒語',
+    '卡那卡那富語': '卡那卡那富語',
+    '拉阿魯哇語': '拉阿魯哇語',
+    '卑南語': '南王卑南語 知本卑南語 初鹿卑南語 建和卑南語',
+    '雅美語': '雅美語',
+    '撒奇萊雅語': '撒奇萊雅語'
+}
+
+?>
+
+          <form method="POST" action="${portal_url}">
+            <div class="row">
+              <div class="col-xs-4">
+                <input name="live_to_schedule" hidden>
+                <select name="lang">
+                  <option tal:repeat="item lang_cata"
+                          tal:content="item"
+                          tal:attributes="value item">
+                  </option>
+                </select>
+              </div>
+              <div class="col-xs-4">
+                <select name="range">
+                  <option value="latest">107學年下學期</option>
+                  <option value="107_1">107學年上學期</option>
+                </select>
+              </div>
+              <div class="col-xs-4">
+                <input type="submit" name="submit" value="送出">
+              </div>
+            </div>
+          </form>
+
+    </div>
+
+
     </metal:empty>
 
   </tal:results>

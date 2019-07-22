@@ -1141,7 +1141,7 @@ class MatchResult(BrowserView):
         # 讀取學校及教師調查表csv檔
         teacher_survy = request.get('teacher_survy', '')
         school_survy = request.get('school_survy', '')
-        import pdb;pdb.set_trace()
+#        import pdb;pdb.set_trace()
 
         tFile = StringIO(teacher_survy.read())
         tReader = csv.DictReader(tFile, delimiter=',')

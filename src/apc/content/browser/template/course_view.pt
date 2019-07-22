@@ -162,12 +162,12 @@ from plone import api
         <span tal:condition="item/place">${item/place}</span>
         <span tal:condition="not:item/place">${item_place}</span>
     </p>
-<!--
+
     <p>
-        <a tal:condition="item/file"
+        <a tal:condition="item/embeded"
            tal:attributes="href string:${item/absolute_url}"><b>觀看上課影片</b></a>
     </p>
--->
+
 <!--
     <h4>直播視訊</h4>
 
