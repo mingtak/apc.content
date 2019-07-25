@@ -4,11 +4,16 @@ import json
 <style>
 h4{
     margin: 5px 0;
+    padding: 5px;
+}
+.highlight{
+    background: brown;
+    color: white;
 }
 </style>
 <div id='count' class='col-md-10'/>
-<div class='col-md-2' tal:define="count python: json.loads(view.count)">
-  <div tal:repeat="item count" style='display: flex; border: 1px solid #ccc'>
+<div class='col-md-2' tal:define="count python: json.loads(view.count)" style='margin-top: -70px'>
+  <div tal:repeat="item count" style='display: flex; border: 1px solid #ccc' id='${item}'>
     <h4 style='width: 140px'>${item}</h4>
     <h4>${python: count[item]}堂</h4>
   </div>
@@ -23,7 +28,13 @@ h4{
         bindto: '#count',
         data: {
             json: ${view/count},
-            type: 'pie'
+            type: 'pie',
+            onmouseover: function(d, i){
+                $('#' + d.name).addClass('highlight')
+            },
+            onmouseout: function(d, i){
+                $('#' + d.name).removeClass('highlight')
+            }
         },
         size: {
             height: 650,

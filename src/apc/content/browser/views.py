@@ -209,32 +209,45 @@ class ShowChart(BrowserView):
             self.total = total
             return self.template2()
         elif mode == 'student_rate':
-            count = {'到課': 0, '缺課': 0}
 
             start = request.get('start')
             end = request.get('end')
             month = request.get('month')
 
-            sqlStr = """SELECT COUNT(status) FROM attend WHERE date """
+            sqlStr = """SELECT * FROM attend WHERE date """
 
             if start and end:
-                onCallStr = """BETWEEN '{}' AND '{}' AND status = 'onCall'""".format(start, end)
-                notOnCallStr = """BETWEEN '{}' AND '{}' AND status = 'notOnCall'""".format(start, end)
+                sqlStr += """BETWEEN '{}' AND '{}'""".format(start, end)
             elif month:
-                onCallStr = """like '{}' AND status = 'onCall'""".format(month + '%%')
-                notOnCallStr = """like '{}' AND status = 'notOnCall'""".format(month + '%%')
+                sqlStr += """LIKE '{}'""".format(month + '%%')
 
-
-            onCall = execSql.execSql('%s %s' %(sqlStr, onCallStr))[0][0]
-            notOnCall = execSql.execSql('%s %s' %(sqlStr, notOnCallStr))[0][0]
-
+            result = execSql.execSql(sqlStr)
+            data = {}
+            count = {'onCall': 0, 'notOnCall': 0}
+            for item in result:
+                obj = dict(item)
+                course = obj['course'][6:].encode('utf-8')
+                status = obj['status']
+                count[status] += 1
+                for k,v in lang_cata.items():
+                    if course in v.split(' '):
+                        if data.has_key(k):
+                            data[k][status].append(obj)
+                        else:
+                            data[k] = {
+                                'onCall': [obj] if status == 'onCall' else [],
+                                'notOnCall': [obj] if status == 'notOnCall' else []
+                            }
+                        continue
             self.start = start
             self.end = end
             self.month = month
-            self.result = json.dumps({'onCall': onCall, 'notOnCall': notOnCall})
+            self.count = json.dumps(count)
+            self.data = data
             return self.template3()
 
         elif mode == 'notOnCallDetail':
+            #已無用
             start = request.get('start')
             end = request.get('end')
             month = request.get('month')

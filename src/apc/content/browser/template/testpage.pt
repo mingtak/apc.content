@@ -40,17 +40,17 @@ portal = api.portal.get()
         </td>
         <td>
           <tal:cond condition="python:obj.file">
-            ${python:obj.file.filename}
+            <a href="${obj/absolute_url}/@@download/file/${obj/file/filename}">${python:obj.file.filename}</a>
           </tal:cond>
         </td>
         <td>
           <tal:cond condition="python:obj.file2">
-            ${python:obj.file2.filename}
+            <a href="${obj/absolute_url}/@@download/file2/${obj/file2/filename}">${python:obj.file2.filename}</a>
           </tal:cond>
         </td>
         <td>
           <tal:cond condition="python:obj.file3">
-            ${python:obj.file3.filename}
+            <a href="${obj/absolute_url}/@@download/file3/${obj/file3/filename}">${python:obj.file3.filename}</a>
           </tal:cond>
         </td>
 

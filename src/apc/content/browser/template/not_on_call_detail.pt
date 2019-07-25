@@ -19,7 +19,7 @@
         <th>補課數</th>
     </tr>
     <tal:rep repeat="item view/count">
-        <tr tal:attributes="class python: 'notCall two' if repeat.item.number % 2 != 0 else 'notCall'"  data-target='collapse${repeat/item/number}'>
+        <tr tal:attributes="class python: 'notCall two' if repeat.item.number % 2 != 0 else 'notCall'" data-target='collapse${repeat/item/number}'>
             <td>${repeat/item/number}</td>
             <td>${python: item}</td>
             <td>${python: ''}</td>

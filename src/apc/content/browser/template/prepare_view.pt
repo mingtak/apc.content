@@ -27,7 +27,7 @@
     </li>
 
 
-    <li><b>課程直播:</b>
+    <li><b>課程影片:</b>
         <div tal:condition="context/embeded" tal:content="structure context/embeded" class="embedCode"></div>
         <div tal:condition="not:context/embeded">尚未上傳</div>
     </li>

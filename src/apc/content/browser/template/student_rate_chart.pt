@@ -1,41 +1,157 @@
 <?python
 import json
 ?>
+<style>
+th{
+    text-align: center;
+}
+th, td{
+    padding: 10px;
+}
+.two{
+    background: #eee
+}
+.on_call_table tr:first-child th{
+    font-size: 20px;
+    background: rgb(31, 119, 180);
+    color: white;
+}
+.not_call_table tr:first-child th{
+    font-size: 20px;
+    background: rgb(255, 127, 14);
+    color: white;
+}
+</style>
+
 <div class='row'>
+  <h3 style='color: brown;text-align: center'>*點擊圓餅圖可以顯示出缺席列表</h3>
   <div class='col-md-12' style='text-align: center'>
-    <div class='col-md-2' tal:define='result python: json.loads(view.result)'>
+    <div class='col-md-2' tal:define='result python: json.loads(view.count)'>
       <h3>應到人數</h3>
-      <h3>${python: result['onCall'] + result['notOnCall']}
+      <h3>${python: result['onCall'] + result['notOnCall']}</h3>
       <h3>出席人數</h3>
-      <h3>${python: result['onCall']}
+      <h3>${python: result['onCall']}</h3>
       <h3>缺席人數</h3>
-      <h3>${python: result['notOnCall']}
+      <h3>${python: result['notOnCall']}</h3>
     </div>
     <div id='count' class='col-md-10'></div>
   </div>
 </div>
+<br><br>
+<h3 style='color: brown;text-align: center'>*點擊列表可顯示更詳細資料</h3>
+<table class='on_call_table' style='display: none'>
+    <tr>
+        <th colspan='6'>出席列表</th>
+    </tr>
+    <tr>
+        <th></th>
+        <th>族語別</th>
+        <th>應出席數</th>
+        <th>實際出席數</th>
+        <th>缺席數</th>
+        <th>補課數</th>
+    </tr>
+    <tal:rep repeat="item view/data">
+        <tr tal:attributes="class python: 'notCall two' if repeat.item.number % 2 != 0 else 'notCall'" 
+            data-target='collapse${repeat/item/number}'>
+            <td>${repeat/item/number}</td>
+            <td>${python: item}</td>
+            <td>${python: ''}</td>
+            <td>${python: len(view.data[item]['onCall'])}</td>
+            <td >${python: len(view.data[item]['notOnCall'])}</td>
+            <td>${python: ''}</td>
+        </tr>
+        <tr class="collapse collapse${repeat/item/number}" style='background: #f08a5d;display: none'
+            tal:condition="python: view.data[item]['onCall']">
+            <td> </td>
+            <th>姓名</th>
+            <th>上課日期</th>
+            <th>課程名稱</th>
+            <th>縣市</th>
+            <th>國小</th>
+        </tr>
+        <tr tal:repeat="onCall python: view.data[item]['onCall']" class="collapse collapse${repeat/item/number}" 
+            style='display: none;background: #fce38a'>
+            <td>${repeat/onCall/number}</td>
+            <td>${python: onCall['name']}</td>
+            <td>${python: onCall['date']}</td>
+            <td>${python: onCall['course']}</td>
+            <td>${python: onCall['county']}</td>
+            <td>${python: onCall['school']}</td>
+        </tr>
+    </tal:rep>
+</table>
+
+
+<table class='not_call_table'>
+    <tr>
+        <th colspan='6'>缺席列表</th>
+    </tr>
+    <tr>
+        <th></th>
+        <th>族語別</th>
+        <th>應出席數</th>
+        <th>實際出席數</th>
+        <th>缺席數</th>
+        <th>補課數</th>
+    </tr>
+    <tal:rep repeat="item view/data">
+        <tr tal:attributes="class python: 'notCall two' if repeat.item.number % 2 != 0 else 'notCall'" data-target='collapse${repeat/item/number}'>
+            <td>${repeat/item/number}</td>
+            <td>${python: item}</td>
+            <td>${python: ''}</td>
+            <td>${python: len(view.data[item]['onCall'])}</td>
+            <td >${python: len(view.data[item]['notOnCall'])}</td>
+            <td>${python: ''}</td>
+        </tr>
+        <tr class="collapse collapse${repeat/item/number}" style='background: #f08a5d;display: none'
+            tal:condition="python: view.data[item]['notOnCall']">
+            <td> </td>
+            <th>姓名</th>
+            <th>上課日期</th>
+            <th>課程名稱</th>
+            <th>縣市</th>
+            <th>國小</th>
+        </tr>
+        <tr tal:repeat="notCall python: view.data[item]['notOnCall']" class="collapse collapse${repeat/item/number}" 
+            style='display: none;background: #fce38a'>
+            <td>${repeat/notCall/number}</td>
+            <td>${python: notCall['name']}</td>
+            <td>${python: notCall['date']}</td>
+            <td>${python: notCall['course']}</td>
+            <td>${python: notCall['county']}</td>
+            <td>${python: notCall['school']}</td>
+        </tr>
+    </tal:rep>
+</table>
+
+
 <script>
+$(function(){
+    $('.notCall').click(function(){
+        target = $(this).data()['target']
+        $('.' + target).toggle('normal')
+    })
+})
+
     var amount_total = c3.generate({
         bindto: '#count',
         data: {
-            json: ${view/result},
+            json: ${view/count},
             type: 'pie',
             names:{
                 onCall: '出席',
                 notOnCall: '缺席'
             },
             onclick: function(d, l){
-                if(d.name != '缺席') return
-
-                $('#result').html('')
-                $.ajax({
-                    method: 'post',
-                    url: '${context/absolute_url}/show_chart',
-                    data: {mode: 'notOnCallDetail', start: '${view/start}', end: '${view/end}', month: '${view/month}'},
-                    success: function(e){
-                        $('#result').html(e)
-                    }
-                })
+                if(d.name == '缺席'){
+                    $('.not_call_table').show()
+                    $('.on_call_table').hide()
+                }
+                else{
+                    $('.not_call_table').hide()
+                    $('.on_call_table').show()
+                }
             }
         },
         size: {

@@ -148,6 +148,9 @@ $(function(){
         option = $(this).data('option')
         if(option == 'satisfaction'){
             $('.btn-send[data-mode="satisfaction"]').click()
+            $(this).addClass('selected')
+            $(this).siblings().removeClass('selected')
+
         }else{
             $(this).addClass('selected')
             $(this).siblings().removeClass('selected')
