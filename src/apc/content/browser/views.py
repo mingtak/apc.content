@@ -98,8 +98,8 @@ class VerifyStudent(BrowserView):
         return self.template()
 
 
-class SatisfactionSurvy(BrowserView):
-    template = ViewPageTemplateFile("template/satisfaction_survy.pt")
+class SatisfactionSurvey(BrowserView):
+    template = ViewPageTemplateFile("template/satisfaction_survey.pt")
 
     def getCityList(self):
         """ 取得縣市列表 """
@@ -599,9 +599,9 @@ class ZipGetSchools(BrowserView):
         return json.dumps(result)
 
 
-class SchoolSurvy(BrowserView):
-    """ School Survy View """
-    template = ViewPageTemplateFile("template/school_survy.pt")
+class SchoolSurvey(BrowserView):
+    """ School Survey View """
+    template = ViewPageTemplateFile("template/school_survey.pt")
 
     def getCityList(self):
         """ 取得縣市列表 """
@@ -617,7 +617,7 @@ class SchoolSurvy(BrowserView):
         context = self.context
         request = self.request
         portal = api.portal.get()
-        resultObj = portal['school_survy']
+        resultObj = portal['school_survey']
         result = {}
 
         if request.has_key('download'):
@@ -657,7 +657,7 @@ class SchoolSurvy(BrowserView):
 
         jsonData.append(result)
         resultObj.description = json.dumps(jsonData)
-        api.portal.show_message(message=_('Survy Finish, Thanks!'), request=request)
+        api.portal.show_message(message=_('Survey Finish, Thanks!'), request=request)
         return self.template()
 
 
@@ -676,7 +676,7 @@ class SchoolSurvy(BrowserView):
         context = self.context
         request = self.request
         portal = api.portal.get()
-        resultObj = portal['school_survy']
+        resultObj = portal['school_survey']
 
         result = json.loads(resultObj.description)
 
@@ -730,18 +730,18 @@ class SchoolSurvy(BrowserView):
 
             index2 += 1
 
-        workbook.save('school_survy.xlsx')
+        workbook.save('school_survey.xls')
 
-        request.response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        request.response.setHeader('Content-Disposition', 'attachment; filename="school_survy.xlsx"')
+        request.response.setHeader('Content-Type', 'application/vnd.ms-excel')
+        request.response.setHeader('Content-Disposition', 'attachment; filename="school_survey.xls"')
 
-        with open('school_survy.xlsx', 'r') as f:
+        with open('school_survey.xls', 'rb') as f:
             return f.read()
 
 
-class TeacherSurvy(BrowserView):
-    """ Teaher Survy View """
-    template = ViewPageTemplateFile("template/teacher_survy.pt")
+class TeacherSurvey(BrowserView):
+    """ Teaher Survey View """
+    template = ViewPageTemplateFile("template/teacher_survey.pt")
 
     def getCityList(self):
         """ 取得縣市列表 """
@@ -760,7 +760,7 @@ class TeacherSurvy(BrowserView):
         context = self.context
         request = self.request
         portal = api.portal.get()
-        resultObj = portal['teacher_survy']
+        resultObj = portal['teacher_survey']
 
         result = json.loads(resultObj.description)
 
@@ -819,19 +819,19 @@ class TeacherSurvy(BrowserView):
                     index3 += 1
 
             index2 += 1
-        request.response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        request.response.setHeader('Content-Disposition', 'attachment; filename="teacher_survy.xlsx"')
+        request.response.setHeader('Content-Type', 'application/vnd.ms-excel')
+        request.response.setHeader('Content-Disposition', 'attachment; filename="teacher_survey.xls"')
 
-        workbook.save('teacher_survy.xlsx')
+        workbook.save('teacher_survey.xls')
 
-        with open('teacher_survy.xlsx', 'r') as f:
+        with open('teacher_survey.xls', 'rb') as f:
             return f.read()
 
     def __call__(self):
         context = self.context
         request = self.request
         portal = api.portal.get()
-        resultObj = portal['teacher_survy']
+        resultObj = portal['teacher_survey']
         result = {}
 
         if request.has_key('download'):
@@ -872,7 +872,7 @@ class TeacherSurvy(BrowserView):
 
         jsonData.append(result)
         resultObj.description = json.dumps(jsonData)
-        api.portal.show_message(message=_('Survy Finish, Thanks!'), request=request)
+        api.portal.show_message(message=_('Survey Finish, Thanks!'), request=request)
 #        import pdb;pdb.set_trace()
         return self.template()
 
@@ -1188,17 +1188,17 @@ class MatchResult(BrowserView):
             return request.response.redirect(portal.absolute_url())
 
         # 讀取學校及教師調查表csv檔
-        teacher_survy = request.get('teacher_survy', '')
-        school_survy = request.get('school_survy', '')
+        teacher_survey = request.get('teacher_survey', '')
+        school_survey = request.get('school_survey', '')
 #        import pdb;pdb.set_trace()
 
-        tFile = StringIO(teacher_survy.read())
+        tFile = StringIO(teacher_survey.read())
         tReader = csv.DictReader(tFile, delimiter=',')
         teachers = []
         for item in tReader:
             teachers.append(item)
 
-        sFile = StringIO(school_survy.read())
+        sFile = StringIO(school_survey.read())
         sReader = csv.DictReader(sFile, delimiter=',')
         schools = []
         for item in sReader:

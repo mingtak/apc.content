@@ -41,9 +41,9 @@
   />
 
   <browser:page
-      name="satisfaction_survy"
+      name="satisfaction_survey"
       for="*"
-      class=".views.SatisfactionSurvy"
+      class=".views.SatisfactionSurvey"
       layer="apc.content.interfaces.IApcContentLayer"
       permission="zope2.View"
   />
@@ -408,17 +408,17 @@
   />
 
   <browser:page
-      name="teacher_survy"
+      name="teacher_survey"
       for="*"
-      class=".views.TeacherSurvy"
+      class=".views.TeacherSurvey"
       layer="apc.content.interfaces.IApcContentLayer"
       permission="zope2.View"
   />
 
   <browser:page
-      name="school_survy"
+      name="school_survey"
       for="*"
-      class=".views.SchoolSurvy"
+      class=".views.SchoolSurvey"
       layer="apc.content.interfaces.IApcContentLayer"
       permission="zope2.View"
   />

@@ -70,7 +70,7 @@ time = {'1': '周一早自習',
 ?>
 
 <a tal:condition="python:api.user.get_current().id == 'admin'"
-   href="${context/absolute_url}/@@school_survy?download" style="float:right">
+   href="${context/absolute_url}/@@school_survey?download" style="float:right">
    下載調查表
 </a>
 

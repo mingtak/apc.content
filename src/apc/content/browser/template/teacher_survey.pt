@@ -70,7 +70,7 @@ time = {'1': '周一早自習',
 ?>
 
 <a tal:condition="python:api.user.get_current().id == 'admin'"
-   href="${context/absolute_url}/@@teacher_survy?download" style="float:right">
+   href="${context/absolute_url}/@@teacher_survey?download" style="float:right">
    下載調查表
 </a>
 
@@ -348,7 +348,6 @@ time = {'1': '周一早自習',
   族語教師主播端設置場所建議
   <select name='location' id='location'>
     <option value='台北攝影棚(行政院新創中心) 地址: 台北市仁愛路三段55號'>台北攝影棚(行政院新創中心) 地址: 台北市仁愛路三段55號</option>
-    <option value='高雄市攝影棚(小港區二苓國小原住民族教育資料中心)'>高雄市攝影棚(小港區二苓國小原住民族教育資料中心)</option>
     <option value='自宅'>自宅</option>
     <option value='其他'>其他</option>
   </select>

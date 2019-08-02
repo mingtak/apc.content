@@ -17,7 +17,7 @@ msgstr ""
 msgid "Class Time Section"
 msgstr "課程時段(填寫範例: 周一早自習)"
 
-msgid "Survy Finish, Thanks!"
+msgid "Survey Finish, Thanks!"
 msgstr "已完成填寫，感謝您。"
 
 #: ./browser/views.py:1049
