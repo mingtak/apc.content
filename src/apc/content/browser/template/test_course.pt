@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="apc.content">
+<body>
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+                    tal:define="toc context/table_of_contents|nothing;">
+
+<table>
+  <thead>
+    <tr>
+      <th>共學組</th>
+      <th>組成學校</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr tal:repeat="item view/course">
+      <td>${item/Title}</td>
+      <td>
+        <ol>
+          <li tal:repeat="school python:item.getObject().school">
+            ${python:school.to_object.getParentNode().title}${school/to_object/title}
+          </li>
+        </ol>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+

@@ -28,6 +28,7 @@ from mingtak.ECBase.browser.views import SqlObj
 import codecs
 import os
 import xlwt
+import random
 #import adal
 #from pypowerbi.dataset import Column, Table, Dataset
 #from pypowerbi.client import PowerBIClient
@@ -38,6 +39,38 @@ sys.setdefaultencoding('utf8')
 
 
 logger = logging.getLogger("apc.content")
+
+
+class UpdatePageCount(BrowserView):
+
+    def __call__(self):
+        return
+        sqlObj = SqlObj()
+        brain = api.content.find(Type="Prepare")
+
+        for item in brain:
+            obj = item.getObject()
+            if not (obj.file or obj.file2 or obj.file3 or obj.embeded):
+                parent = obj.getParentNode()
+                title = '%s-%s' % (parent.title, obj.title)
+                init = random.randint(1, 10)
+                sqlStr = """INSERT INTO page_count(url, title, count)
+                            VALUES('{}', '{}', {}) ON DUPLICATE KEY
+                            UPDATE count = count + {}, title = '{}'""".format(item.getURL(), title, init, init, title)
+                sqlObj.execSql(sqlStr)
+                continue
+
+            parent = obj.getParentNode()
+            title = '%s-%s' % (parent.title, obj.title)
+            init = random.randint(100, 200)
+            sqlStr = """INSERT INTO page_count(url, title, count)
+                        VALUES('{}', '{}', {}) ON DUPLICATE KEY
+                        UPDATE count = count + {}, title = '{}'""".format(item.getURL(), title, init, init, title)
+            sqlObj.execSql(sqlStr)
+            logger.info('PAGE COUNT: %s: %s' % (item.getURL(), init))
+
+        return 'OK'
+
 
 
 class GernalLogin(BrowserView):
@@ -386,6 +419,7 @@ class ShowChart(BrowserView):
 class TestPage(BrowserView):
 
     index = ViewPageTemplateFile("template/testpage.pt")
+    course_template = ViewPageTemplateFile("template/test_course.pt")
 
     def __call__(self):
         alsoProvides(self.request, IDisableCSRFProtection)
@@ -393,8 +427,10 @@ class TestPage(BrowserView):
         context = self.context
         request = self.request
 
-        self.brain = api.content.find(Type='Prepare')
-        return self.index()
+        self.teacher = api.content.find(portal_type='Teacher')
+        self.course = api.content.find(portal_type='Course')
+        return self.course_template()
+#        return self.index()
 
         import pdb; pdb.set_trace()
 

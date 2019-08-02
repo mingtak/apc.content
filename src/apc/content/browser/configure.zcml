@@ -306,7 +306,17 @@
       layer="apc.content.interfaces.IApcContentLayer"
       permission="zope2.View"
   />
- 
+
+<!-- 臨時，統計資料用 --> 
+  <browser:page
+      name="teacher_listing2"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      template="template/teacher_listing_2.pt"
+      class=".views.TeacherListingView"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="cmf.ManagePortal"
+  />
+
   <browser:page
       name="course_listing"
       for="plone.app.contenttypes.interfaces.IFolder"
@@ -456,5 +466,12 @@
       permission="cmf.ManagePortal"
   />
 
+  <browser:page
+      name="update_page_count"
+      for="*"
+      class=".views.UpdatePageCount"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="cmf.ManagePortal"
+  />
 
 </configure>

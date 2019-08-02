@@ -22,10 +22,15 @@ class PageCountViewlet(base.ViewletBase):
     def update(self):
         execSql = SqlObj()
         url = self.context.absolute_url()
-        try:
-            title = self.context.title.encode('utf-8')
-        except:
-            title = self.context.title
+
+        if self.context.portal_type == 'Prepare':
+            parent = self.context.getParentNode()
+            title = '%s-%s' % (parent.title, self.context.title)
+        else:
+            try:
+                title = self.context.title.encode('utf-8')
+            except:
+                title = self.context.title
 
         sqlStr = """INSERT INTO page_count(url, title, count) VALUES('{}', '{}', 1) ON DUPLICATE KEY UPDATE count = count + 1,
                     title = '{}'""".format(url, title, title)

@@ -1,0 +1,94 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  lang="en"
+  metal:use-macro="context/main_template/macros/master"
+  i18n:domain="apc.content">
+<body>
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core"
+          tal:define="toc context/table_of_contents|nothing;">
+
+<?python
+from plone import api
+portal = api.portal.get()
+?>
+
+<div id="site-content" class="site-content clearfix">
+  <div id="inner-content" class="inner-content-wrap">
+    <metal:listingmacro define-macro="listing">
+      <tal:results define="nodes python:portal['teacher'].getChildNodes();">
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>姓名</th>
+      <th>姓別</th>
+      <th>族名</th>
+      <th>教授族語</th>
+      <th>族語認證</th>
+      <th>振興人員研習</th>
+      <th>教學類（合格師資）</th>
+      <th>教學類（族語教師）</th>
+      <th>學歷</th>
+      <th>工作經歷</th>
+      <th>教學年資</th>
+      <th>備註</th>
+      <th>email</th>
+      <th>教授共學組</th>
+    </tr>
+  </thead>
+  <tbody>
+
+<?python
+from plone import api
+?>
+
+    <tal:repeat tal:repeat="item nodes">
+    <tr>
+      <td>${repeat/item/number}</td>
+      <td>${item/title}</td>
+      <td i18n:translate=''>${item/gender}</td>
+      <td>${item/nameSpell}</td>
+      <td>${item/aboriginalsLang}</td>
+      <td>${item/certification}</td>
+      <td>${item/study}</td>
+      <td>${item/qualified_teacher}</td>
+      <td>${item/ethnic_teacher}</td>
+      <td tal:content="structure python:item.education.replace('\n', '<br>') if item.education else ''"></td>
+      <td tal:content="structure python:item.experience.replace('\n', '<br>') if item.experience else ''"></td>
+      <td>${item/teaching_years}</td>
+      <td tal:content="structure python:item.remarks.replace('\n', '<br>') if item.remarks else ''"></td>
+      <td>${item/email}</td>
+      <td>
+        <tal:course define="brain python:api.content.find(portal_type='Course', course_teacher=item.UID())"
+                    repeat="course brain">
+          <span tal:content="course/Title"><br tal:condition="not:repeat/course/end">
+        </tal:course>
+      </td>
+
+    </tr>
+    </tal:repeat>
+
+
+  </tbody>
+</table>
+
+
+
+      </tal:results>
+    </metal:listingmacro>
+
+  </div><!-- /#inner-content -->
+</div><!-- /#site-content -->
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+
+
