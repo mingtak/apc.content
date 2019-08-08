@@ -18,6 +18,20 @@
       directory="static"
       />
   <browser:page
+      name="update_youtube_embeded"
+      for="*"
+      class=".youtube.UpdateYoutubeEmbeded"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+  <browser:page
+      name="upload_youtube"
+      for="*"
+      class=".youtube.UploadYoutube"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+  <browser:page
       name="detect_not_rollcall"
       for="*"
       class=".crontab.DetectNotRollCall"
