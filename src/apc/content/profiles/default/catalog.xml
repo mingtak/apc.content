@@ -15,10 +15,16 @@
   </index>
   <column value="vMeetingRoom"/>
 
+  <index name="download_url" meta_type="FieldIndex">
+    <indexed_attr value="download_url" />
+  </index>
+  <column value="download_url"/>
+
   <index name="course_teacher" meta_type="FieldIndex">
     <indexed_attr value="course_teacher" />
   </index>
   <column value="course_teacher"/>
+
   <index name="course_schools" meta_type="KeywordIndex">
     <indexed_attr value="course_schools" />
   </index>

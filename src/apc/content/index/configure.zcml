@@ -15,4 +15,6 @@
     <adapter name="leaveALesson" factory=".indexers.leaveALesson" />
     <adapter name="zip" factory=".indexers.zip" />
     <adapter name="timeSection" factory=".indexers.timeSection" />
+    <adapter name="download_url" factory=".indexers.download_url" />
+
 </configure>

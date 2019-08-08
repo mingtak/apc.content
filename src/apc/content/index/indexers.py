@@ -37,6 +37,10 @@ def start_date(obj):
     return date
 
 @indexer(IPrepare)
+def download_url(obj):
+    return obj.download_url
+
+@indexer(IPrepare)
 def leaveALesson(obj):
     if obj.leave:
         return True

@@ -60,6 +60,16 @@ class IPrepare(model.Schema):
         required=False,
     )
 
+    download_url = schema.TextLine(
+        title=_(u'Download URL'),
+        required=False,
+    )
+
+    youtube_embeded = schema.Text(
+        title=_(u'Youtube Embeded Code'),
+        required=False,
+    )
+
     embeded = schema.Text(
         title=_(u'Embeded Code'),
         required=False,
