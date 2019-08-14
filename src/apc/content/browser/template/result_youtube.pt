@@ -1,3 +1,7 @@
+<?python
+from plone import api
+abs_url = api.portal.get().absolute_url()
+?>
 <table tal:condition='view/result'>
   <tal:def define='result view/result'>
     <tr>
@@ -8,7 +12,9 @@
     <tr tal:repeat="item result">
       <td>${python: item['keyword']}</td>
       <td>${python: item['language']}</td>
-      <td tal:content="structure python: item['embedUrl']"></td>
+      <td>
+        <a href="${abs_url}/fullscreen_youtube?id=${python: item['id']}" target='_blank'>觀看影片</a>
+      </td>
     </tr>
   </tal:def>
 </table>

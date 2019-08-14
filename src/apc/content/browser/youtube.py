@@ -16,6 +16,17 @@ from bs4 import BeautifulSoup as bs
 import json
 
 
+class FullscreenYoutube(BrowserView):
+    template = ViewPageTemplateFile('template/fullscreen_youtube.pt')
+    def __call__(self):
+        request = self.request
+        id = request.get('id')
+        execSql = SqlObj()
+        sqlStr = """SELECT embedUrl FROM youtube WHERE id = '%s'""" %id
+        self.result = execSql.execSql(sqlStr)
+        return self.template()
+
+
 class AnalysisYoutube(BrowserView):
     template = ViewPageTemplateFile('template/analysis_youtube.pt')
     template2 = ViewPageTemplateFile('template/result_youtube.pt')
@@ -52,9 +63,10 @@ class FetchYoutube(BrowserView):
         portal = api.portal.get()
         execSql = SqlObj()
         alsoProvides(self.request, IDisableCSRFProtection)
-
+        # 抓playlist 裡的影片
         for i in soup.select('.playlist-video'):
             href = i.get('href')
+            # 抓影片資料
             video = requests.get('https://www.youtube.com%s' %href)
 
             soup2 = bs(video.text, 'html.parser')
@@ -73,10 +85,12 @@ class FetchYoutube(BrowserView):
             content.embeded = embedUrl
 #            content.cover_url = cover_url
 
+            # 分析說明
             if description:
                 for desc in description.split(','):
                     if desc:
                         temp = desc.split('-')
+                        # 計算影片起始時間
                         time = (int(temp[0].split(':')[0]) * 60) + int(temp[0].split(':')[1])
                         keyword = temp[1]
                         embedUrl = """<iframe width='560' height='315' src='https://www.youtube.com/embed/%s?start=%s' frameborder='0'

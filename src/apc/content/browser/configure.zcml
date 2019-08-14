@@ -18,6 +18,13 @@
       directory="static"
       />
   <browser:page
+      name="fullscreen_youtube"
+      for="*"
+      class=".youtube.FullscreenYoutube"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="zope2.View"
+  />
+  <browser:page
       name="analysis_youtube"
       for="*"
       class=".youtube.AnalysisYoutube"
