@@ -8,9 +8,9 @@
     <tr tal:repeat="item result">
       <td>${python: item['keyword']}</td>
       <td>${python: item['language']}</td>
-      <td>${python: item['embedUrl']}</td>
+      <td tal:content="structure python: item['embedUrl']"></td>
     </tr>
   </tal:def>
 </table>
 
-<h3 tal:condition='not view/reuslt'>查無資料</h3>
+<h3 tal:condition='python: not view.result'>查無資料</h3>

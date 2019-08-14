@@ -22,9 +22,20 @@ class AnalysisYoutube(BrowserView):
     def __call__(self):
         request = self.request
         keyword = request.get('keyword')
-        if keyword:
+        language = request.get('language')
+
+        if keyword or language:
             execSql = SqlObj()
-            sqlStr = """SELECT * FROM youtube WHERE keyword LIKE '%%{}%%'""".format(keyword)
+            if keyword and language:
+                sqlStr = """SELECT * FROM youtube WHERE keyword LIKE '%%{}%%' AND language LIKE '%%{}%%'""".format(keyword, language)
+            elif keyword:
+                sqlStr = """SELECT * FROM youtube WHERE keyword LIKE '%%{}%%'""".format(keyword)
+            elif language:
+                sqlStr = """SELECT * FROM youtube WHERE language LIKE '%%{}%%'""".format(language)
+            else:
+                self.result = []
+                return self.template2()
+
             self.result = execSql.execSql(sqlStr)
             return self.template2()
         else:

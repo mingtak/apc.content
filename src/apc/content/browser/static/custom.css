@@ -380,3 +380,13 @@ body.template-course_view ul.school {
 .template-plone_root_view .flex-control-nav.flex-control-paging {
     display:none;
 }
+
+.template-analysis_youtube th{
+    font-size: 20px;
+    font-weight: 400;
+}
+.template-analysis_youtube td, .template-analysis_youtube th{
+    text-align: center;
+    padding: 8px;
+    vertical-align: middle;
+}

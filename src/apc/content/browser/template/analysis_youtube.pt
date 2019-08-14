@@ -13,6 +13,10 @@
 <label>
   關鍵字:<input id='keyword' />
 </label>
+<label>
+  族語:<input id='language' />
+</label>
+
 <button id='send'>送出</button>
 
 <div id='result'/>
@@ -21,9 +25,15 @@
 $(function(){
     $('#send').click(function(){
         keyword = $('#keyword').val()
+        language = $('#language').val()
+
+        if(!keyword && !language){
+            alert('請輸入關鍵字或族語')
+            return
+        }
         $.ajax({
             url: '${view/context/absolute_url}/analysis_youtube',
-            data: {keyword: keyword},
+            data: {keyword: keyword, language: language},
             success: function(rep){
                 $('#result').html(rep)
             }
