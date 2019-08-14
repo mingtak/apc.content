@@ -635,6 +635,7 @@ class SchoolSurvey(BrowserView):
         result['phone'] = request.get('phone')
         result['cell'] = request.get('cell')
         result['email'] = request.get('email')
+        result['ps'] = request.get('ps')
 #        result['lang-class-time'] = request.get('lang-class-time')
 
 # 可上課時間採 JOSN, 方便後續媒合
@@ -684,7 +685,7 @@ class SchoolSurvey(BrowserView):
         sheet = workbook.add_sheet('sheet1')
 
         index1 = 0
-        for i in ['city', 'zip', 'school_id', 'school_name', 'contact', 'phone', 'cell', 'email', 'class-time',
+        for i in ['city', 'zip', 'school_id', 'school_name', 'contact', 'phone', 'cell', 'email', 'class-time', 'ps',
             'lang1', 'level1',
             'lang2', 'level2',
             'lang3', 'level3',
@@ -720,7 +721,8 @@ class SchoolSurvey(BrowserView):
             sheet.write(index2, 6, item.get('cell'))
             sheet.write(index2, 7, item.get('email'))
             sheet.write(index2, 8, item.get('class-time'))
-            index3 = 9
+            sheet.write(index2, 9, item.get('ps'))
+            index3 = 10
             for index in range(20):
                 if item['lang'][index][1:4] != ["0", "0", "0"]:
                     sheet.write(index2, index3, item['lang'][index][0])

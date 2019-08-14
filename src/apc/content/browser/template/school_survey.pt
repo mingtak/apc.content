@@ -395,7 +395,7 @@ time = {'1': '周一早自習',
       需求人數:
      </p>
     </td>
-    <td class="ce4" colspan="2" style="text-align:left;width:30%; ">
+    <td class="ce4" colspan="2" style="text-align:left;width:42%; ">
 <span class="rank">低年段(123年級)</span>
 <input type="number" name="lang-${index}" value="0">
     </td>
@@ -410,44 +410,18 @@ time = {'1': '周一早自習',
       <input type="number" name="lang-${index}" value="0">
     </td>
    </tr>
-
-<!--
-   <tr class="ro1">
-    <td class="ce3 title" style="text-align:left;width:22.58mm; ">
-     <p>
-      可配合時段:
-     </p>
-    </td>
-    <td class="ce2" colspan="2" style="text-align:left;width:22.58mm; ">
-<select name="lang-${index}">
-  <option tal:repeat="item python:range(7)"
-          tal:attributes="value python:item+1" tal:content="python:time[str(item+1)]">
-</select>
-    </td>
-    <td class="ce2" colspan="4" style="text-align:left;width:22.58mm; ">
-<input class="other" name="lang-${index}" placeholder="若選其它，請於本欄填寫可配合時段">
-    </td>
-   </tr>
--->
   </table>
-
-
-
 <br>
-
-
-
-
-
-
-
-
-
-
-
-
-
 </div>
+
+<table>
+   <tr>
+     <td style='width: 20%'>備註(若有特殊之上課時段需求，或任何建議事項，請填寫於此欄)：</td>
+     <td>
+       <textarea rows='3' cols='50' name='ps'></textarea>
+     </td>
+   </tr>
+</table>
 
 
 <br>

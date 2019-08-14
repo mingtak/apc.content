@@ -14,12 +14,16 @@
   <thead>
     <tr>
       <th>共學組</th>
+      <th>上課時段</th>
+      <th>授課教師</th>
       <th>組成學校</th>
     </tr>
   </thead>
   <tbody>
     <tr tal:repeat="item view/course">
       <td>${item/Title}</td>
+      <td>${item/timeSection}</td>
+      <td>${python:item.getObject().teacher.to_object.title if item.getObject().teacher else ''}</td>
       <td>
         <ol>
           <li tal:repeat="school python:item.getObject().school">
