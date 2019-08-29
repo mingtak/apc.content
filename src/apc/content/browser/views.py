@@ -427,8 +427,18 @@ class TestPage(BrowserView):
         context = self.context
         request = self.request
 
-        self.teacher = api.content.find(portal_type='Teacher')
         self.course = api.content.find(portal_type='Course')
+        self.prepare = api.content.find(portal_type='Prepare')
+        for item in self.course:
+            try:
+                api.content.transition(obj=item.getObject(), transition='publish')
+            except:pass
+        for item in self.prepare:
+            try:
+                api.content.transition(obj=item.getObject(), transition='publish')
+            except:pass
+
+        return 'ok'
         return self.course_template()
 #        return self.index()
 
@@ -1983,6 +1993,7 @@ class Rollcall(BrowserView):
     def __call__(self):
         request = self.request
         context = self.context
+        portal = api.portal.get()
 
         on_call = request.form.get('on_call').split('||')
         not_on_call = request.form.get('not_on_call').split('||')
@@ -2025,7 +2036,7 @@ class Rollcall(BrowserView):
                 continue
 #            import pdb;pdb.set_trace()
             cityTitle, schoolName, name = item.split(',')
-            city = api.content.find(path='/apc_costudy/school', Title=cityTitle, depth=1)[0]
+            city = api.content.find(path='/%s/school' % portal.getId(), Title=cityTitle, depth=1)[0]
             school = api.content.find(path=city.getPath(), Title=schoolName)[0]
             email = school.getObject().email
             # 寄 Email

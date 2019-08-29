@@ -14,9 +14,9 @@ expires = {
     'range': 'min',
 }
 
-news02Brain = catalog(path='/apc_costudy/news/news02', portal_type='News Item', effective=effective,
+news02Brain = catalog(path='/%s/news/news02' % portal.getId(), portal_type='News Item', effective=effective,
                 expires=expires, sort_on='effective', sort_order='reverse', sort_limit=10)[0:10]
-news03Brain = catalog(path='/apc_costudy/news/news03', portal_type='News Item', effective=effective,
+news03Brain = catalog(path='/%s/news/news03' % portal.getId(), portal_type='News Item', effective=effective,
                 expires=expires, sort_on='effective', sort_order='reverse', sort_limit=10)[0:5]
 leaveBrain = api.content.find(leaveALesson=True, sort_on='modified', sort_order='reverse', sort_limit=10)
 liveBrain = api.content.find(context=portal['live_video'], portal_type='LiveClass', sort_on='start', sort_order='reverse')
@@ -162,7 +162,7 @@ lang_cata = {
           </tbody>
         </table>
       </ul>
-      <div class="readmore pull-right">[<a href="${portal/absolute_url}/news/news01">閱讀更多</a>]</div>
+      <div class="readmore pull-right">[<a href="${portal/absolute_url}/news/news01">查看停/補課列表</a>]</div>
     </div>
   </div>
 

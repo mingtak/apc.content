@@ -509,4 +509,13 @@
       permission="cmf.ManagePortal"
   />
 
+<!-- 匯課程，用完即關
+  <browser:page
+      name="add_course_1081"
+      for="*"
+      class=".add_course.AddCourse1081"
+      layer="apc.content.interfaces.IApcContentLayer"
+      permission="cmf.ManagePortal"
+  />
+-->
 </configure>

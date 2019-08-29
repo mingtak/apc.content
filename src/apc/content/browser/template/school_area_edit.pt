@@ -87,11 +87,11 @@ portal = api.portal.get()
                 <div class="tr-list row">
                   <div class="col-sm-4 col-md-2">
                     <li class="publish-date">
-                      ${python:item_id[0:6]}
+                      ${python:item_id[0:8]}
                     </li>
                   </div>
                   <div class="col-sm-4 col-md-4">
-                    <a href="${item_url}" class="title">${python:item_title[6:]}</a>
+                    <a href="${item_url}" class="title">${python:item_title[8:]}</a>
                   </div>
                   <div class="col-sm-4 col-md-6">
                      (<a href="javascript:;" onclick="showNamelist('${item_uid}')">新增學生名單</a>)
@@ -109,8 +109,8 @@ portal = api.portal.get()
                 請輸入年級：
                 <input type='number' name='level' style='width: 20%;' required>
                 <input type='hidden' name='course_uid' value='${item_uid}'>
-                <input type='hidden' name='course' value='${python: item_id[0:6]}'>
-                <input type='hidden' name='language' value='${python:item_title[6:]}'>
+                <input type='hidden' name='course' value='${python: item_id[0:8]}'>
+                <input type='hidden' name='language' value='${python:item_title[8:]}'>
 
                 <input type="hidden" name="widget-form-btn" value="widget-addStudent-form">
                 <button type="submit" class="btn context" >送出</button>

@@ -27,7 +27,7 @@ catalog = portal.portal_catalog
 </tr>
 <tr tal:repeat="item view/result">
   <td tal:define="school python:catalog({'id':item.split()[0], 'portal_type':['Teacher', 'School']})[0]">
-    ${python:''.join(item.split()[:-2])}
+    ${python:'%s%s' % (school.getObject().getParentNode().title, school.Title)}
     (<a target="_blank" href="${python:'%s/edit#autotoc-item-autotoc-2' % school.getURL()}">改密碼</a>)
   </td>
 

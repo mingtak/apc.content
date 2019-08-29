@@ -55,7 +55,9 @@ class AnalysisYoutube(BrowserView):
 
 class FetchYoutube(BrowserView):
     def __call__(self):
-        url = 'https://www.youtube.com/watch?v=Blh4fv2LXpg&list=PLBTGDa1tS7xFyMJMgbQuUsy5FzoRc65aB'
+        # 抓影片右邊的影片列表, 會一次顯示所有影片
+#        url = 'https://www.youtube.com/watch?v=Blh4fv2LXpg&list=PLBTGDa1tS7xFyMJMgbQuUsy5FzoRc65aB'
+        url = 'https://www.youtube.com/watch?v=i7ScDVyN56I&list=PLmP3ukJ2_C1aXYr-DnjeFb-v176PreCIb&index=2&t=0s'
 
         playlist = requests.get(url)
         soup = bs(playlist.text, 'html.parser')
@@ -63,21 +65,34 @@ class FetchYoutube(BrowserView):
         portal = api.portal.get()
         execSql = SqlObj()
         alsoProvides(self.request, IDisableCSRFProtection)
+
         # 抓playlist 裡的影片
+        # TODO 反轉playlist抓後十個
         for i in soup.select('.playlist-video'):
             href = i.get('href')
             # 抓影片資料
             video = requests.get('https://www.youtube.com%s' %href)
 
             soup2 = bs(video.text, 'html.parser')
-            title = soup2.select('#eow-title')[0].text.strip()
+#            title = soup2.select('#eow-title')[0].text.strip()
+
             description = soup2.select('#eow-description')[0].text
+            if not description:
+                continue
+            title = description.split(',')[0]
 
             videoId = video.url.split('v=')[1].split('&list')[0]
             courseId = title.split('-')[0].split('_')[0]
             prepareId = title.split('-')[0]
             language = title.split('-')[1]
-            content = portal['language_study']['latest']['class_intro'][courseId][prepareId]
+
+            sqlStr = """SELECT id FROM `youtube` WHERE videoId = '{}'""".format(videoId)
+            check = execSql.execSql(sqlStr)
+            # 確認是否重複
+            if check:
+                continue
+
+            content = portal['language_study']['108test']['class_intro'][courseId][prepareId]
 
             embedUrl = """<iframe width='560' height='315' src='https://www.youtube.com/embed/%s' frameborder='0'
                           allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
@@ -87,11 +102,19 @@ class FetchYoutube(BrowserView):
 
             # 分析說明
             if description:
-                for desc in description.split(','):
+                for desc in description.split(',')[1:]:
                     if desc:
                         temp = desc.split('-')
+                        timeList = temp[0].split(':')
+
                         # 計算影片起始時間
-                        time = (int(temp[0].split(':')[0]) * 60) + int(temp[0].split(':')[1])
+                        if len(timeList) == 3:
+                            time =  int(timeList[0])*60*60 + int(timeList[1])*60 + int(timeList[2])
+                        elif len(timeList) == 2:
+                            time = int(timeList[0])*60 + int(timeList[1])
+                        else:
+                            continue
+
                         keyword = temp[1]
                         embedUrl = """<iframe width='560' height='315' src='https://www.youtube.com/embed/%s?start=%s' frameborder='0'
                               allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'

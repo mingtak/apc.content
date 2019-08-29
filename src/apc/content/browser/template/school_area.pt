@@ -80,11 +80,11 @@ portal = api.portal.get()
                 <div class="tr-list row">
                   <div class="col-sm-4 col-md-2">
                     <li class="publish-date">
-                      ${python:item_id[0:6]}
+                      ${python:item_id[0:8]}
                     </li>
                   </div>
                   <div class="col-sm-4 col-md-4">
-                    <a href="${item_url}" class="title">${python:item_title[6:]}</a>
+                    <a href="${item_url}" class="title">${python:item_title[8:]}</a>
                   </div>
                   <div class="col-sm-4 col-md-6">
                   <div class="col-xs-3">

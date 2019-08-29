@@ -30,18 +30,17 @@ def moveObjectsToTop(obj, event):
     """
     Moves Items to the top of its folder
     """
-#    import pdb; pdb.set_trace()
+    try:
+        if obj.effective() < DateTime(2000,1,1):
+            year = DateTime().year()
+            month = DateTime().month()
+            day = DateTime().day()
+            tz = pytz.timezone('Asia/Taipei')
 
-    if obj.effective() < DateTime(2000,1,1):
-        year = DateTime().year()
-        month = DateTime().month()
-        day = DateTime().day()
-        tz = pytz.timezone('Asia/Taipei')
+            obj.effective = datetime.datetime(year, month, day, 0, 0, tzinfo=tz)
+            obj.reindexObject()
 
-        obj.effective = datetime.datetime(year, month, day, 0, 0, tzinfo=tz)
-        obj.reindexObject()
-#        import pdb; pdb.set_trace()
-
-    folder = obj.getParentNode()
-    if folder != None and hasattr(folder, 'moveObjectsToTop'):
-        folder.moveObjectsToTop(obj.id)
+        folder = obj.getParentNode()
+        if folder != None and hasattr(folder, 'moveObjectsToTop'):
+            folder.moveObjectsToTop(obj.id)
+    except:pass
